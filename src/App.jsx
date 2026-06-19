@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwte1jkE2vu7Lg32395bHpnjXYv9uibdodFYAneu0AphFxNCzl-JHX6Q7lv1tIn9Dnz/exec";
 const generateCaseNumber = () => "SC-" + Math.floor(1000 + Math.random() * 9000);
@@ -14,7 +14,7 @@ export default function CarmenGame() {
   const [submitting, setSubmitting] = useState(false);
   const [caseNumber] = useState(generateCaseNumber());
 
-const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
+const correctAnswers = ["Orlando", "MCO", "mco", "Orlando, FL", "Orlando, Florida"];
   const prompt = "Your sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen in bulk, had a frozen drink in hand, and kept asking where they could find the warmest place Minnesotans escape to when winter hits hard. They disappeared into a crowd of flipflops, palm trees, and travelers wearing mouse ear headbands. Where in the Sun Country world did they go? ";
 
   const handleSubmit = () => {
@@ -31,8 +31,7 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
   };
 
   const handleFinalSubmit = async () => {
-    if (!name) return alert("Name required");
-
+    if (!name) return alert("Name Required");
     setSubmitting(true);
 
     try {
@@ -46,15 +45,13 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
       console.error(err);
     }
 
-    setTimeout(() => {
-      setSubmitted(true);
-    }, 800);
+    setTimeout(() => setSubmitted(true), 800);
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black relative overflow-hidden">
 
-      {/* MAP */}
+      {/* ✅ NEW MAP IMAGE */}
      <img
   src="https://res.hovia.com/gimmersta-wallpaper/image/upload/c_fill,f_auto,fl_progressive,q_auto,w_1101,h_801/v1716223329/articles/VI0004BU30W_product.jpg"
   className="absolute inset-0 w-full h-full object-cover opacity-40 pointer-events-none"
@@ -70,8 +67,8 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
-        className="absolute w-[850px] h-[850px] rounded-full opacity-60 pointer-events-none"
-        style={{ background: "conic-gradient(rgba(0,255,100,0.6), transparent 30%)" }}
+        className="absolute w-[650px] h-[650px] rounded-full opacity-60 pointer-events-none"
+        style={{ background: "conic-gradient(rgba(0,255,100,0.6), transparent 20%)" }}
       />
 
       {/* CONTENT */}
@@ -85,6 +82,21 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
 
             <div className="bg-yellow-100 border-2 border-yellow-600 rounded-xl p-10 shadow-xl relative overflow-hidden">
 
+              {/* ✅ RESULT FLASH */}
+              <AnimatePresence>
+                {showName && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: [0, 0.6, 0] }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className={`absolute inset-0 pointer-events-none ${
+                      isCorrect ? "bg-green-400" : "bg-red-500"
+                    }`}
+                  />
+                )}
+              </AnimatePresence>
+
               {/* CONFIDENTIAL */}
               <div className="absolute top-6 right-6 text-red-600 border-4 border-red-600 px-4 py-1 font-bold rotate-[-15deg]">
                 CONFIDENTIAL
@@ -95,7 +107,7 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
                 Case #: {caseNumber}
               </div>
 
-              <h1 className="text-3xl font-bold mb-4">Sun Country Detective Agency</h1><br></br><h3>Subject: Carmen Sandiego</h3>
+              <h1 className="text-3xl font-bold mb-4">Carmen Sandiego</h1><br></br><h2>Suspect: Carmen Sandiego</h2>
 
               <div className="bg-white p-4 border mb-4">
                 {prompt}
@@ -118,7 +130,7 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
                 </button>
               )}
 
-              {/* 🔥 ENHANCED SCANNING */}
+              {/* ENHANCED SCANNING */}
               {scanning && (
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -137,7 +149,6 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
               {showName && (
                 <div className="mt-4">
 
-                  {/* 🔥 BIG RESULT */}
                   <motion.p
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1.1, opacity: 1 }}
@@ -145,13 +156,13 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
                       isCorrect ? "text-green-600" : "text-red-600"
                     }`}
                   >
-                    {isCorrect ? "🎯 TARGET LOCKED! Excellent Work Gumshoe!" : "❌ CARMEN ESCAPED! You Can Track Her Again Tomorrow!"}
+                    {isCorrect ? "🎯 TARGET LOCKED! Excellent Work Gumshoe!" : "❌ CARMEN ESCAPED! Track Her Again Tomorrow!"}
                   </motion.p>
 
                   <input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Agent name"
+                    placeholder="Agent Full Name"
                     className="w-full p-3 mb-3 border"
                   />
 
@@ -172,7 +183,7 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
           </div>
         ) : (
           <div className="text-white text-center text-3xl">
-            ✅ Case Submitted   Agent: {name} Case: {caseNumber}
+            ✅ Case Submitted    Agent: {name}  Case: {caseNumber}
           </div>
         )}
       </div>
