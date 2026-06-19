@@ -41,12 +41,12 @@ export default function CarmenGame() {
 
     let step = 0;
 
-    const interval = setInterval(() => {
+  const interval = setInterval(() => {
   step++;
   if (step < scanMessages.length) {
     setScanStep(step);
   }
-}, 2400); // slower transitions
+}, 2400);
 
 setTimeout(() => {
   clearInterval(interval);
@@ -57,9 +57,7 @@ setTimeout(() => {
   setIsCorrect(match);
   setShowName(true);
   setScanning(false);
-}, 6500); // longer total scan
-
-
+}, 7500);
       const normalized = answer.trim().toLowerCase();
       const match = correctAnswers.includes(normalized);
 
