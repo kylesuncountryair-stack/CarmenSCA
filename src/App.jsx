@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwte1jkE2vu7Lg32395bHpnjXYv9uibdodFYAneu0AphFxNCzl-JHX6Q7lv1tIn9Dnz/exec";
 
 export default function CarmenGame() {
   const [answer, setAnswer] = useState("");
@@ -12,8 +12,8 @@ export default function CarmenGame() {
   const [submitted, setSubmitted] = useState(false);
   const [scanning, setScanning] = useState(false);
 
-  const correctAnswers = ["Paris", "CDG"];
-  const prompt = "Where in the world is Carmen Sandiego?";
+  const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
+  const prompt = "•	Your sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen in bulk, had a frozen drink in hand, and kept asking where they could find the warmest place Minnesotans escape to when winter hits hard. They disappeared into a crowd of flipflops, palm trees, and travelers wearing mouse ear headbands. Where in the Sun Country world did they go? ";
 
   const handleSubmit = () => {
     setScanning(true);
@@ -82,7 +82,7 @@ export default function CarmenGame() {
                 Carmen Sandiego
               </h1>
               <p className="text-sm text-red-300 mb-6">
-                ACME Detective Agency
+                Sun Country Detective Agency
               </p>
 
               <div className="bg-black/70 border border-red-700 rounded-xl p-4 mb-6">
@@ -116,7 +116,7 @@ export default function CarmenGame() {
 
               {scanning && (
                 <div className="mt-4 text-yellow-300 font-bold">
-                  🔍 Scanning Global Network...
+                  🔍 Scanning Global Sun Country Network...
                 </div>
               )}
 
