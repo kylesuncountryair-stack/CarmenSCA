@@ -54,7 +54,7 @@ const correctAnswers = ["Orlando", "MCO", "mco", "Orlando, FL", "Orlando, Florid
       {/* ✅ NEW MAP IMAGE */}
      <img
   src="https://res.hovia.com/gimmersta-wallpaper/image/upload/c_fill,f_auto,fl_progressive,q_auto,w_1101,h_801/v1716223329/articles/VI0004BU30W_product.jpg"
-  className="absolute inset-0 w-full h-full object-cover opacity-40 pointer-events-none"
+  className="absolute inset-0 w-full h-full object-cover opacity-35 pointer-events-none"
 />
 
       {/* RADAR */}
