@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwte1jkE2vu7Lg32395bHpnjXYv9uibdodFYAneu0AphFxNCzl-JHX6Q7lv1tIn9Dnz/exec";
 
-// generate random case number
-const generateCaseNumber = () => {
-  return "SC-" + Math.floor(1000 + Math.random() * 9000);
-};
+const generateCaseNumber = () => "SC-" + Math.floor(1000 + Math.random() * 9000);
 
 export default function CarmenGame() {
   const [answer, setAnswer] = useState("");
@@ -20,12 +17,13 @@ export default function CarmenGame() {
 const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
   const prompt = "•	Your sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen in bulk, had a frozen drink in hand, and kept asking where they could find the warmest place Minnesotans escape to when winter hits hard. They disappeared into a crowd of flipflops, palm trees, and travelers wearing mouse ear headbands. Where in the Sun Country world did they go? ";
 
-
   const handleSubmit = () => {
     setScanning(true);
+
     setTimeout(() => {
       const normalized = answer.trim().toLowerCase();
-      const match = correctAnswers.some((a) => a.toLowerCase() === normalized);
+      const match = correctAnswers.some(a => a.toLowerCase() === normalized);
+
       setIsCorrect(match);
       setShowName(true);
       setScanning(false);
@@ -34,135 +32,144 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
 
   const handleFinalSubmit = async () => {
     if (!name) return alert("Name required");
+
     try {
       await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, answer, correct: isCorrect, caseNumber }),
+        body: JSON.stringify({
+          name,
+          answer,
+          result: isCorrect ? "Correct" : "Incorrect
+          caseNumber,
+        }),
       });
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
 
     setSubmitted(true);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black text-black relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-black relative overflow-hidden">
 
-      {/* MAP */}
-      <div className="absolute inset-0 opacity-25 bg-[url(https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg)] bg-cover bg-center" />
-      <div className="absolute inset-0 bg-black/40" />
+      {/* ✅ MAP (fixed) */}
+     <img
+  src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg"
+  className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none"
+/>
 
-      {/* FOLDER WRAPPER */}
-      <div className="w-full max-w-5xl p-6 z-10 relative">
-        <AnimatePresence>
-          {!submitted ? (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
 
-              {/* FILE TAB */}
-              <div className="relative w-fit ml-6">
-                <div className="bg-yellow-300 px-6 py-2 rounded-t-lg border border-yellow-500 shadow-md font-bold tracking-wide">
-                  CASE FILE
-                </div>
-                <div className="absolute right-[-20px] top-0 w-6 h-full bg-yellow-200 skew-x-12 border-r border-yellow-500" />
-              </div>
+      {/* OVERLAY */}
+      <div className="absolute inset-0 bg-black/50 pointer-events-none" />
 
-              {/* MAIN FOLDER */}
-              <div className="bg-yellow-100 border-2 border-yellow-600 rounded-xl p-10 shadow-[0_10px_30px_rgba(0,0,0,0.6)] relative overflow-hidden">
+      {/* RADAR RINGS */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="w-[700px] h-[700px] border border-red-700 rounded-full animate-ping opacity-30"></div>
+        <div className="absolute w-[500px] h-[500px] border border-red-500 rounded-full animate-ping opacity-30"></div>
+      </div>
 
-                {/* CONFIDENTIAL STAMP */}
-                <motion.div
-                  initial={{ rotate: -20, opacity: 0 }}
-                  animate={{ rotate: -15, opacity: 0.9 }}
-                  className="absolute top-6 right-6 text-red-600 border-4 border-red-600 px-6 py-2 font-extrabold text-2xl tracking-widest"
-                >
-                  CONFIDENTIAL
-                </motion.div>
+      {/* RADAR SWEEP */}
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+        className="absolute w-[650px] h-[650px] rounded-full opacity-50 pointer-events-none"
+        style={{ background: "conic-gradient(rgba(0,255,100,0.5), transparent 25%)" }}
+      />
 
-                {/* CASE NUMBER */}
-                <div className="absolute top-6 left-6 text-sm font-bold text-gray-700">
-                  Case #: {caseNumber}
-                </div>
+      {/* GLOBE */}
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+        className="absolute w-[450px] h-[450px] rounded-full opacity-40 pointer-events-none"
+        style={{
+          backgroundImage: "url(https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/512px-The_Earth_seen_from_Apollo_17.jpg)",
+          backgroundSize: "cover",
+        }}
+      />
 
-                {/* PAPER TEXTURE */}
-                <div className="absolute inset-0 opacity-10 bg-[repeating-linear-gradient(0deg,transparent,transparent_24px,rgba(0,0,0,0.05)_25px)] rounded-xl" />
+      {/* CONTENT */}
+      <div className="w-full max-w-5xl p-6 relative z-20 text-black">
+        {!submitted ? (
+          <div>
 
-                <h1 className="text-4xl font-extrabold mb-2 text-red-600">
-                  Carmen Sandiego
-                </h1>
-                <p className="text-sm text-gray-600 mb-8 tracking-widest">
-                  Sun Country Detective Agency
-                </p>
-
-                {/* FILE CONTENT */}
-                <div className="bg-white border border-gray-300 rounded-lg p-6 mb-6 shadow-inner">
-                  <p className="text-lg font-semibold text-gray-800 leading-relaxed">
-                    {prompt}
-                  </p>
-                </div>
-
-                <input
-                  value={answer}
-                  onChange={(e) => setAnswer(e.target.value)}
-                  placeholder="Enter city or airport code"
-                  className={`w-full p-4 rounded-lg mb-6 border-2 text-lg ${
-                    isCorrect === true
-                      ? "bg-green-200 border-green-600"
-                      : isCorrect === false
-                      ? "bg-red-200 border-red-600"
-                      : "bg-white border-gray-400"
-                  }`}
-                  disabled={showName || scanning}
-                />
-
-                {!showName && !scanning && (
-                  <button
-                    onClick={handleSubmit}
-                    className="bg-red-600 text-white px-8 py-3 rounded-lg font-bold hover:scale-105 transition"
-                  >
-                    Track Carmen
-                  </button>
-                )}
-
-                {scanning && (
-                  <div className="mt-4 text-green-600 font-bold text-lg animate-pulse">
-                    📡 Scanning Global Network...
-                  </div>
-                )}
-
-                {showName && (
-                  <div className="mt-6">
-                    <p className="mb-4 text-lg text-gray-700">
-                      {isCorrect
-                        ? "🎯 Target Locked! Excellent work, Gumshoe."
-                        : "❌ Carmen slipped away this time… try again tomorrow."}
-                    </p>
-
-                    <input
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="Agent full name"
-                      className="w-full p-4 rounded-lg mb-4 border border-gray-400"
-                    />
-
-                    <button
-                      onClick={handleFinalSubmit}
-                      className="bg-green-600 text-white px-8 py-3 rounded-lg font-bold"
-                    >
-                      Submit Report
-                    </button>
-                  </div>
-                )}
-
-              </div>
-
-            </motion.div>
-          ) : (
-            <div className="text-center text-yellow-300">
-              <h2 className="text-5xl font-extrabold">Good Work Gumshoe 🕵️‍♂️</h2>
+            <div className="bg-yellow-300 inline-block px-6 py-2 rounded-t-lg border font-bold ml-4">
+              CASE FILE
             </div>
-          )}
-        </AnimatePresence>
+
+            <div className="bg-yellow-100 border-2 border-yellow-600 rounded-xl p-10 shadow-xl relative">
+
+              {/* CONFIDENTIAL */}
+              <div className="absolute top-6 right-6 text-red-600 border-4 border-red-600 px-4 py-1 font-bold rotate-[-15deg]">
+                CONFIDENTIAL
+              </div>
+
+              {/* CASE NUMBER */}
+              <div className="absolute top-6 left-6 text-sm font-bold">
+                Case #: {caseNumber}
+              </div>
+
+              <h1 className="text-3xl font-bold mb-4">Carmen Sandiego</h1>
+
+              <div className="bg-white p-4 border mb-4">
+                {prompt}
+              </div>
+
+              <input
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                className="w-full p-3 mb-4 border"
+                placeholder="Enter city or airport code"
+                disabled={scanning || showName}
+              />
+
+              {!scanning && !showName && (
+                <button
+                  onClick={handleSubmit}
+                  className="bg-red-600 text-white px-6 py-2"
+                >
+                  Track Carmen
+                </button>
+              )}
+
+              {scanning && (
+                <div className="text-green-600 font-bold animate-pulse">
+                  📡 Scanning Sun Country Global Network...
+                </div>
+              )}
+
+              {showName && (
+                <div className="mt-4">
+                  <p className="mb-2 font-bold">
+                    {isCorrect ? "🎯 Target Locked, Great Work Gumshoe!" : "❌ Carmen Escaped, Search For Her Again Tomorrow!"}
+                  </p>
+
+                  <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Agent Full Name"
+                    className="w-full p-3 mb-3 border"
+                  />
+
+                  <button
+                    onClick={handleFinalSubmit}
+                    className="bg-green-600 text-white px-6 py-2"
+                  >
+                    Submit Report
+                  </button>
+                </div>
+              )}
+
+            </div>
+
+          </div>
+        ) : (
+          <div className="text-white text-center text-3xl">
+            ✅ Case Submitted \nAgent: {name} \nCase: {caseNumber}
+          </div>
+        )}
       </div>
 
     </div>
