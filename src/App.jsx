@@ -184,7 +184,7 @@ export default function CarmenGame() {
                   <motion.p
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1.1, opacity: 1 }}
-                    className={`mb-4 text-2xl font-extrabold ${
+                    className={`mb-4 text-2xl font-extrabold text-center ${
                       isCorrect ? "text-green-600" : "text-red-600"
                     }`}
                   >
