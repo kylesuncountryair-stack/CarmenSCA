@@ -66,7 +66,7 @@ setTimeout(() => {
       setIsCorrect(match);
       setShowName(true);
       setScanning(false);
-    }, 2300);
+    }, 2400);
   };
 
   const handleFinalSubmit = async () => {
