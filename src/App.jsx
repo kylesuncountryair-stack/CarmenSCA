@@ -15,7 +15,7 @@ export default function CarmenGame() {
   const [caseNumber] = useState(generateCaseNumber());
 
 const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
-  const prompt = "•	Your sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen in bulk, had a frozen drink in hand, and kept asking where they could find the warmest place Minnesotans escape to when winter hits hard. They disappeared into a crowd of flipflops, palm trees, and travelers wearing mouse ear headbands. Where in the Sun Country world did they go? ";
+  const prompt = "Your sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen in bulk, had a frozen drink in hand, and kept asking where they could find the warmest place Minnesotans escape to when winter hits hard. They disappeared into a crowd of flipflops, palm trees, and travelers wearing mouse ear headbands. Where in the Sun Country world did they go? ";
 
   const handleSubmit = () => {
     setScanning(true);
