@@ -46,7 +46,7 @@ export default function CarmenGame() {
   if (step < scanMessages.length) {
     setScanStep(step);
   }
-}, 1800); // slower transitions
+}, 2400); // slower transitions
 
 setTimeout(() => {
   clearInterval(interval);
@@ -57,7 +57,7 @@ setTimeout(() => {
   setIsCorrect(match);
   setShowName(true);
   setScanning(false);
-}, 5500); // longer total scan
+}, 6500); // longer total scan
 
 
       const normalized = answer.trim().toLowerCase();
