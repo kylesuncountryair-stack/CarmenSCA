@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwte1jkE2vu7Lg32395bHpnjXYv9uibdodFYAneu0AphFxNCzl-JHX6Q7lv1tIn9Dnz/exec";
-
 const generateCaseNumber = () => "SC-" + Math.floor(1000 + Math.random() * 9000);
 
 export default function CarmenGame() {
@@ -12,6 +11,7 @@ export default function CarmenGame() {
   const [name, setName] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [scanning, setScanning] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [caseNumber] = useState(generateCaseNumber());
 
 const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
@@ -27,67 +27,51 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
       setIsCorrect(match);
       setShowName(true);
       setScanning(false);
-    }, 2000);
+    }, 2200);
   };
 
   const handleFinalSubmit = async () => {
     if (!name) return alert("Name required");
+
+    setSubmitting(true);
 
     try {
       await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          answer,
-          result: isCorrect ? "Correct" : "Incorrect",
-          caseNumber,
-        }),
+        body: JSON.stringify({ name, answer, correct: isCorrect, caseNumber }),
       });
     } catch (err) {
       console.error(err);
     }
 
-    setSubmitted(true);
+    setTimeout(() => {
+      setSubmitted(true);
+    }, 800);
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black relative overflow-hidden">
 
-      {/* ✅ MAP (fixed) */}
+      {/* MAP */}
      <img
   src="https://res.hovia.com/gimmersta-wallpaper/image/upload/c_fill,f_auto,fl_progressive,q_auto,w_1101,h_801/v1716223329/articles/VI0004BU30W_product.jpg"
   className="absolute inset-0 w-full h-full object-cover opacity-50 pointer-events-none"
 />
 
-
-      {/* OVERLAY */}
-      <div className="absolute inset-0 bg-black/50 pointer-events-none" />
-
-      {/* RADAR RINGS */}
+      {/* RADAR */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="w-[700px] h-[700px] border border-red-700 rounded-full animate-ping opacity-30"></div>
-        <div className="absolute w-[500px] h-[500px] border border-red-500 rounded-full animate-ping opacity-30"></div>
+        <div className="absolute w-[500px] h-[500px] border border-red-500 rounded-full animate-ping opacity-40"></div>
       </div>
 
-      {/* RADAR SWEEP */}
+      {/* SWEEP */}
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
-        className="absolute w-[850px] h-[850px] rounded-full opacity-50 pointer-events-none"
-        style={{ background: "conic-gradient(rgba(0,255,100,0.5), transparent 25%)" }}
-      />
-
-      {/* GLOBE */}
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-        className="absolute w-[450px] h-[450px] rounded-full opacity-40 pointer-events-none"
-        style={{
-          backgroundImage: "url(https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/512px-The_Earth_seen_from_Apollo_17.jpg)",
-          backgroundSize: "cover",
-        }}
+        className="absolute w-[850px] h-[850px] rounded-full opacity-60 pointer-events-none"
+        style={{ background: "conic-gradient(rgba(0,255,100,0.6), transparent 40%)" }}
       />
 
       {/* CONTENT */}
@@ -99,19 +83,19 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
               CASE FILE
             </div>
 
-            <div className="bg-yellow-100 border-2 border-yellow-600 rounded-xl p-10 shadow-xl relative">
+            <div className="bg-yellow-100 border-2 border-yellow-600 rounded-xl p-10 shadow-xl relative overflow-hidden">
 
               {/* CONFIDENTIAL */}
               <div className="absolute top-6 right-6 text-red-600 border-4 border-red-600 px-4 py-1 font-bold rotate-[-15deg]">
                 CONFIDENTIAL
               </div>
 
-              {/* CASE NUMBER */}
+              {/* CASE */}
               <div className="absolute top-6 left-6 text-sm font-bold">
                 Case #: {caseNumber}
               </div>
 
-              <h1 className="text-3xl font-bold mb-4">Sun Country Detective Ageny<br></br>Suspect: Carmen Sandiego</h1>
+              <h1 className="text-3xl font-bold mb-4">Sun Country Detective Agency</h1><br></br><h3>Subject: Carmen Sandiego</h3>
 
               <div className="bg-white p-4 border mb-4">
                 {prompt}
@@ -128,36 +112,57 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
               {!scanning && !showName && (
                 <button
                   onClick={handleSubmit}
-                  className="bg-red-600 text-white px-6 py-2"
+                  className="bg-red-600 text-white px-6 py-2 hover:scale-105 transition"
                 >
                   Track Carmen
                 </button>
               )}
 
+              {/* 🔥 ENHANCED SCANNING */}
               {scanning && (
-                <div className="text-green-600 font-bold animate-pulse">
-                  📡 Scanning Sun Country Global Network...
-                </div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-green-400 font-bold text-lg flex flex-col items-center gap-2"
+                >
+                  <div className="animate-pulse text-2xl">📡 SCANNING SUN COUNTRY GLOBAL NETWORK...</div>
+                  <div className="flex gap-2">
+                    <span className="animate-bounce">●</span>
+                    <span className="animate-bounce delay-150">●</span>
+                    <span className="animate-bounce delay-300">●</span>
+                  </div>
+                </motion.div>
               )}
 
               {showName && (
                 <div className="mt-4">
-                  <p className="mb-2 font-bold">
-                    {isCorrect ? "🎯 Target Locked, Great Work Gumshoe!" : "❌ Carmen Escaped, Search For Her Again Tomorrow!"}
-                  </p>
+
+                  {/* 🔥 BIG RESULT */}
+                  <motion.p
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1.1, opacity: 1 }}
+                    className={`mb-4 text-2xl font-extrabold ${
+                      isCorrect ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    {isCorrect ? "🎯 TARGET LOCKED! Excellent Work Gumshoe!" : "❌ CARMEN ESCAPED! You Can Track Her Again Tomorrow!"}
+                  </motion.p>
 
                   <input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Agent Full Name"
+                    placeholder="Agent name"
                     className="w-full p-3 mb-3 border"
                   />
 
                   <button
                     onClick={handleFinalSubmit}
-                    className="bg-green-600 text-white px-6 py-2"
+                    disabled={submitting}
+                    className={`px-6 py-2 text-white ${
+                      submitting ? "bg-gray-500" : "bg-green-600"
+                    }`}
                   >
-                    Submit Report
+                    {submitting ? "Submitting..." : "Submit Report"}
                   </button>
                 </div>
               )}
@@ -167,7 +172,7 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
           </div>
         ) : (
           <div className="text-white text-center text-3xl">
-            ✅ Case Submitted    Agent: {name} Case: {caseNumber}
+            ✅ Case Submitted   Agent: {name} Case: {caseNumber}
           </div>
         )}
       </div>
