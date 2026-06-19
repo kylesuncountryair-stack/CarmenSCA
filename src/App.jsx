@@ -57,7 +57,7 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
 
       {/* ✅ MAP (fixed) */}
      <img
-  src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg"
+  src="https://res.hovia.com/gimmersta-wallpaper/image/upload/c_fill,f_auto,fl_progressive,q_auto,w_1101,h_801/v1716223329/articles/VI0004BU30W_product.jpg"
   className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none"
 />
 
@@ -167,7 +167,7 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
           </div>
         ) : (
           <div className="text-white text-center text-3xl">
-            ✅ Case Submitted \nAgent: {name} \nCase: {caseNumber}
+            ✅ Case Submitted    Agent: {name} Case: {caseNumber}
           </div>
         )}
       </div>
