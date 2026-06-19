@@ -41,7 +41,7 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
         body: JSON.stringify({
           name,
           answer,
-          result: isCorrect ? "Correct" : "Incorrect,
+          result: isCorrect ? "Correct" : "Incorrect",
           caseNumber,
         }),
       });
