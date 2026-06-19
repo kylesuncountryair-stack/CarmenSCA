@@ -73,7 +73,7 @@ export default function CarmenGame() {
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage:
-            "url('https://storage.googleapis.com/batchradar_uploads/files/6a3577da452185276a142ea1/8607fcbc-241a-4df1-8a22-5bb9a991e1ba/SCACarmenBG.png?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=batchradar-storage-account%40housestagingpro.iam.gserviceaccount.com%2F20260619%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20260619T171011Z&X-Goog-Expires=3600&X-Goog-SignedHeaders=host&response-content-type=image%2Fpng&response-content-disposition=inline%3B%20filename%3D%22SCACarmenBG.png%22&X-Goog-Signature=554d3a6f6317ed7030d31b80aaeec35adc887a471107c71c8567355136da4924ff7317e521ad6fcb9f0166ec1d11d6b1e5a2a1206b9a587dabf2ecb0c66105dd6d5adf950f300a051aef59dbd31ce08ec3c4384209e94c034dae76166555f2bfaeef798b07be1ae6349f32aa359c885ce127ee7131409a4aa75fc50fd131184080a821d6c140675547ef9bc0bba27858426ee8a405fab90ab274318d3b37a2966da579f742e2b76f3e3ae33dc5eb231839e3b29d22b5de2bf727f8d5218e571ae693ad89e3fa32caad82f70c01e9bb620095209c3201cf07e3b1cf5e9b593efad60983bffb3a5ebcf30b5e167d12f1ad66bd582da7c4073c040e4ec363a94fbf')",
+            "url('https://i.wpfc.ml/h7/uxapf2.png')",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
