@@ -53,7 +53,7 @@ const correctAnswers = ["Orlando", "MCO", "mco", "Orlando, FL", "Orlando, Florid
 
       {/* ✅ NEW MAP IMAGE */}
      <img
-  src="https://drive.google.com/file/d/1wjm0K6-EvR_KiTSMfx7Nbxo7XsrSyOS_/preview"
+  src="https://www.pasteboard.co/Gc6hIoN49MEG.png"
   className="absolute inset-0 w-full h-full object-cover opacity-35 pointer-events-none"
 />
 
