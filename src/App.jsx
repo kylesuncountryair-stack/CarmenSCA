@@ -41,31 +41,31 @@ export default function CarmenGame() {
 
     let step = 0;
 
+ const handleSubmit = () => {
+  setScanning(true);
+  setScanStep(0);
+
+  let step = 0;
+
   const interval = setInterval(() => {
-  step++;
-  if (step < scanMessages.length) {
-    setScanStep(step);
-  }
-}, 2400);
+    step++;
+    if (step < scanMessages.length) {
+      setScanStep(step);
+    }
+  }, 2400);
 
-setTimeout(() => {
-  clearInterval(interval);
+  setTimeout(() => {
+    clearInterval(interval);
 
-  const normalized = answer.trim().toLowerCase();
-  const match = correctAnswers.includes(normalized);
+    const normalized = answer.trim().toLowerCase();
+    const match = correctAnswers.includes(normalized);
 
-  setIsCorrect(match);
-  setShowName(true);
-  setScanning(false);
-}, 7500);
-      const normalized = answer.trim().toLowerCase();
-      const match = correctAnswers.includes(normalized);
+    setIsCorrect(match);
+    setShowName(true);
+    setScanning(false);
+  }, 7500);
+};
 
-      setIsCorrect(match);
-      setShowName(true);
-      setScanning(false);
-    }, 2400);
-  };
 
   const handleFinalSubmit = async () => {
     if (!name) return alert("Name Required");
