@@ -81,7 +81,7 @@ export default function CarmenGame() {
       />
 
       {/* ✅ DARK OVERLAY */}
-      <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+      <div className="absolute inset-0 bg-black/40 pointer-events-none" />
 
       {/* ✅ RADAR RINGS */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
