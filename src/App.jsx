@@ -118,7 +118,7 @@ export default function CarmenGame() {
   }}
 >
            {/* 📄 PAPER TEXTURE */}
-<div className="absolute inset-0 opacity-10 pointer-events-none bg-[repeating-linear-gradient(0deg,transparent,transparent_22px,rgba(0,0,0,0.04)_23px)]" />
+<div className="absolute inset-0 opacity-30 pointer-events-none bg-[repeating-linear-gradient(0deg,transparent,transparent_22px,rgba(0,0,0,0.04)_23px)]" />
 
            {/* 📁 EDGE SHADING */}
 <div className="absolute inset-0 pointer-events-none">
@@ -169,7 +169,7 @@ export default function CarmenGame() {
               {!scanning && !showName && (
                 <button
                   onClick={handleSubmit}
-                  className="bg-red-600 text-white px-6 py-2 hover:scale-105 transition"
+                  className="bg-red-600 text-white font-bold px-6 py-2 hover:scale-105 transition"
                 >
                   Track Carmen
                 </button>
