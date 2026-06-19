@@ -110,7 +110,22 @@ export default function CarmenGame() {
             </div>
 
             {/* FOLDER */}
-            <div className="bg-yellow-100 border-2 border-yellow-600 rounded-xl p-10 shadow-xl relative overflow-hidden">
+         <div
+  className="border-2 border-yellow-700 rounded-xl p-10 shadow-[0_15px_40px_rgba(0,0,0,0.6)] relative overflow-hidden"
+  style={{
+    background:
+      "linear-gradient(135deg, #fef3c7 0%, #fde68a 45%, #fcd34d 100%)",
+  }}
+>
+           {/* 📄 PAPER TEXTURE */}
+<div className="absolute inset-0 opacity-10 pointer-events-none bg-[repeating-linear-gradient(0deg,transparent,transparent_22px,rgba(0,0,0,0.04)_23px)]" />
+
+           {/* 📁 EDGE SHADING */}
+<div className="absolute inset-0 pointer-events-none">
+  <div className="absolute inset-0 rounded-xl border border-black/10" />
+  <div className="absolute top-0 left-0 right-0 h-6 bg-gradient-to-b from-black/20 to-transparent rounded-t-xl opacity-40" />
+  <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-black/30 to-transparent rounded-b-xl opacity-30" />
+</div>
 
               {/* ✅ RESULT FLASH */}
               <AnimatePresence>
