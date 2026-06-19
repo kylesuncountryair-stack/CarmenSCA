@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwte1jkE2vu7Lg32395bHpnjXYv9uibdodFYAneu0AphFxNCzl-JHX6Q7lv1tIn9Dnz/exec";
-const generateCaseNumber = () => "SC-" + Math.floor(1000 + Math.random() * 9000);
+// ✅ CLEAN Google Script URL
+const GOOGLE_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbwte1jkE2vu7Lg32395bHpnjXYv9uibdodFYAneu0AphFxNCzl-JHX6Q7lv1tIn9Dnz/exec";
+
+const generateCaseNumber = () =>
+  "SC-" + Math.floor(1000 + Math.random() * 9000);
 
 export default function CarmenGame() {
   const [answer, setAnswer] = useState("");
@@ -14,15 +18,22 @@ export default function CarmenGame() {
   const [submitting, setSubmitting] = useState(false);
   const [caseNumber] = useState(generateCaseNumber());
 
-const correctAnswers = ["Orlando", "MCO", "mco", "Orlando, FL", "Orlando, Florida"];
-  const prompt = "Your sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen in bulk, had a frozen drink in hand, and kept asking where they could find the warmest place Minnesotans escape to when winter hits hard. They disappeared into a crowd of flipflops, palm trees, and travelers wearing mouse ear headbands. Where in the Sun Country world did they go? ";
+  const correctAnswers = [
+    "orlando",
+    "mco",
+    "orlando, fl",
+    "orlando, florida",
+  ];
+
+  const prompt =
+    "Your sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen in bulk, had a frozen drink in hand, and kept asking where they could find the warmest place Minnesotans escape to when winter hits hard. They disappeared into a crowd of flip flops, palm trees, and travelers wearing mouse ear headbands. Where in the Sun Country world did they go?";
 
   const handleSubmit = () => {
     setScanning(true);
 
     setTimeout(() => {
       const normalized = answer.trim().toLowerCase();
-      const match = correctAnswers.some(a => a.toLowerCase() === normalized);
+      const match = correctAnswers.some((a) => a === normalized);
 
       setIsCorrect(match);
       setShowName(true);
@@ -32,6 +43,7 @@ const correctAnswers = ["Orlando", "MCO", "mco", "Orlando, FL", "Orlando, Florid
 
   const handleFinalSubmit = async () => {
     if (!name) return alert("Name Required");
+
     setSubmitting(true);
 
     try {
@@ -39,7 +51,12 @@ const correctAnswers = ["Orlando", "MCO", "mco", "Orlando, FL", "Orlando, Florid
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, answer, correct: isCorrect, caseNumber }),
+        body: JSON.stringify({
+          name,
+          answer,
+          result: isCorrect ? "Correct" : "Incorrect",
+          caseNumber,
+        }),
       });
     } catch (err) {
       console.error(err);
@@ -49,39 +66,50 @@ const correctAnswers = ["Orlando", "MCO", "mco", "Orlando, FL", "Orlando, Florid
   };
 
   return (
+    <div className="min-h-screen flex items-center justify-center bg-black relative overflow-hidden">
 
-<div
-  className="absolute inset-0 opacity-75 pointer-events-none"
-  style={{
-    backgroundImage: "url('https://storage.googleapis.com/batchradar_uploads/files/6a3577da452185276a142ea1/8607fcbc-241a-4df1-8a22-5bb9a991e1ba/SCACarmenBG.png')",
-    backgroundSize: "contain",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center"
-  }}
-/>
-      {/* RADAR */}
+      {/* ✅ BACKGROUND IMAGE (FIXED) */}
+      <div
+        className="absolute inset-0 opacity-75 pointer-events-none"
+        style={{
+          backgroundImage:
+            "url('https://storage.googleapis.com/batchradar_uploads/files/6a3577da452185276a142ea1/8607fcbc-241a-4df1-8a22-5bb9a991e1ba/SCACarmenBG.png')",
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+        }}
+      />
+
+      {/* ✅ DARK OVERLAY */}
+      <div className="absolute inset-0 bg-black/50 pointer-events-none" />
+
+      {/* ✅ RADAR RINGS */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-[700px] h-[700px] border border-red-700 rounded-full animate-ping opacity-30"></div>
-        <div className="absolute w-[500px] h-[500px] border border-red-500 rounded-full animate-ping opacity-30"></div>
+        <div className="w-[700px] h-[700px] border border-red-700 rounded-full animate-ping opacity-30" />
+        <div className="absolute w-[500px] h-[500px] border border-red-500 rounded-full animate-ping opacity-30" />
       </div>
 
-      {/* SWEEP */}
+      {/* ✅ RADAR SWEEP */}
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
         className="absolute w-[650px] h-[650px] rounded-full opacity-60 pointer-events-none"
-        style={{ background: "conic-gradient(rgba(0,255,100,0.6), transparent 20%)" }}
+        style={{
+          background: "conic-gradient(rgba(0,255,100,0.6), transparent 20%)",
+        }}
       />
 
-      {/* CONTENT */}
+      {/* ✅ CONTENT */}
       <div className="w-full max-w-5xl p-6 relative z-20 text-black">
         {!submitted ? (
           <div>
 
-            <div className="bg-yellow-300 inline-block px-6 py-2 rounded-t-lg border font-bold ml-4">
+            {/* TAB */}
+            <div className="bg-yellow-300 px-6 py-2 rounded-t-lg border font-bold ml-4 inline-block">
               CASE FILE
             </div>
 
+            {/* FOLDER */}
             <div className="bg-yellow-100 border-2 border-yellow-600 rounded-xl p-10 shadow-xl relative overflow-hidden">
 
               {/* ✅ RESULT FLASH */}
@@ -89,8 +117,7 @@ const correctAnswers = ["Orlando", "MCO", "mco", "Orlando, FL", "Orlando, Florid
                 {showName && (
                   <motion.div
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: [0, 0.6, 0] }}
-                    exit={{ opacity: 0 }}
+                    animate={{ opacity: [0, 0.7, 0] }}
                     transition={{ duration: 0.8 }}
                     className={`absolute inset-0 pointer-events-none ${
                       isCorrect ? "bg-green-400" : "bg-red-500"
@@ -109,12 +136,13 @@ const correctAnswers = ["Orlando", "MCO", "mco", "Orlando, FL", "Orlando, Florid
                 Case #: {caseNumber}
               </div>
 
-              <h1 className="text-3xl font-bold mb-4">Suspect: Carmen Sandiego</h1>
+              <h1 className="text-3xl font-bold mb-4">
+                Suspect: Carmen Sandiego
+              </h1>
 
-              <div className="bg-white p-4 border mb-4">
-                {prompt}
-              </div>
+              <div className="bg-white p-4 border mb-4">{prompt}</div>
 
+              {/* INPUT */}
               <input
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
@@ -132,14 +160,16 @@ const correctAnswers = ["Orlando", "MCO", "mco", "Orlando, FL", "Orlando, Florid
                 </button>
               )}
 
-              {/* ENHANCED SCANNING */}
+              {/* SCANNING */}
               {scanning && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="text-green-400 font-bold text-lg flex flex-col items-center gap-2"
                 >
-                  <div className="animate-pulse text-2xl">📡 SCANNING SUN COUNTRY GLOBAL NETWORK...</div>
+                  <div className="animate-pulse text-2xl">
+                    📡 SCANNING SUN COUNTRY GLOBAL NETWORK...
+                  </div>
                   <div className="flex gap-2">
                     <span className="animate-bounce">●</span>
                     <span className="animate-bounce delay-150">●</span>
@@ -148,9 +178,9 @@ const correctAnswers = ["Orlando", "MCO", "mco", "Orlando, FL", "Orlando, Florid
                 </motion.div>
               )}
 
+              {/* RESULT */}
               {showName && (
                 <div className="mt-4">
-
                   <motion.p
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1.1, opacity: 1 }}
@@ -158,7 +188,9 @@ const correctAnswers = ["Orlando", "MCO", "mco", "Orlando, FL", "Orlando, Florid
                       isCorrect ? "text-green-600" : "text-red-600"
                     }`}
                   >
-                    {isCorrect ? "🎯 TARGET LOCKED! Excellent Work Gumshoe!" : "❌ CARMEN ESCAPED! Track Her Again Tomorrow!"}
+                    {isCorrect
+                      ? "🎯 TARGET LOCKED! Excellent Work Gumshoe!"
+                      : "❌ CARMEN ESCAPED! Track Her Again Tomorrow!"}
                   </motion.p>
 
                   <input
@@ -185,7 +217,9 @@ const correctAnswers = ["Orlando", "MCO", "mco", "Orlando, FL", "Orlando, Florid
           </div>
         ) : (
           <div className="text-white text-center text-3xl">
-            ✅ Case Submitted    Agent: {name}  Case: {caseNumber}
+            ✅ Case Submitted<br />
+            Agent: {name}<br />
+            Case: {caseNumber}
           </div>
         )}
       </div>
