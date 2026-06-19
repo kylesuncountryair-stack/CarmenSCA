@@ -57,13 +57,13 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
       {/* MAP */}
      <img
   src="https://res.hovia.com/gimmersta-wallpaper/image/upload/c_fill,f_auto,fl_progressive,q_auto,w_1101,h_801/v1716223329/articles/VI0004BU30W_product.jpg"
-  className="absolute inset-0 w-full h-full object-cover opacity-50 pointer-events-none"
+  className="absolute inset-0 w-full h-full object-cover opacity-40 pointer-events-none"
 />
 
       {/* RADAR */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="w-[700px] h-[700px] border border-red-700 rounded-full animate-ping opacity-30"></div>
-        <div className="absolute w-[500px] h-[500px] border border-red-500 rounded-full animate-ping opacity-40"></div>
+        <div className="absolute w-[500px] h-[500px] border border-red-500 rounded-full animate-ping opacity-30"></div>
       </div>
 
       {/* SWEEP */}
@@ -71,7 +71,7 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
         className="absolute w-[850px] h-[850px] rounded-full opacity-60 pointer-events-none"
-        style={{ background: "conic-gradient(rgba(0,255,100,0.6), transparent 40%)" }}
+        style={{ background: "conic-gradient(rgba(0,255,100,0.6), transparent 30%)" }}
       />
 
       {/* CONTENT */}
