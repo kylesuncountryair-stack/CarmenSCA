@@ -111,7 +111,7 @@ const correctAnswers = ["Orlando", "MCO", "Orlando, FL", "Orlando, Florida"];
                 Case #: {caseNumber}
               </div>
 
-              <h1 className="text-3xl font-bold mb-4">Carmen Sandiego</h1>
+              <h1 className="text-3xl font-bold mb-4">Sun Country Detective Ageny<br></br>Suspect: Carmen Sandiego</h1>
 
               <div className="bg-white p-4 border mb-4">
                 {prompt}
