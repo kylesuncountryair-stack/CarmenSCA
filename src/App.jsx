@@ -59,9 +59,9 @@ const correctAnswers = ["Orlando", "MCO", "mco", "Orlando, FL", "Orlando, Florid
     backgroundPosition: "center"
   }}
     
-)
-</div>
 
+</div>
+)
       {/* RADAR */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="w-[700px] h-[700px] border border-red-700 rounded-full animate-ping opacity-30"></div>
