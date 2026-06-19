@@ -33,7 +33,7 @@ export default function CarmenGame() {
   ];
 
   const prompt =
-    "YYour sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen, holding a frozen drink, and asking where Minnesotans escape winter. Surrounded by palm trees, flip flops, and mouse ears... Where in the Sun Country world did they go?";
+    "YYour sneaky traveler has vanished again! Rumor has it; they were last seen buying sunscreen, holding a frozen drink, and asking where Minnesotans escape winter. Surrounded by palm trees, flip flops, and mouse ears... Where in the Sun Country world did they go?";
 
   const handleSubmit = () => {
     setScanning(true);
@@ -41,31 +41,24 @@ export default function CarmenGame() {
 
     let step = 0;
 
- const handleSubmit = () => {
-  setScanning(true);
-  setScanStep(0);
+    const interval = setInterval(() => {
+      step++;
+      if (step < scanMessages.length) {
+        setScanStep(step);
+      }
+    }, 2400);
 
-  let step = 0;
+    setTimeout(() => {
+      clearInterval(interval);
 
-  const interval = setInterval(() => {
-    step++;
-    if (step < scanMessages.length) {
-      setScanStep(step);
-    }
-  }, 2400);
+      const normalized = answer.trim().toLowerCase();
+      const match = correctAnswers.includes(normalized);
 
-  setTimeout(() => {
-    clearInterval(interval);
-
-    const normalized = answer.trim().toLowerCase();
-    const match = correctAnswers.includes(normalized);
-
-    setIsCorrect(match);
-    setShowName(true);
-    setScanning(false);
-  }, 7500);
-};
-
+      setIsCorrect(match);
+      setShowName(true);
+      setScanning(false);
+    }, 7500);
+  };
 
   const handleFinalSubmit = async () => {
     if (!name) return alert("Name Required");
@@ -124,23 +117,19 @@ export default function CarmenGame() {
         {!submitted ? (
           <div>
 
-            {/* TAB */}
             <div className="bg-yellow-300 px-6 py-2 rounded-t-lg border border-yellow-700 font-bold ml-4 inline-block">
               CASE FILE
             </div>
 
-            {/* FOLDER */}
             <div
               className="border-2 border-yellow-700 rounded-xl p-10 shadow-xl relative overflow-hidden"
-              style={{
-                background: "linear-gradient(135deg,#fef3c7,#fde68a,#fcd34d)",
-              }}
+              style={{ background: "linear-gradient(135deg,#fef3c7,#fde68a,#fcd34d)" }}
             >
 
               {/* TEXTURE */}
               <div className="absolute inset-0 pointer-events-none opacity-20 bg-[repeating-linear-gradient(0deg,transparent,transparent_22px,rgba(0,0,0,0.04)_23px)]" />
 
-              {/* RESULT FLASH FIX */}
+              {/* RESULT FLASH */}
               <AnimatePresence>
                 {showName && (
                   <motion.div
@@ -182,19 +171,16 @@ export default function CarmenGame() {
                 </button>
               )}
 
-              {/* ✅ CENTERED SCANNING ONLY */}
+              {/* SCANNING */}
               {scanning && (
-                <motion.div
-                  key={scanStep}
-                  className="text-green-400 font-bold flex flex-col items-center text-center"
-                >
+                <div className="text-green-400 font-bold flex flex-col items-center text-center">
                   <div className="text-2xl">📡 {scanMessages[scanStep]}</div>
                   <div className="flex gap-2">
                     <span className="animate-bounce">●</span>
+                    <span className="animate-bounce delay-150">●</span>
                     <span className="animate-bounce delay-300">●</span>
-                    <span className="animate-bounce delay-400">●</span>
                   </div>
-                </motion.div>
+                </div>
               )}
 
               {showName && (
@@ -207,7 +193,7 @@ export default function CarmenGame() {
                   >
                     {isCorrect
                       ? "🎯 TARGET LOCKED! Excellent Work Gumshoe!"
-                      : "❌ CARMEN ESCAPED! Track Her Again Tomorrow"}
+                      : "❌ CARMEN ESCAPED! Track Her Again Tomorrow!"}
                   </motion.p>
 
                   <input
