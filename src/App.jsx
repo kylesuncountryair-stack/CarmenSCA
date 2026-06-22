@@ -90,7 +90,7 @@ export default function CarmenGame() {
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: "url('https://i.wpfc.ml/h7/uxapf2.png')",
-          backgroundSize: "cover",
+          backgroundSize: "contain",
           backgroundPosition: "center",
         }}
       />
