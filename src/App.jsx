@@ -403,7 +403,7 @@ function RadarBackground() {
           <path
             d="M400,400 L400,20 A380,380 0 0,1 752,540 Z"
             fill="url(#sweepFade)"
-            opacity="0.9"
+            opacity="5.9"
           />
           {/* Leading edge glow line */}
           <line
