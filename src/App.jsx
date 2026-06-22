@@ -386,7 +386,7 @@ export default function CarmenGame() {
                 <div style={styles.folderField}>
                   <span style={styles.folderFieldLabel}>OUTCOME</span>
                   {isCorrect ? (
-                    <RedactedReveal text="Orlando, FL (MCO) — Target Located" />
+                    <RedactedReveal text="Target Located" />
                   ) : (
                     <span style={{ ...styles.folderFieldValue, color: "#dc2626" }}>Suspect Evaded — Location Unknown</span>
                   )}
@@ -438,7 +438,7 @@ export default function CarmenGame() {
                 </div>
               </div>
               <div style={styles.folderFooter}>
-                <span style={styles.folderFooterText}>Sun Country Airlines · SC Pursuit Division · {new Date().getFullYear()}</span>
+                <span style={styles.folderFooterText}>Sun Country Airlines · Pursuit Division · {new Date().getFullYear()}</span>
               </div>
             </div>
           </motion.div>
@@ -473,7 +473,7 @@ export default function CarmenGame() {
           <div style={styles.headerLeft}>
             <span style={styles.orgLabel}>SUN COUNTRY AIRLINES</span>
             <span style={styles.divider}>|</span>
-            <span style={styles.orgLabel}>SC PURSUIT DIVISION</span>
+            <span style={styles.orgLabel}>PURSUIT DIVISION</span>
           </div>
           <div style={styles.caseTag}>CASE {caseNumber}</div>
         </div>
