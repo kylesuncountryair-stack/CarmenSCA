@@ -233,7 +233,7 @@ export default function CarmenGame() {
                     onChange={(e) => setAnswer(e.target.value)}
                     onKeyDown={handleKeyDown}
                     style={styles.input}
-                    placeholder="e.g. Orlando or MCO"
+                    placeholder="Input Suspected Location"
                   />
                   <button
                     onClick={handleSubmit}
