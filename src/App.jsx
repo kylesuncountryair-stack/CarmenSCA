@@ -45,23 +45,6 @@ function getTodayString() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
-// ── Web Audio ─────────────────────────────────────────────────────────────────
-function playPing() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(880, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.4);
-    gain.gain.setValueAtTime(0.12, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + 0.5);
-  } catch (e) {}
-}
-
 function playStamp() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -187,28 +170,17 @@ function TypewriterLine({ text, speed = 30, onDone }) {
 
 // ── Scan message with slide-up transition ─────────────────────────────────────
 function ScanMessage({ text, step }) {
-  const [displayed, setDisplayed] = useState("");
-  useEffect(() => {
-    setDisplayed("");
-    let i = 0;
-    const id = setInterval(() => {
-      i++;
-      setDisplayed(text.slice(0, i));
-      if (i >= text.length) clearInterval(id);
-    }, 30);
-    return () => clearInterval(id);
-  }, [text]);
   return (
     <AnimatePresence mode="wait">
       <motion.p
         key={step}
-        initial={{ opacity: 0, y: 8 }}
+        initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.2 }}
+        exit={{ opacity: 0, y: -6 }}
+        transition={{ duration: 0.18, ease: "easeOut" }}
         style={styles.scanMessage}
       >
-        {displayed}<span style={{ opacity: 0.5 }}>▌</span>
+        {text}
       </motion.p>
     </AnimatePresence>
   );
@@ -237,7 +209,7 @@ function BootSequence({ onComplete }) {
       setLineIndex(next);
     } else {
       setLines(prev => [...prev, bootLines[lineIndex]]);
-      setTimeout(() => { setFading(true); setTimeout(onComplete, 600); }, 700);
+      setTimeout(() => { setFading(true); setTimeout(onComplete, 400); }, 300);
     }
   };
 
@@ -256,7 +228,7 @@ function BootSequence({ onComplete }) {
           ))}
           {lineIndex < bootLines.length && (
             <p style={styles.bootLine}>
-              <TypewriterLine key={lineIndex} text={bootLines[lineIndex]} speed={28} onDone={advance} />
+              <TypewriterLine key={lineIndex} text={bootLines[lineIndex]} speed={16} onDone={advance} />
             </p>
           )}
         </div>
@@ -266,25 +238,28 @@ function BootSequence({ onComplete }) {
 }
 
 // ── Chunky progress bar ───────────────────────────────────────────────────────
-function useChunkyProgress(active, duration) {
+function useChunkyProgress(active) {
   const [progress, setProgress] = useState(0);
-  const progressRef = useRef(0);
+  const stateRef = useRef({ value: 0, pauseUntil: 0 });
 
   useEffect(() => {
-    if (!active) { setProgress(0); progressRef.current = 0; return; }
-    const schedule = () => {
-      const remaining = 99 - progressRef.current;
-      if (remaining <= 0) return;
-      const chunk = Math.max(1, Math.floor(Math.random() * Math.min(remaining * 0.35, 8)));
-      const delay = 150 + Math.random() * 400;
-      setTimeout(() => {
-        progressRef.current = Math.min(99, progressRef.current + chunk);
-        setProgress(progressRef.current);
-        schedule();
-      }, delay);
-    };
-    schedule();
-    return () => { progressRef.current = 0; };
+    if (!active) {
+      stateRef.current = { value: 0, pauseUntil: 0 };
+      setProgress(0);
+      return;
+    }
+    stateRef.current = { value: 0, pauseUntil: 0 };
+    const id = setInterval(() => {
+      const s = stateRef.current;
+      const now = Date.now();
+      if (now < s.pauseUntil || s.value >= 99) return;
+      const chunk = 1 + Math.floor(Math.random() * 5);
+      const next = Math.min(99, s.value + chunk);
+      s.value = next;
+      setProgress(next);
+      if (Math.random() < 0.2) s.pauseUntil = now + 300 + Math.random() * 400;
+    }, 120);
+    return () => clearInterval(id);
   }, [active]);
 
   return progress;
@@ -305,25 +280,12 @@ export default function CarmenGame() {
   const [flashRed, setFlashRed] = useState(false);
   const [radarFast, setRadarFast] = useState(false);
   const [booting, setBooting] = useState(true);
-  const pingRef = useRef(null);
-
-  const scanProgress = useChunkyProgress(scanning, 8000);
+  const scanProgress = useChunkyProgress(scanning);
 
   useEffect(() => {
     const played = localStorage.getItem(LOCKOUT_KEY);
     if (played === getTodayString()) setLockedOut(true);
   }, []);
-
-  // Radar ping every 2s during scan
-  useEffect(() => {
-    if (scanning) {
-      playPing();
-      pingRef.current = setInterval(playPing, 2000);
-    } else {
-      clearInterval(pingRef.current);
-    }
-    return () => clearInterval(pingRef.current);
-  }, [scanning]);
 
   const handleSubmit = () => {
     if (!answer.trim()) return;
@@ -476,7 +438,7 @@ export default function CarmenGame() {
                 </div>
               </div>
               <div style={styles.folderFooter}>
-                <span style={styles.folderFooterText}>Sun Country Airlines · Pursuit Division · {new Date().getFullYear()}</span>
+                <span style={styles.folderFooterText}>Sun Country Airlines · SC Pursuit Division · {new Date().getFullYear()}</span>
               </div>
             </div>
           </motion.div>
