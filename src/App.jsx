@@ -172,7 +172,7 @@ export default function CarmenGame() {
           <div style={styles.headerLeft}>
             <span style={styles.orgLabel}>SUN COUNTRY AIRLINES</span>
             <span style={styles.divider}>|</span>
-            <span style={styles.orgLabel}>SC PURSUIT DIVISION</span>
+            <span style={styles.orgLabel}>PURSUIT DIVISION</span>
           </div>
           <div style={styles.caseTag}>CASE #{caseNumber}</div>
         </div>
