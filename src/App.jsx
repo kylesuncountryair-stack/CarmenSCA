@@ -30,7 +30,7 @@ function getTodayString() {
 }
 
 // ── Typewriter hook ──────────────────────────────────────────────────────────
-function useTypewriter(text, speed = 38) {
+function useTypewriter(text, speed = 38, withSound = false) {
   const [displayed, setDisplayed] = useState("");
   const [done, setDone] = useState(false);
   useEffect(() => {
@@ -40,6 +40,7 @@ function useTypewriter(text, speed = 38) {
     const id = setInterval(() => {
       i++;
       setDisplayed(text.slice(0, i));
+      if (withSound) playTick();
       if (i >= text.length) { clearInterval(id); setDone(true); }
     }, speed);
     return () => clearInterval(id);
@@ -49,7 +50,7 @@ function useTypewriter(text, speed = 38) {
 
 // ── Typewriter scan message component ───────────────────────────────────────
 function TypewriterMessage({ text }) {
-  const { displayed } = useTypewriter(text, 35);
+  const { displayed } = useTypewriter(text, 35, true);
   return <span>{displayed}<span style={{ opacity: 0.5 }}>▌</span></span>;
 }
 
@@ -69,6 +70,23 @@ function RedactedReveal({ text }) {
   );
 }
 
+// ── Web Audio typewriter tick ────────────────────────────────────────────────
+function playTick() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = "square";
+    osc.frequency.setValueAtTime(1200, ctx.currentTime);
+    gain.gain.setValueAtTime(0.04, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.045);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.045);
+  } catch (e) {}
+}
+
 export default function CarmenGame() {
   const [answer, setAnswer] = useState("");
   const [isCorrect, setIsCorrect] = useState(null);
@@ -82,6 +100,7 @@ export default function CarmenGame() {
   const [scanProgress, setScanProgress] = useState(0);
   const [lockedOut, setLockedOut] = useState(false);
   const [flashGreen, setFlashGreen] = useState(false);
+  const [flashRed, setFlashRed] = useState(false);
   const [radarFast, setRadarFast] = useState(false);
 
   useEffect(() => {
@@ -97,7 +116,7 @@ export default function CarmenGame() {
     setScanProgress(0);
 
     let step = 0;
-    const SCAN_DURATION = 12000;
+    const SCAN_DURATION = 8000;
     const TICK = 80;
     const totalTicks = SCAN_DURATION / TICK;
     let tick = 0;
@@ -105,7 +124,7 @@ export default function CarmenGame() {
     const stepInterval = setInterval(() => {
       step++;
       if (step < scanMessages.length) setScanStep(step);
-    }, 1600);
+    }, 1050);
 
     const progressInterval = setInterval(() => {
       tick++;
@@ -124,14 +143,17 @@ export default function CarmenGame() {
       if (match) {
         setFlashGreen(true);
         setTimeout(() => setFlashGreen(false), 1200);
+      } else {
+        setFlashRed(true);
+        setTimeout(() => setFlashRed(false), 1000);
       }
 
       setTimeout(() => {
         setIsCorrect(match);
         setShowName(true);
         setScanning(false);
-      }, match ? 1400 : 400);
-    }, 12000);
+      }, match ? 1400 : 1100);
+    }, SCAN_DURATION);
   };
 
   const handleFinalSubmit = async () => {
@@ -157,8 +179,10 @@ export default function CarmenGame() {
     @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.85)} }
     @keyframes btnPulse { 0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0.5)} 50%{box-shadow:0 0 0 8px rgba(220,38,38,0)} }
     @keyframes greenFlash { 0%{opacity:0} 20%{opacity:0.55} 80%{opacity:0.55} 100%{opacity:0} }
+    @keyframes redFlash { 0%{opacity:0} 15%{opacity:0.5} 70%{opacity:0.5} 100%{opacity:0} }
     @keyframes stampIn { 0%{opacity:0;transform:rotate(-4deg) scale(1.4)} 60%{opacity:1;transform:rotate(-2deg) scale(0.95)} 100%{opacity:1;transform:rotate(-2deg) scale(1)} }
     @keyframes unredact { 0%{width:100%} 100%{width:0%} }
+    @keyframes inputFocus { 0%{box-shadow:0 0 0 0 rgba(146,64,14,0.4)} 100%{box-shadow:0 0 0 3px rgba(146,64,14,0.25)} }
   `;
 
   if (submitted) {
@@ -175,7 +199,7 @@ export default function CarmenGame() {
           >
             {/* Folder tab */}
             <div style={styles.folderTab}>
-              <span style={styles.folderTabText}>SC PURSUIT DIVISION</span>
+              <span style={styles.folderTabText}>PURSUIT DIVISION</span>
               <span style={styles.folderTabCase}>REF-{caseNumber}</span>
             </div>
 
@@ -299,12 +323,19 @@ export default function CarmenGame() {
       <style>{keyframes}</style>
       <RadarBackground fast={radarFast} />
 
-      {/* Green flash overlay on correct answer */}
+      {/* Result flash overlays */}
       {flashGreen && (
         <div style={{
           position: "fixed", inset: 0, zIndex: 5, pointerEvents: "none",
           background: "rgba(34,197,94,0.3)",
           animation: "greenFlash 1.2s ease-in-out forwards",
+        }}></div>
+      )}
+      {flashRed && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 5, pointerEvents: "none",
+          background: "rgba(220,38,38,0.35)",
+          animation: "redFlash 1.0s ease-in-out forwards",
         }}></div>
       )}
 
@@ -319,7 +350,7 @@ export default function CarmenGame() {
           <div style={styles.headerLeft}>
             <span style={styles.orgLabel}>SUN COUNTRY AIRLINES</span>
             <span style={styles.divider}>|</span>
-            <span style={styles.orgLabel}>SC PURSUIT DIVISION</span>
+            <span style={styles.orgLabel}>PURSUIT DIVISION</span>
           </div>
           <div style={styles.caseTag}>CASE #{caseNumber}</div>
         </div>
@@ -394,6 +425,8 @@ export default function CarmenGame() {
                     value={answer}
                     onChange={(e) => setAnswer(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && answer.trim() && handleSubmit()}
+                    onFocus={(e) => e.target.style.boxShadow = "0 0 0 3px rgba(146,64,14,0.25)"}
+                    onBlur={(e) => e.target.style.boxShadow = "none"}
                     style={styles.input}
                     placeholder="City or airport code"
                   />
@@ -474,6 +507,8 @@ export default function CarmenGame() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && name.trim() && handleFinalSubmit()}
+                      onFocus={(e) => e.target.style.boxShadow = "0 0 0 3px rgba(146,64,14,0.25)"}
+                      onBlur={(e) => e.target.style.boxShadow = "none"}
                       style={styles.input}
                       placeholder="Enter your name to file report"
                     />
@@ -484,6 +519,7 @@ export default function CarmenGame() {
                         ...styles.submitBtn,
                         opacity: submitting || !name.trim() ? 0.5 : 1,
                         cursor: submitting || !name.trim() ? "not-allowed" : "pointer",
+                        animation: name.trim() && !submitting ? "btnPulse 1.8s ease-in-out infinite" : "none",
                       }}
                     >
                       {submitting ? "Filing..." : "File Report"}
@@ -497,7 +533,7 @@ export default function CarmenGame() {
           {/* Footer */}
           <div style={styles.cardFooter}>
             <span style={styles.footerText}>
-              Sun Country Airlines · Internal Training Exercise · {new Date().getFullYear()}
+              Sun Country Airlines · Eyes Only
             </span>
             <span style={styles.footerText}>REF-{caseNumber}</span>
           </div>
@@ -759,11 +795,11 @@ const styles = {
   scanHeader: { display: "flex", alignItems: "center", gap: 10, marginBottom: 8 },
   scanDot: {
     width: 8, height: 8, borderRadius: "50%",
-    background: "#22c55e", display: "inline-block", boxShadow: "0 0 6px #22c55e",
+    background: "#dc2626", display: "inline-block", boxShadow: "0 0 6px #dc2626",
   },
-  scanTitle: { fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", color: "#166534" },
+  scanTitle: { fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", color: "#991b1b" },
   scanMessage: {
-    fontSize: 13, color: "#166534",
+    fontSize: 13, color: "#78350f",
     fontFamily: "'Courier New', Courier, monospace",
     margin: "0 0 14px", letterSpacing: "0.04em", minHeight: 20,
   },
@@ -773,11 +809,11 @@ const styles = {
   },
   progressFill: {
     height: "100%",
-    background: "linear-gradient(90deg,#16a34a,#22c55e)",
+    background: "linear-gradient(90deg,#991b1b,#dc2626)",
     borderRadius: 3,
   },
   scanProgress: {
-    fontSize: 11, color: "#166534", margin: 0,
+    fontSize: 11, color: "#991b1b", margin: 0,
     textAlign: "right", letterSpacing: "0.08em",
   },
 
