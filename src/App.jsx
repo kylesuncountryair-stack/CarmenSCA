@@ -92,6 +92,7 @@ export default function CarmenGame() {
           backgroundImage: "url('https://i.wpfc.ml/h7/uxapf2.png')",
           backgroundSize: "contain",
           backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }}
       />
 
