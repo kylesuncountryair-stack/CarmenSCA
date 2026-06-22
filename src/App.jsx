@@ -20,7 +20,7 @@ const scanMessages = [
 ];
 
 const prompt =
-  "Your sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen in bulk, had a frozen drink in hand, and kept asking where they could find the warmest place Minnesotans escape to when winter hits hard. They disappeared into a crowd of flipflops, palm trees, and travelers wearing mouse ears..";
+  "Your sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen in bulk, had a frozen drink in hand, and kept asking where they could find the warmest place Minnesotans escape to when winter hits hard. They disappeared into a crowd of flipflops, palm trees, and travelers wearing mouse ears...";
 
 const LOCKOUT_KEY = "carmen_played_date";
 
@@ -144,26 +144,73 @@ export default function CarmenGame() {
         <RadarBackground fast={false} />
         <div style={styles.centeredFill}>
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 200 }}
-            style={styles.successCard}
+            initial={{ y: 40, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 160, damping: 18 }}
+            style={styles.folderWrap}
           >
-            <div style={styles.successIcon}>✓</div>
-            <p style={styles.successTitle}>Report Filed</p>
-            <div style={styles.successMeta}>
-              <span style={styles.metaLabel}>AGENT</span>
-              <span style={styles.metaValue}>{name}</span>
+            {/* Folder tab */}
+            <div style={styles.folderTab}>
+              <span style={styles.folderTabText}>SC PURSUIT DIVISION</span>
+              <span style={styles.folderTabCase}>REF-{caseNumber}</span>
             </div>
-            <div style={styles.successMeta}>
-              <span style={styles.metaLabel}>CASE</span>
-              <span style={styles.metaValue}>{caseNumber}</span>
-            </div>
-            <div style={styles.successMeta}>
-              <span style={styles.metaLabel}>STATUS</span>
-              <span style={{ ...styles.metaValue, color: isCorrect ? "#4ade80" : "#f87171" }}>
-                {isCorrect ? "Target Located" : "Pursuit Ongoing"}
-              </span>
+
+            {/* Folder body */}
+            <div style={styles.folderBody}>
+
+              {/* Paper line texture */}
+              <div style={styles.paperLines}></div>
+
+              {/* Stamp — animates in */}
+              <motion.div
+                initial={{ scale: 1.6, opacity: 0, rotate: -6 }}
+                animate={{ scale: 1, opacity: 1, rotate: -3 }}
+                transition={{ delay: 0.35, type: "spring", stiffness: 220, damping: 14 }}
+                style={{
+                  ...styles.filedStamp,
+                  borderColor: isCorrect ? "#15803d" : "#dc2626",
+                  color: isCorrect ? "#15803d" : "#dc2626",
+                }}
+              >
+                {isCorrect ? "CASE CLOSED" : "CASE OPEN"}
+              </motion.div>
+
+              {/* Title row */}
+              <p style={styles.folderTitle}>Pursuit Dossier</p>
+              <p style={styles.folderSuspect}>Re: Carmen Sandiego</p>
+
+              <div style={styles.folderDivider}></div>
+
+              {/* Fields */}
+              <div style={styles.folderFields}>
+                <div style={styles.folderField}>
+                  <span style={styles.folderFieldLabel}>REPORTING AGENT</span>
+                  <span style={styles.folderFieldValue}>{name}</span>
+                </div>
+                <div style={styles.folderField}>
+                  <span style={styles.folderFieldLabel}>FILED</span>
+                  <span style={styles.folderFieldValue}>
+                    {new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }).toUpperCase()}
+                  </span>
+                </div>
+                <div style={styles.folderField}>
+                  <span style={styles.folderFieldLabel}>ANSWER SUBMITTED</span>
+                  <span style={styles.folderFieldValue}>{answer.toUpperCase()}</span>
+                </div>
+                <div style={styles.folderField}>
+                  <span style={styles.folderFieldLabel}>OUTCOME</span>
+                  <span style={{
+                    ...styles.folderFieldValue,
+                    color: isCorrect ? "#15803d" : "#dc2626",
+                  }}>
+                    {isCorrect ? "Target Located — Orlando, FL (MCO)" : "Suspect Evaded"}
+                  </span>
+                </div>
+              </div>
+
+              <div style={styles.folderFooter}>
+                <span style={styles.folderFooterText}>Sun Country Airlines · Internal Training Exercise · {new Date().getFullYear()}</span>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -738,22 +785,125 @@ const styles = {
     fontFamily: "'Courier New', Courier, monospace",
   },
 
-  // Success
-  successCard: {
-    background: "#0f172a", border: "1px solid rgba(255,255,255,0.1)",
-    borderRadius: 12, padding: "40px 48px", textAlign: "center",
-    boxShadow: "0 24px 60px rgba(0,0,0,0.8)", minWidth: 320,
+  // Success — folder card
+  folderWrap: {
+    width: "100%",
+    maxWidth: 520,
+    position: "relative",
+    zIndex: 10,
   },
-  successIcon: { fontSize: 40, color: "#4ade80", marginBottom: 16 },
-  successTitle: {
-    fontSize: 20, color: "#fff", fontWeight: 700,
-    letterSpacing: "0.1em", margin: "0 0 24px",
+  folderTab: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    background: "#b91c1c",
+    borderBottom: "3px solid #7f1d1d",
+    borderRadius: "6px 6px 0 0",
+    padding: "8px 18px",
+    width: "55%",
   },
-  successMeta: {
-    display: "flex", justifyContent: "space-between",
-    gap: 32, padding: "8px 0",
-    borderBottom: "1px solid rgba(255,255,255,0.07)",
+  folderTabText: {
+    color: "#fff",
+    fontSize: 9,
+    fontWeight: 700,
+    letterSpacing: "0.14em",
+    fontFamily: "'Courier New', Courier, monospace",
   },
-  metaLabel: { fontSize: 10, letterSpacing: "0.12em", color: "rgba(255,255,255,0.4)" },
-  metaValue: { fontSize: 13, color: "#fff" },
+  folderTabCase: {
+    color: "rgba(255,255,255,0.6)",
+    fontSize: 9,
+    letterSpacing: "0.08em",
+    fontFamily: "'Courier New', Courier, monospace",
+  },
+  folderBody: {
+    background: "#fefce8",
+    border: "2px solid #92400e",
+    borderTop: "2px solid #92400e",
+    borderRadius: "0 6px 6px 6px",
+    padding: "28px 32px 24px",
+    position: "relative",
+    overflow: "hidden",
+    boxShadow: "0 24px 60px rgba(0,0,0,0.75)",
+  },
+  filedStamp: {
+    position: "absolute",
+    top: 24,
+    right: 24,
+    fontSize: 13,
+    fontWeight: 700,
+    letterSpacing: "0.2em",
+    border: "3px solid",
+    padding: "5px 12px",
+    borderRadius: 3,
+    opacity: 0.88,
+    fontFamily: "'Courier New', Courier, monospace",
+    transformOrigin: "center",
+    zIndex: 2,
+  },
+  folderTitle: {
+    fontSize: 22,
+    fontWeight: 700,
+    color: "#1c0a00",
+    margin: "0 0 2px",
+    letterSpacing: "0.02em",
+    position: "relative",
+    zIndex: 1,
+  },
+  folderSuspect: {
+    fontSize: 12,
+    color: "#78350f",
+    margin: "0 0 16px",
+    letterSpacing: "0.08em",
+    fontFamily: "'Courier New', Courier, monospace",
+    position: "relative",
+    zIndex: 1,
+  },
+  folderDivider: {
+    height: 1,
+    background: "rgba(146,64,14,0.25)",
+    marginBottom: 20,
+    position: "relative",
+    zIndex: 1,
+  },
+  folderFields: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 14,
+    position: "relative",
+    zIndex: 1,
+  },
+  folderField: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 3,
+    paddingBottom: 14,
+    borderBottom: "1px solid rgba(146,64,14,0.12)",
+  },
+  folderFieldLabel: {
+    fontSize: 8,
+    fontWeight: 700,
+    letterSpacing: "0.16em",
+    color: "#a16207",
+    fontFamily: "'Courier New', Courier, monospace",
+  },
+  folderFieldValue: {
+    fontSize: 14,
+    fontWeight: 700,
+    color: "#1c0a00",
+    fontFamily: "'Courier New', Courier, monospace",
+    letterSpacing: "0.03em",
+  },
+  folderFooter: {
+    marginTop: 20,
+    paddingTop: 12,
+    borderTop: "1px solid rgba(146,64,14,0.15)",
+    position: "relative",
+    zIndex: 1,
+  },
+  folderFooterText: {
+    fontSize: 9,
+    color: "#a16207",
+    letterSpacing: "0.08em",
+    fontFamily: "'Courier New', Courier, monospace",
+  },
 };
