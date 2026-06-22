@@ -25,7 +25,8 @@ const prompt =
 const LOCKOUT_KEY = "carmen_played_date";
 
 function getTodayString() {
-  return new Date().toISOString().slice(0, 10);
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
 // ── Typewriter hook ──────────────────────────────────────────────────────────
@@ -50,6 +51,22 @@ function useTypewriter(text, speed = 38) {
 function TypewriterMessage({ text }) {
   const { displayed } = useTypewriter(text, 35);
   return <span>{displayed}<span style={{ opacity: 0.5 }}>▌</span></span>;
+}
+
+// ── Redacted reveal component ────────────────────────────────────────────────
+function RedactedReveal({ text }) {
+  return (
+    <span style={{ position: "relative", display: "inline-block", fontFamily: "'Courier New', Courier, monospace", fontSize: 14, fontWeight: 700, color: "#15803d", letterSpacing: "0.03em" }}>
+      {text}
+      <span style={{
+        position: "absolute", inset: 0,
+        background: "#1c0a00",
+        borderRadius: 2,
+        animation: "unredact 0.7s ease-in-out 0.6s forwards",
+        width: "100%",
+      }}></span>
+    </span>
+  );
 }
 
 export default function CarmenGame() {
@@ -80,14 +97,20 @@ export default function CarmenGame() {
     setScanProgress(0);
 
     let step = 0;
+    const SCAN_DURATION = 12000;
+    const TICK = 80;
+    const totalTicks = SCAN_DURATION / TICK;
+    let tick = 0;
+
     const stepInterval = setInterval(() => {
       step++;
       if (step < scanMessages.length) setScanStep(step);
     }, 1600);
 
     const progressInterval = setInterval(() => {
-      setScanProgress((p) => Math.min(p + 1, 95));
-    }, 115);
+      tick++;
+      setScanProgress(Math.min(Math.round((tick / totalTicks) * 100), 99));
+    }, TICK);
 
     setTimeout(() => {
       clearInterval(stepInterval);
@@ -135,6 +158,7 @@ export default function CarmenGame() {
     @keyframes btnPulse { 0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0.5)} 50%{box-shadow:0 0 0 8px rgba(220,38,38,0)} }
     @keyframes greenFlash { 0%{opacity:0} 20%{opacity:0.55} 80%{opacity:0.55} 100%{opacity:0} }
     @keyframes stampIn { 0%{opacity:0;transform:rotate(-4deg) scale(1.4)} 60%{opacity:1;transform:rotate(-2deg) scale(0.95)} 100%{opacity:1;transform:rotate(-2deg) scale(1)} }
+    @keyframes unredact { 0%{width:100%} 100%{width:0%} }
   `;
 
   if (submitted) {
@@ -194,17 +218,20 @@ export default function CarmenGame() {
                   </span>
                 </div>
                 <div style={styles.folderField}>
-                  <span style={styles.folderFieldLabel}>ANSWER SUBMITTED</span>
+                  <span style={styles.folderFieldLabel}>
+                    {isCorrect ? "LOCATION CONFIRMED" : "SUBMITTED LOCATION"}
+                  </span>
                   <span style={styles.folderFieldValue}>{answer.toUpperCase()}</span>
                 </div>
                 <div style={styles.folderField}>
                   <span style={styles.folderFieldLabel}>OUTCOME</span>
-                  <span style={{
-                    ...styles.folderFieldValue,
-                    color: isCorrect ? "#15803d" : "#dc2626",
-                  }}>
-                    {isCorrect ? "Target Located — Orlando, FL (MCO)" : "Suspect Evaded"}
-                  </span>
+                  {isCorrect ? (
+                    <RedactedReveal text="Orlando, FL (MCO) — Target Located" />
+                  ) : (
+                    <span style={{ ...styles.folderFieldValue, color: "#dc2626" }}>
+                      Suspect Evaded — Location Unknown
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -225,25 +252,42 @@ export default function CarmenGame() {
         <RadarBackground fast={false} />
         <div style={styles.centeredFill}>
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 180 }}
-            style={styles.lockoutCard}
+            initial={{ y: 40, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 160, damping: 18 }}
+            style={styles.folderWrap}
           >
-            <div style={styles.lockoutIcon}>
-              <svg viewBox="0 0 40 48" width="40" height="48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="4" y="20" width="32" height="24" rx="3" fill="#dc2626"/>
-                <path d="M10 20V14a10 10 0 0 1 20 0v6" stroke="#dc2626" strokeWidth="3.5" strokeLinecap="round" fill="none"/>
-                <circle cx="20" cy="32" r="3.5" fill="#fff"/>
-                <rect x="18.5" y="32" width="3" height="6" rx="1.5" fill="#fff"/>
-              </svg>
+            <div style={styles.folderTab}>
+              <span style={styles.folderTabText}>SC PURSUIT DIVISION</span>
+              <span style={styles.folderTabCase}>DAILY BRIEFING</span>
             </div>
-            <p style={styles.lockoutTitle}>Case Closed for Today</p>
-            <p style={styles.lockoutSub}>
-              You have already filed your report for today. Check back tomorrow for a new case.
-            </p>
-            <div style={styles.lockoutDivider}></div>
-            <p style={styles.lockoutFooter}>SUN COUNTRY AIRLINES · PURSUIT DIVISION</p>
+            <div style={styles.folderBody}>
+              <div style={styles.paperLines}></div>
+              <motion.div
+                initial={{ scale: 1.6, opacity: 0, rotate: -6 }}
+                animate={{ scale: 1, opacity: 1, rotate: -3 }}
+                transition={{ delay: 0.35, type: "spring", stiffness: 220, damping: 14 }}
+                style={{ ...styles.filedStamp, borderColor: "#dc2626", color: "#dc2626" }}
+              >
+                CASE CLOSED
+              </motion.div>
+              <p style={styles.folderTitle}>Access Denied</p>
+              <p style={styles.folderSuspect}>Re: Carmen Sandiego</p>
+              <div style={styles.folderDivider}></div>
+              <div style={styles.folderFields}>
+                <div style={styles.folderField}>
+                  <span style={styles.folderFieldLabel}>STATUS</span>
+                  <span style={{ ...styles.folderFieldValue, color: "#dc2626" }}>Report Already Filed Today</span>
+                </div>
+                <div style={styles.folderField}>
+                  <span style={styles.folderFieldLabel}>NEXT BRIEFING</span>
+                  <span style={styles.folderFieldValue}>Tomorrow — New Case Awaits</span>
+                </div>
+              </div>
+              <div style={styles.folderFooter}>
+                <span style={styles.folderFooterText}>Sun Country Airlines · SC Pursuit Division · {new Date().getFullYear()}</span>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>
@@ -264,7 +308,12 @@ export default function CarmenGame() {
         }}></div>
       )}
 
-      <div style={styles.outer}>
+      <motion.div
+        style={styles.outer}
+        initial={{ y: 32, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 140, damping: 18, delay: 0.1 }}
+      >
         {/* Header — folder tab style */}
         <div style={styles.headerBar}>
           <div style={styles.headerLeft}>
@@ -453,7 +502,7 @@ export default function CarmenGame() {
             <span style={styles.footerText}>REF-{caseNumber}</span>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
@@ -574,9 +623,15 @@ const styles = {
   // Legal-pad line texture — sits behind everything
   paperLines: {
     position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0,
-    backgroundImage: "repeating-linear-gradient(transparent, transparent 27px, rgba(146,64,14,0.07) 27px, rgba(146,64,14,0.07) 28px)",
-    backgroundSize: "100% 28px",
-    backgroundPositionY: "8px",
+    backgroundImage: [
+      "repeating-linear-gradient(transparent, transparent 27px, rgba(146,64,14,0.07) 27px, rgba(146,64,14,0.07) 28px)",
+      "radial-gradient(ellipse at 0% 0%, rgba(120,53,15,0.09) 0%, transparent 55%)",
+      "radial-gradient(ellipse at 100% 0%, rgba(120,53,15,0.07) 0%, transparent 50%)",
+      "radial-gradient(ellipse at 100% 100%, rgba(120,53,15,0.1) 0%, transparent 55%)",
+      "radial-gradient(ellipse at 0% 100%, rgba(120,53,15,0.09) 0%, transparent 55%)",
+    ].join(","),
+    backgroundSize: "100% 28px, 100% 100%, 100% 100%, 100% 100%, 100% 100%",
+    backgroundPositionY: "8px, 0, 0, 0, 0",
   },
 
   // All card children need to sit above the texture
@@ -760,30 +815,6 @@ const styles = {
     position: "relative", zIndex: 1,
   },
   footerText: { fontSize: 9, color: "#a16207", letterSpacing: "0.08em" },
-
-  // Lockout
-  lockoutCard: {
-    background: "#0f172a", border: "1px solid rgba(220,38,38,0.3)",
-    borderRadius: 12, padding: "40px 48px", textAlign: "center",
-    boxShadow: "0 24px 60px rgba(0,0,0,0.8)", maxWidth: 400,
-  },
-  lockoutIcon: { marginBottom: 20, display: "flex", justifyContent: "center" },
-  lockoutTitle: {
-    fontSize: 18, color: "#fff", fontWeight: 700,
-    letterSpacing: "0.08em", margin: "0 0 12px",
-    fontFamily: "'Courier New', Courier, monospace",
-  },
-  lockoutSub: {
-    fontSize: 13, color: "rgba(255,255,255,0.5)",
-    margin: "0 0 24px", lineHeight: 1.6,
-    fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.02em",
-  },
-  lockoutDivider: { height: 1, background: "rgba(220,38,38,0.2)", marginBottom: 16 },
-  lockoutFooter: {
-    fontSize: 9, color: "rgba(255,255,255,0.25)",
-    letterSpacing: "0.12em", margin: 0,
-    fontFamily: "'Courier New', Courier, monospace",
-  },
 
   // Success — folder card
   folderWrap: {
