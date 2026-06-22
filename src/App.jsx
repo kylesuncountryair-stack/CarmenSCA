@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const GOOGLE_SCRIPT_URL =
@@ -12,12 +12,21 @@ const correctAnswers = ["orlando", "mco", "orlando, fl", "orlando, florida"];
 const scanMessages = [
   "Scanning Sun Country Global Network...",
   "Checking Skyspeed Reservations...",
-  "Searching Advisories...",
+  "Cross-referencing Flight Manifests...",
+  "Searching Travel Advisories...",
   "Compiling Customer Care Database Files...",
+  "Analyzing Passenger Records...",
+  "Triangulating Last Known Position...",
 ];
 
 const prompt =
-  "Your sneaky traveler has vanished again! Rumor has it they were last seen buying sunscreen, clutching a frozen drink, and asking where Minnesotans escape winter. Surrounded by palm trees, flip flops, and mouse ears...";
+  "Your sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen in bulk, had a frozen drink in hand, and kept asking where they could find the warmest place Minnesotans escape to when winter hits hard. They disappeared into a crowd of flipflops, palm trees, and travelers wearing mouse ears...";
+
+const LOCKOUT_KEY = "carmen_played_date";
+
+function getTodayString() {
+  return new Date().toISOString().slice(0, 10);
+}
 
 export default function CarmenGame() {
   const [answer, setAnswer] = useState("");
@@ -30,6 +39,12 @@ export default function CarmenGame() {
   const [caseNumber] = useState(generateCaseNumber());
   const [scanStep, setScanStep] = useState(0);
   const [scanProgress, setScanProgress] = useState(0);
+  const [lockedOut, setLockedOut] = useState(false);
+
+  useEffect(() => {
+    const played = localStorage.getItem(LOCKOUT_KEY);
+    if (played === getTodayString()) setLockedOut(true);
+  }, []);
 
   const handleSubmit = () => {
     if (!answer.trim()) return;
@@ -41,11 +56,11 @@ export default function CarmenGame() {
     const stepInterval = setInterval(() => {
       step++;
       if (step < scanMessages.length) setScanStep(step);
-    }, 1300);
+    }, 1600);
 
     const progressInterval = setInterval(() => {
-      setScanProgress((p) => Math.min(p + 2, 95));
-    }, 110);
+      setScanProgress((p) => Math.min(p + 1, 95));
+    }, 115);
 
     setTimeout(() => {
       clearInterval(stepInterval);
@@ -53,12 +68,13 @@ export default function CarmenGame() {
       setScanProgress(100);
       const normalized = answer.trim().toLowerCase();
       const match = correctAnswers.includes(normalized);
+      localStorage.setItem(LOCKOUT_KEY, getTodayString());
       setTimeout(() => {
         setIsCorrect(match);
         setShowName(true);
         setScanning(false);
       }, 400);
-    }, 5500);
+    }, 12000);
   };
 
   const handleFinalSubmit = async () => {
@@ -113,17 +129,50 @@ export default function CarmenGame() {
     );
   }
 
+  if (lockedOut && !submitted) {
+    return (
+      <div style={styles.root}>
+        <RadarBackground />
+        <style>{`@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.85)} } @keyframes btnPulse { 0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0.5)} 50%{box-shadow:0 0 0 8px rgba(220,38,38,0)} }`}</style>
+        <div style={styles.centeredFill}>
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 180 }}
+            style={styles.lockoutCard}
+          >
+            <div style={styles.lockoutIcon}>
+              <svg viewBox="0 0 40 48" width="40" height="48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4" y="20" width="32" height="24" rx="3" fill="#dc2626"/>
+                <path d="M10 20V14a10 10 0 0 1 20 0v6" stroke="#dc2626" strokeWidth="3.5" strokeLinecap="round" fill="none"/>
+                <circle cx="20" cy="32" r="3.5" fill="#fff"/>
+                <rect x="18.5" y="32" width="3" height="6" rx="1.5" fill="#fff"/>
+              </svg>
+            </div>
+            <p style={styles.lockoutTitle}>Case Closed for Today</p>
+            <p style={styles.lockoutSub}>
+              You have already filed your report for today. Check back tomorrow for a new case.
+            </p>
+            <div style={styles.lockoutDivider}></div>
+            <p style={styles.lockoutFooter}>SUN COUNTRY AIRLINES · PURSUIT DIVISION</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={styles.root}>
+      <style>{`@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.85)} } @keyframes btnPulse { 0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0.5)} 50%{box-shadow:0 0 0 8px rgba(220,38,38,0)} }`}</style>
       <RadarBackground />
 
       <div style={styles.outer}>
         {/* Header bar */}
         <div style={styles.headerBar}>
           <div style={styles.headerLeft}>
-            <span style={styles.orgLabel}></span>
-            <span style={styles.divider}></span>
-            <span style={styles.orgLabel}></span>
+            <span style={styles.orgLabel}>SUN COUNTRY AIRLINES</span>
+            <span style={styles.divider}>|</span>
+            <span style={styles.orgLabel}>SC PURSUIT DIVISION</span>
           </div>
           <div style={styles.caseTag}>CASE #{caseNumber}</div>
         </div>
@@ -185,14 +234,14 @@ export default function CarmenGame() {
                 exit={{ opacity: 0, y: -8 }}
                 style={styles.inputSection}
               >
-                <label style={styles.inputLabel}>Enter city name or airport code</label>
+                <label style={styles.inputLabel}>Input Suspect's Location</label>
                 <div style={styles.inputRow}>
                   <input
                     value={answer}
                     onChange={(e) => setAnswer(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && answer.trim() && handleSubmit()}
                     style={styles.input}
-                    placeholder="Input Suspect's Location"
+                    placeholder="City or airport code"
                   />
                   <button
                     onClick={handleSubmit}
@@ -201,6 +250,7 @@ export default function CarmenGame() {
                       ...styles.trackBtn,
                       opacity: answer.trim() ? 1 : 0.45,
                       cursor: answer.trim() ? "pointer" : "not-allowed",
+                      animation: answer.trim() ? "btnPulse 1.8s ease-in-out infinite" : "none",
                     }}
                   >
                     Track Carmen
@@ -218,7 +268,7 @@ export default function CarmenGame() {
                 style={styles.scanSection}
               >
                 <div style={styles.scanHeader}>
-                  <span style={styles.scanDot}></span>
+                  <span style={{ ...styles.scanDot, animation: "pulse 1.2s ease-in-out infinite" }}></span>
                   <span style={styles.scanTitle}>SCANNING...</span>
                 </div>
                 <p style={styles.scanMessage}>{scanMessages[scanStep]}</p>
@@ -243,16 +293,24 @@ export default function CarmenGame() {
                 <div
                   style={{
                     ...styles.resultBanner,
-                    borderColor: isCorrect ? "#4ade80" : "#f87171",
+                    borderColor: isCorrect ? "#16a34a" : "#dc2626",
                     background: isCorrect
                       ? "rgba(74,222,128,0.08)"
                       : "rgba(248,113,113,0.08)",
                   }}
                 >
+                  <div style={styles.resultTagRow}>
+                    <span style={{
+                      ...styles.resultTag,
+                      background: isCorrect ? "#16a34a" : "#dc2626",
+                    }}>
+                      {isCorrect ? "TARGET LOCKED" : "SUSPECT EVADED"}
+                    </span>
+                  </div>
                   <p style={{ ...styles.resultTitle, color: isCorrect ? "#166534" : "#991b1b" }}>
                     {isCorrect
-                      ? "🎯 Target Locked! Excellent Work, Gumshoe!"
-                      : "❌ Carmen Escaped! Track Her Again Tomorrow!"}
+                      ? "Excellent work, Gumshoe. Case closed."
+                      : "Carmen slipped away. Better luck next time, Agent."}
                   </p>
                   {isCorrect && (
                     <p style={styles.resultSub}>Suspect located in Orlando, FL (MCO)</p>
@@ -290,7 +348,7 @@ export default function CarmenGame() {
             <span style={styles.footerText}>
               Sun Country Airlines · Internal Training Exercise · {new Date().getFullYear()}
             </span>
-            <span style={styles.footerText}>SCA-{caseNumber}</span>
+            <span style={styles.footerText}>REF-{caseNumber}</span>
           </div>
         </div>
       </div>
@@ -403,7 +461,7 @@ function RadarBackground() {
           <path
             d="M400,400 L400,20 A380,380 0 0,1 752,540 Z"
             fill="url(#sweepFade)"
-            opacity="10.9"
+            opacity="15.9"
           />
           {/* Leading edge glow line */}
           <line
@@ -782,17 +840,74 @@ const styles = {
     padding: "14px 18px",
     marginBottom: 16,
   },
+  resultTagRow: {
+    marginBottom: 8,
+  },
+  resultTag: {
+    display: "inline-block",
+    color: "#fff",
+    fontSize: 9,
+    fontWeight: 700,
+    letterSpacing: "0.14em",
+    padding: "3px 10px",
+    borderRadius: 2,
+  },
   resultTitle: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: 700,
     margin: "0 0 4px",
     letterSpacing: "0.02em",
+    fontFamily: "'Courier New', Courier, monospace",
   },
   resultSub: {
     fontSize: 12,
     color: "#166534",
     margin: 0,
     letterSpacing: "0.06em",
+  },
+
+  // Lockout
+  lockoutCard: {
+    background: "#0f172a",
+    border: "1px solid rgba(220,38,38,0.3)",
+    borderRadius: 12,
+    padding: "40px 48px",
+    textAlign: "center",
+    boxShadow: "0 24px 60px rgba(0,0,0,0.8)",
+    maxWidth: 400,
+  },
+  lockoutIcon: {
+    marginBottom: 20,
+    display: "flex",
+    justifyContent: "center",
+  },
+  lockoutTitle: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: 700,
+    letterSpacing: "0.08em",
+    margin: "0 0 12px",
+    fontFamily: "'Courier New', Courier, monospace",
+  },
+  lockoutSub: {
+    fontSize: 13,
+    color: "rgba(255,255,255,0.5)",
+    margin: "0 0 24px",
+    lineHeight: 1.6,
+    fontFamily: "'Courier New', Courier, monospace",
+    letterSpacing: "0.02em",
+  },
+  lockoutDivider: {
+    height: 1,
+    background: "rgba(220,38,38,0.2)",
+    marginBottom: 16,
+  },
+  lockoutFooter: {
+    fontSize: 9,
+    color: "rgba(255,255,255,0.25)",
+    letterSpacing: "0.12em",
+    margin: 0,
+    fontFamily: "'Courier New', Courier, monospace",
   },
   agentSection: { marginTop: 4 },
   submitBtn: {
