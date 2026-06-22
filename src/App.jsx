@@ -46,7 +46,7 @@ export default function CarmenGame() {
       if (step < scanMessages.length) {
         setScanStep(step);
       }
-    }, 2400);
+    }, 2200);
 
     setTimeout(() => {
       clearInterval(interval);
@@ -57,7 +57,7 @@ export default function CarmenGame() {
       setIsCorrect(match);
       setShowName(true);
       setScanning(false);
-    }, 7500);
+    }, 5500);
   };
 
   const handleFinalSubmit = async () => {
