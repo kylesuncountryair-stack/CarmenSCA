@@ -20,7 +20,7 @@ const scanMessages = [
 ];
 
 const prompt =
-  "Your sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen in bulk, had a frozen drink in hand, and kept asking where they could find the warmest place Minnesotans escape to when winter hits hard. They disappeared into a crowd of flipflops, palm trees, and travelers wearing mouse ears...";
+  "Your sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen in bulk, had a frozen drink in hand, and kept asking where they could find the warmest place Minnesotans escape to when winter hits hard. They disappeared into a crowd of flipflops, palm trees, and travelers wearing mouse ear...";
 
 const LOCKOUT_KEY = "carmen_played_date";
 
@@ -431,13 +431,13 @@ function RadarBackground() {
         viewBox="0 0 800 800"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <circle cx="400" cy="400" r="380" fill="none" stroke="rgba(220,38,38,0.35)" strokeWidth="1" />
-        <circle cx="400" cy="400" r="280" fill="none" stroke="rgba(220,38,38,0.28)" strokeWidth="1" />
-        <circle cx="400" cy="400" r="180" fill="none" stroke="rgba(220,38,38,0.22)" strokeWidth="1" />
-        <circle cx="400" cy="400" r="90"  fill="none" stroke="rgba(220,38,38,0.18)" strokeWidth="1" />
+        <circle cx="400" cy="400" r="380" fill="none" stroke="rgba(220,38,38,0.7)" strokeWidth="1.5" />
+        <circle cx="400" cy="400" r="280" fill="none" stroke="rgba(220,38,38,0.6)" strokeWidth="1.5" />
+        <circle cx="400" cy="400" r="180" fill="none" stroke="rgba(220,38,38,0.5)" strokeWidth="1.5" />
+        <circle cx="400" cy="400" r="90"  fill="none" stroke="rgba(220,38,38,0.4)" strokeWidth="1.5" />
         {/* Cross-hairs */}
-        <line x1="400" y1="20"  x2="400" y2="780" stroke="rgba(220,38,38,0.12)" strokeWidth="0.5" />
-        <line x1="20"  y1="400" x2="780" y2="400" stroke="rgba(220,38,38,0.12)" strokeWidth="0.5" />
+        <line x1="400" y1="20"  x2="400" y2="780" stroke="rgba(220,38,38,0.3)" strokeWidth="0.75" />
+        <line x1="20"  y1="400" x2="780" y2="400" stroke="rgba(220,38,38,0.3)" strokeWidth="0.75" />
       </svg>
 
       {/* Rotating sweep — separate element so rings stay static */}
@@ -454,21 +454,21 @@ function RadarBackground() {
           <defs>
             <radialGradient id="sweepFade" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="rgba(0,220,80,0)" />
-              <stop offset="100%" stopColor="rgba(0,220,80,0.18)" />
+              <stop offset="100%" stopColor="rgba(0,220,80,0.55)" />
             </radialGradient>
           </defs>
           {/* Conic sweep approximated with a wide wedge path */}
           <path
             d="M400,400 L400,20 A380,380 0 0,1 752,540 Z"
             fill="url(#sweepFade)"
-            opacity="0.9"
+            opacity="1"
           />
           {/* Leading edge glow line */}
           <line
             x1="400" y1="400"
             x2="400" y2="20"
-            stroke="rgba(0,255,80,0.6)"
-            strokeWidth="1.5"
+            stroke="rgba(0,255,80,0.9)"
+            strokeWidth="2"
           />
         </svg>
       </motion.div>
@@ -509,13 +509,13 @@ const styles = {
   },
   radarSvg: {
     position: "absolute",
-    width: "min(90vw, 90vh)",
-    height: "min(90vw, 90vh)",
+    width: "min(120vw, 120vh)",
+    height: "min(120vw, 120vh)",
   },
   sweepWrap: {
     position: "absolute",
-    width: "min(90vw, 90vh)",
-    height: "min(90vw, 90vh)",
+    width: "min(120vw, 120vh)",
+    height: "min(120vw, 120vh)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
