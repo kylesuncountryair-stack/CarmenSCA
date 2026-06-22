@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const GOOGLE_SCRIPT_URL =
@@ -7,12 +7,7 @@ const GOOGLE_SCRIPT_URL =
 const generateCaseNumber = () =>
   "SC-" + Math.floor(1000 + Math.random() * 9000);
 
-const correctAnswers = [
-  "orlando",
-  "mco",
-  "orlando, fl",
-  "orlando, florida",
-];
+const correctAnswers = ["orlando", "mco", "orlando, fl", "orlando, florida"];
 
 const scanMessages = [
   "Scanning Sun Country Global Network...",
@@ -22,7 +17,7 @@ const scanMessages = [
 ];
 
 const prompt =
-  "Your sneaky traveler has vanished again! Rumor has it; they were last seen buying sunscreen, holding a frozen drink, and asking where Minnesotans escape winter. Surrounded by palm trees, flip flops, and mouse ears... Where in the Sun Country world did they go?";
+  "Your sneaky traveler has vanished again! Rumor has it they were last seen buying sunscreen, clutching a frozen drink, and asking where Minnesotans escape winter. Surrounded by palm trees, flip flops, and mouse ears...";
 
 export default function CarmenGame() {
   const [answer, setAnswer] = useState("");
@@ -35,16 +30,6 @@ export default function CarmenGame() {
   const [caseNumber] = useState(generateCaseNumber());
   const [scanStep, setScanStep] = useState(0);
   const [scanProgress, setScanProgress] = useState(0);
-  const [glitchActive, setGlitchActive] = useState(false);
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setGlitchActive(true);
-      setTimeout(() => setGlitchActive(false), 150);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleSubmit = () => {
     if (!answer.trim()) return;
@@ -66,10 +51,8 @@ export default function CarmenGame() {
       clearInterval(stepInterval);
       clearInterval(progressInterval);
       setScanProgress(100);
-
       const normalized = answer.trim().toLowerCase();
       const match = correctAnswers.includes(normalized);
-
       setTimeout(() => {
         setIsCorrect(match);
         setShowName(true);
@@ -97,17 +80,11 @@ export default function CarmenGame() {
     setTimeout(() => setSubmitted(true), 800);
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !scanning && !showName && answer.trim()) {
-      handleSubmit();
-    }
-  };
-
   if (submitted) {
     return (
       <div style={styles.root}>
-        <GridLines />
-        <div style={styles.successWrap}>
+        <RadarBackground />
+        <div style={styles.centeredFill}>
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -117,15 +94,15 @@ export default function CarmenGame() {
             <div style={styles.successIcon}>✓</div>
             <p style={styles.successTitle}>Report Filed</p>
             <div style={styles.successMeta}>
-              <span style={styles.metaLabel}>Agent</span>
+              <span style={styles.metaLabel}>AGENT</span>
               <span style={styles.metaValue}>{name}</span>
             </div>
             <div style={styles.successMeta}>
-              <span style={styles.metaLabel}>Case</span>
+              <span style={styles.metaLabel}>CASE</span>
               <span style={styles.metaValue}>{caseNumber}</span>
             </div>
             <div style={styles.successMeta}>
-              <span style={styles.metaLabel}>Status</span>
+              <span style={styles.metaLabel}>STATUS</span>
               <span style={{ ...styles.metaValue, color: isCorrect ? "#4ade80" : "#f87171" }}>
                 {isCorrect ? "Target Located" : "Pursuit Ongoing"}
               </span>
@@ -138,32 +115,17 @@ export default function CarmenGame() {
 
   return (
     <div style={styles.root}>
-      <GridLines />
+      <RadarBackground />
 
-      {/* Radar sweep */}
-      <div style={styles.radarWrap}>
-        <div style={styles.radarRing1} />
-        <div style={styles.radarRing2} />
-        <div style={styles.radarRing3} />
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 5, ease: "linear" }}
-          style={styles.radarSweep}
-        />
-      </div>
-
-      {/* Main card */}
       <div style={styles.outer}>
         {/* Header bar */}
         <div style={styles.headerBar}>
           <div style={styles.headerLeft}>
             <span style={styles.orgLabel}></span>
-            <span style={styles.divider}>|</span>
+            <span style={styles.divider}></span>
             <span style={styles.orgLabel}></span>
           </div>
-          <div style={styles.caseTag}>
-            CASE #{caseNumber}
-          </div>
+          <div style={styles.caseTag}>CASE #{caseNumber}</div>
         </div>
 
         <div style={styles.card}>
@@ -177,9 +139,9 @@ export default function CarmenGame() {
           <div style={styles.suspectHeader}>
             <div style={styles.suspectPhotoWrap}>
               <div style={styles.suspectPhoto}>
-                <SilhouetteIcon />
+                <Fingerprint />
               </div>
-              <div style={styles.photoLabel}>SUSPECT</div>
+              <div style={styles.photoLabel}>PRINT ON FILE</div>
             </div>
             <div style={styles.suspectInfo}>
               <p style={styles.suspectName}>Carmen Sandiego</p>
@@ -196,7 +158,7 @@ export default function CarmenGame() {
             </div>
           </div>
 
-          {/* Divider */}
+          {/* Section label */}
           <div style={styles.sectionDivider}>
             <span style={styles.sectionLabel}>LAST KNOWN INTELLIGENCE</span>
           </div>
@@ -213,7 +175,7 @@ export default function CarmenGame() {
             </p>
           </div>
 
-          {/* Input area */}
+          {/* Input / scan / result */}
           <AnimatePresence mode="wait">
             {!scanning && !showName && (
               <motion.div
@@ -223,17 +185,14 @@ export default function CarmenGame() {
                 exit={{ opacity: 0, y: -8 }}
                 style={styles.inputSection}
               >
-                <label style={styles.inputLabel}>
-                  Enter city name or airport code
-                </label>
+                <label style={styles.inputLabel}>Enter city name or airport code</label>
                 <div style={styles.inputRow}>
                   <input
-                    ref={inputRef}
                     value={answer}
                     onChange={(e) => setAnswer(e.target.value)}
-                    onKeyDown={handleKeyDown}
+                    onKeyDown={(e) => e.key === "Enter" && answer.trim() && handleSubmit()}
                     style={styles.input}
-                    placeholder="Input Suspected Location"
+                    placeholder="Input Suspect's Location"
                   />
                   <button
                     onClick={handleSubmit}
@@ -241,6 +200,7 @@ export default function CarmenGame() {
                     style={{
                       ...styles.trackBtn,
                       opacity: answer.trim() ? 1 : 0.45,
+                      cursor: answer.trim() ? "pointer" : "not-allowed",
                     }}
                   >
                     Track Carmen
@@ -258,7 +218,7 @@ export default function CarmenGame() {
                 style={styles.scanSection}
               >
                 <div style={styles.scanHeader}>
-                  <span style={styles.scanDot} />
+                  <span style={styles.scanDot}></span>
                   <span style={styles.scanTitle}>SCANNING...</span>
                 </div>
                 <p style={styles.scanMessage}>{scanMessages[scanStep]}</p>
@@ -267,7 +227,7 @@ export default function CarmenGame() {
                     style={styles.progressFill}
                     animate={{ width: `${scanProgress}%` }}
                     transition={{ ease: "linear" }}
-                  />
+                  ></motion.div>
                 </div>
                 <p style={styles.scanProgress}>{Math.round(scanProgress)}%</p>
               </motion.div>
@@ -285,27 +245,19 @@ export default function CarmenGame() {
                     ...styles.resultBanner,
                     borderColor: isCorrect ? "#4ade80" : "#f87171",
                     background: isCorrect
-                      ? "rgba(74, 222, 128, 0.08)"
-                      : "rgba(248, 113, 113, 0.08)",
+                      ? "rgba(74,222,128,0.08)"
+                      : "rgba(248,113,113,0.08)",
                   }}
                 >
-                  <p
-                    style={{
-                      ...styles.resultTitle,
-                      color: isCorrect ? "#4ade80" : "#f87171",
-                    }}
-                  >
+                  <p style={{ ...styles.resultTitle, color: isCorrect ? "#166534" : "#991b1b" }}>
                     {isCorrect
                       ? "🎯 Target Locked! Excellent Work, Gumshoe!"
                       : "❌ Carmen Escaped! Track Her Again Tomorrow!"}
                   </p>
                   {isCorrect && (
-                    <p style={styles.resultSub}>
-                      Suspect located in Orlando, FL (MCO)
-                    </p>
+                    <p style={styles.resultSub}>Suspect located in Orlando, FL (MCO)</p>
                   )}
                 </div>
-
                 <div style={styles.agentSection}>
                   <label style={styles.inputLabel}>Agent Full Name</label>
                   <div style={styles.inputRow}>
@@ -314,7 +266,7 @@ export default function CarmenGame() {
                       onChange={(e) => setName(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && name.trim() && handleFinalSubmit()}
                       style={styles.input}
-                      placeholder="Enter your full name to file report"
+                      placeholder="Enter your name to file report"
                     />
                     <button
                       onClick={handleFinalSubmit}
@@ -322,6 +274,7 @@ export default function CarmenGame() {
                       style={{
                         ...styles.submitBtn,
                         opacity: submitting || !name.trim() ? 0.5 : 1,
+                        cursor: submitting || !name.trim() ? "not-allowed" : "pointer",
                       }}
                     >
                       {submitting ? "Filing..." : "File Report"}
@@ -337,7 +290,7 @@ export default function CarmenGame() {
             <span style={styles.footerText}>
               Sun Country Airlines · Internal Training Exercise · {new Date().getFullYear()}
             </span>
-            <span style={styles.footerText}>ACME-{caseNumber}</span>
+            <span style={styles.footerText}>SCA-{caseNumber}</span>
           </div>
         </div>
       </div>
@@ -345,43 +298,134 @@ export default function CarmenGame() {
   );
 }
 
-function SilhouetteIcon() {
+// ── Fingerprint ────────────────────────────────────────────────────────────
+function Fingerprint() {
+  const cx = 44, cy = 48;
+  const rings = [
+    { rx: 6,  ry: 7,  gaps: [] },
+    { rx: 11, ry: 13, gaps: [{ start: 60, end: 100 }] },
+    { rx: 16, ry: 19, gaps: [{ start: 200, end: 240 }] },
+    { rx: 21, ry: 25, gaps: [{ start: 50,  end: 85  }] },
+    { rx: 26, ry: 31, gaps: [{ start: 180, end: 225 }] },
+    { rx: 31, ry: 37, gaps: [{ start: 55,  end: 95  }, { start: 270, end: 300 }] },
+    { rx: 36, ry: 42, gaps: [{ start: 190, end: 230 }] },
+  ];
+
+  function arcPath(rx, ry, startDeg, endDeg) {
+    const toRad = (d) => (d * Math.PI) / 180;
+    const x1 = cx + rx * Math.cos(toRad(startDeg));
+    const y1 = cy + ry * Math.sin(toRad(startDeg));
+    const x2 = cx + rx * Math.cos(toRad(endDeg));
+    const y2 = cy + ry * Math.sin(toRad(endDeg));
+    const span = ((endDeg - startDeg) + 360) % 360;
+    const large = span > 180 ? 1 : 0;
+    return `M ${x1} ${y1} A ${rx} ${ry} 0 ${large} 1 ${x2} ${y2}`;
+  }
+
+  function ringPaths(rx, ry, gaps) {
+    if (gaps.length === 0) {
+      return [arcPath(rx, ry, 0, 359.9)];
+    }
+    const sorted = [...gaps].sort((a, b) => a.start - b.start);
+    const paths = [];
+    let cursor = sorted[sorted.length - 1].end;
+    for (const g of sorted) {
+      paths.push(arcPath(rx, ry, cursor, g.start));
+      cursor = g.end;
+    }
+    return paths;
+  }
+
   return (
-    <svg viewBox="0 0 80 100" width="60" height="75" fill="none">
-      <circle cx="40" cy="28" r="18" fill="#c0392b" opacity="0.85" />
-      <path
-        d="M10 95 C10 68 70 68 70 95"
-        stroke="#c0392b"
-        strokeWidth="2"
-        fill="#c0392b"
-        opacity="0.85"
-      />
-      <rect x="28" y="12" width="24" height="8" rx="2" fill="#8b0000" opacity="0.9" />
-      <path d="M18 18 Q40 4 62 18" stroke="#8b0000" strokeWidth="3" fill="none" />
+    <svg
+      viewBox="0 0 88 100"
+      width="72"
+      height="82"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ display: "block" }}
+    >
+      {rings.map((r, i) =>
+        ringPaths(r.rx, r.ry, r.gaps).map((d, j) => (
+          <path
+            key={`${i}-${j}`}
+            d={d}
+            fill="none"
+            stroke="#dc2626"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+          />
+        ))
+      )}
+      {/* bottom arch lines suggesting fingertip */}
+      <path d="M 10 85 Q 44 100 78 85" fill="none" stroke="#dc2626" strokeWidth="2.2" strokeLinecap="round" opacity="0.6"/>
+      <path d="M 16 91 Q 44 104 72 91" fill="none" stroke="#dc2626" strokeWidth="2.2" strokeLinecap="round" opacity="0.35"/>
     </svg>
   );
 }
 
-function GridLines() {
+// ── Radar background — SVG-based so it always shows ───────────────────────
+function RadarBackground() {
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        pointerEvents: "none",
-        zIndex: 0,
-        backgroundImage:
-          "linear-gradient(rgba(220,38,38,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(220,38,38,0.04) 1px, transparent 1px)",
-        backgroundSize: "48px 48px",
-      }}
-    />
+    <div style={styles.radarContainer}>
+      {/* Static rings */}
+      <svg
+        style={styles.radarSvg}
+        viewBox="0 0 800 800"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle cx="400" cy="400" r="380" fill="none" stroke="rgba(220,38,38,0.35)" strokeWidth="1" />
+        <circle cx="400" cy="400" r="280" fill="none" stroke="rgba(220,38,38,0.28)" strokeWidth="1" />
+        <circle cx="400" cy="400" r="180" fill="none" stroke="rgba(220,38,38,0.22)" strokeWidth="1" />
+        <circle cx="400" cy="400" r="90"  fill="none" stroke="rgba(220,38,38,0.18)" strokeWidth="1" />
+        {/* Cross-hairs */}
+        <line x1="400" y1="20"  x2="400" y2="780" stroke="rgba(220,38,38,0.12)" strokeWidth="0.5" />
+        <line x1="20"  y1="400" x2="780" y2="400" stroke="rgba(220,38,38,0.12)" strokeWidth="0.5" />
+      </svg>
+
+      {/* Rotating sweep — separate element so rings stay static */}
+      <motion.div
+        style={styles.sweepWrap}
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+      >
+        <svg
+          style={styles.radarSvg}
+          viewBox="0 0 800 800"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <radialGradient id="sweepFade" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="rgba(0,220,80,0)" />
+              <stop offset="100%" stopColor="rgba(0,220,80,0.18)" />
+            </radialGradient>
+          </defs>
+          {/* Conic sweep approximated with a wide wedge path */}
+          <path
+            d="M400,400 L400,20 A380,380 0 0,1 752,540 Z"
+            fill="url(#sweepFade)"
+            opacity="0.9"
+          />
+          {/* Leading edge glow line */}
+          <line
+            x1="400" y1="400"
+            x2="400" y2="20"
+            stroke="rgba(0,255,80,0.6)"
+            strokeWidth="1.5"
+          />
+        </svg>
+      </motion.div>
+
+      {/* Dark overlay so bg image doesn't wash out the card */}
+      <div style={styles.darkOverlay}></div>
+    </div>
   );
 }
 
+// ── Styles ─────────────────────────────────────────────────────────────────
 const styles = {
   root: {
     minHeight: "100vh",
-    background: "#0a0a0a",
+    background: "#050505",
     backgroundImage: "url('https://i.wpfc.ml/h7/uxapf2.png')",
     backgroundSize: "cover",
     backgroundPosition: "center",
@@ -394,7 +438,9 @@ const styles = {
     position: "relative",
     overflow: "hidden",
   },
-  radarWrap: {
+
+  // Radar
+  radarContainer: {
     position: "fixed",
     inset: 0,
     display: "flex",
@@ -403,48 +449,50 @@ const styles = {
     pointerEvents: "none",
     zIndex: 1,
   },
-  radarRing1: {
+  radarSvg: {
     position: "absolute",
-    width: 700,
-    height: 700,
-    borderRadius: "50%",
-    border: "1px solid rgba(220,38,38,0.12)",
+    width: "min(90vw, 90vh)",
+    height: "min(90vw, 90vh)",
   },
-  radarRing2: {
+  sweepWrap: {
     position: "absolute",
-    width: 500,
-    height: 500,
-    borderRadius: "50%",
-    border: "1px solid rgba(220,38,38,0.1)",
+    width: "min(90vw, 90vh)",
+    height: "min(90vw, 90vh)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  radarRing3: {
+  darkOverlay: {
     position: "absolute",
-    width: 300,
-    height: 300,
-    borderRadius: "50%",
-    border: "1px solid rgba(220,38,38,0.08)",
+    inset: 0,
+    background: "rgba(0,0,0,0.45)",
   },
-  radarSweep: {
-    position: "absolute",
-    width: 600,
-    height: 600,
-    borderRadius: "50%",
-    background: "conic-gradient(rgba(0,220,80,0.08), transparent 18%)",
+
+  centeredFill: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    position: "relative",
+    zIndex: 10,
   },
+
+  // Main layout
   outer: {
     width: "100%",
     maxWidth: 680,
     position: "relative",
     zIndex: 10,
   },
+
+  // Header bar
   headerBar: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     padding: "8px 16px",
-    background: "rgba(220,38,38,0.9)",
+    background: "rgba(220,38,38,0.92)",
     borderRadius: "6px 6px 0 0",
-    marginBottom: 0,
   },
   headerLeft: {
     display: "flex",
@@ -470,15 +518,15 @@ const styles = {
     padding: "3px 10px",
     borderRadius: 3,
   },
+
+  // Card
   card: {
-    background: "linear-gradient(160deg, #fefce8 0%, #fef3c7 50%, #fde68a 100%)",
+    background: "linear-gradient(160deg,#fefce8 0%,#fef3c7 50%,#fde68a 100%)",
     border: "2px solid #92400e",
     borderTop: "none",
     borderRadius: "0 0 12px 12px",
     padding: "28px 32px 24px",
-    position: "relative",
-    boxShadow: "0 24px 60px rgba(0,0,0,0.7)",
-    backgroundAttachment: "local",
+    boxShadow: "0 24px 60px rgba(0,0,0,0.75)",
   },
   cardTopStrip: {
     display: "flex",
@@ -506,6 +554,8 @@ const styles = {
     padding: "4px 10px",
     borderRadius: 3,
   },
+
+  // Suspect block
   suspectHeader: {
     display: "flex",
     gap: 20,
@@ -523,14 +573,15 @@ const styles = {
     flexShrink: 0,
   },
   suspectPhoto: {
-    width: 80,
-    height: 96,
-    background: "#fef9c3",
+    width: 88,
+    height: 104,
+    background: "#0d0000",
     border: "2px solid #92400e",
     borderRadius: 4,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    overflow: "hidden",
   },
   photoLabel: {
     fontSize: 9,
@@ -546,7 +597,6 @@ const styles = {
     fontWeight: 700,
     color: "#1c0a00",
     margin: "0 0 2px",
-    fontFamily: "'Courier New', Courier, monospace",
     letterSpacing: "0.02em",
   },
   suspectAlias: {
@@ -592,6 +642,8 @@ const styles = {
     borderRadius: 10,
     letterSpacing: "0.06em",
   },
+
+  // Section divider
   sectionDivider: {
     display: "flex",
     alignItems: "center",
@@ -603,11 +655,9 @@ const styles = {
     fontWeight: 700,
     letterSpacing: "0.14em",
     color: "#78350f",
-    whiteSpace: "nowrap",
-    background: "linear-gradient(160deg, #fefce8 0%, #fef3c7 50%, #fde68a 100%)",
-    padding: "0 8px 0 0",
-    position: "relative",
   },
+
+  // Clue
   clueBox: {
     background: "#fffbeb",
     border: "1px solid #92400e",
@@ -622,9 +672,7 @@ const styles = {
     gap: 8,
     marginBottom: 10,
   },
-  clueIcon: {
-    fontSize: 16,
-  },
+  clueIcon: { fontSize: 16 },
   clueTitle: {
     fontSize: 10,
     fontWeight: 700,
@@ -645,9 +693,9 @@ const styles = {
     margin: 0,
     fontFamily: "Georgia, serif",
   },
-  inputSection: {
-    marginBottom: 8,
-  },
+
+  // Input
+  inputSection: { marginBottom: 8 },
   inputLabel: {
     display: "block",
     fontSize: 10,
@@ -656,10 +704,7 @@ const styles = {
     color: "#78350f",
     marginBottom: 8,
   },
-  inputRow: {
-    display: "flex",
-    gap: 10,
-  },
+  inputRow: { display: "flex", gap: 10 },
   input: {
     flex: 1,
     padding: "10px 14px",
@@ -682,19 +727,12 @@ const styles = {
     fontWeight: 700,
     letterSpacing: "0.08em",
     fontFamily: "'Courier New', Courier, monospace",
-    cursor: "pointer",
     whiteSpace: "nowrap",
-    transition: "background 0.15s",
   },
-  scanSection: {
-    padding: "20px 0",
-  },
-  scanHeader: {
-    display: "flex",
-    alignItems: "center",
-    gap: 10,
-    marginBottom: 8,
-  },
+
+  // Scan
+  scanSection: { padding: "20px 0" },
+  scanHeader: { display: "flex", alignItems: "center", gap: 10, marginBottom: 8 },
   scanDot: {
     width: 8,
     height: 8,
@@ -702,7 +740,6 @@ const styles = {
     background: "#22c55e",
     display: "inline-block",
     boxShadow: "0 0 6px #22c55e",
-    animation: "pulse 1s infinite",
   },
   scanTitle: {
     fontSize: 11,
@@ -726,7 +763,7 @@ const styles = {
   },
   progressFill: {
     height: "100%",
-    background: "linear-gradient(90deg, #16a34a, #22c55e)",
+    background: "linear-gradient(90deg,#16a34a,#22c55e)",
     borderRadius: 3,
   },
   scanProgress: {
@@ -736,9 +773,9 @@ const styles = {
     textAlign: "right",
     letterSpacing: "0.08em",
   },
-  resultSection: {
-    marginBottom: 4,
-  },
+
+  // Result
+  resultSection: { marginBottom: 4 },
   resultBanner: {
     border: "1.5px solid",
     borderRadius: 6,
@@ -757,9 +794,7 @@ const styles = {
     margin: 0,
     letterSpacing: "0.06em",
   },
-  agentSection: {
-    marginTop: 4,
-  },
+  agentSection: { marginTop: 4 },
   submitBtn: {
     padding: "10px 20px",
     background: "#166534",
@@ -770,10 +805,10 @@ const styles = {
     fontWeight: 700,
     letterSpacing: "0.08em",
     fontFamily: "'Courier New', Courier, monospace",
-    cursor: "pointer",
     whiteSpace: "nowrap",
-    transition: "background 0.15s",
   },
+
+  // Footer
   cardFooter: {
     display: "flex",
     justifyContent: "space-between",
@@ -786,14 +821,8 @@ const styles = {
     color: "#a16207",
     letterSpacing: "0.08em",
   },
-  successWrap: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    zIndex: 10,
-    position: "relative",
-  },
+
+  // Success screen
   successCard: {
     background: "#0f172a",
     border: "1px solid rgba(255,255,255,0.1)",
@@ -807,7 +836,6 @@ const styles = {
     fontSize: 40,
     color: "#4ade80",
     marginBottom: 16,
-    fontWeight: 300,
   },
   successTitle: {
     fontSize: 20,
@@ -815,7 +843,6 @@ const styles = {
     fontWeight: 700,
     letterSpacing: "0.1em",
     margin: "0 0 24px",
-    fontFamily: "'Courier New', Courier, monospace",
   },
   successMeta: {
     display: "flex",
@@ -828,11 +855,9 @@ const styles = {
     fontSize: 10,
     letterSpacing: "0.12em",
     color: "rgba(255,255,255,0.4)",
-    fontFamily: "'Courier New', Courier, monospace",
   },
   metaValue: {
     fontSize: 13,
     color: "#fff",
-    fontFamily: "'Courier New', Courier, monospace",
   },
 };
