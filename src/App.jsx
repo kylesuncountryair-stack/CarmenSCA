@@ -32,6 +32,9 @@ const bootLines = [
   "CONNECTION ESTABLISHED. ACCESS GRANTED.",
 ];
 
+const HEX_CHARS = "0123456789ABCDEF";
+const randomHex = (len) => Array.from({ length: len }, () => HEX_CHARS[Math.floor(Math.random() * 16)]).join("");
+
 const prompt =
   "Your sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen in bulk, had a frozen drink in hand, and kept asking where they could find the warmest place Minnesotans escape to when winter hits hard. They disappeared into a crowd of flipflops, palm trees, and travelers wearing mouse ears...";
 
@@ -42,18 +45,20 @@ function getTodayString() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
-// ── Web Audio ────────────────────────────────────────────────────────────────
-function playTick() {
+// ── Web Audio ─────────────────────────────────────────────────────────────────
+function playPing() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.connect(gain); gain.connect(ctx.destination);
-    osc.type = "square";
-    osc.frequency.setValueAtTime(1200, ctx.currentTime);
-    gain.gain.setValueAtTime(0.04, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.045);
-    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.045);
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.4);
+    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.5);
   } catch (e) {}
 }
 
@@ -95,7 +100,68 @@ function playChime(correct) {
   } catch (e) {}
 }
 
-// ── Typewriter hook ──────────────────────────────────────────────────────────
+function playTick() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = "square";
+    osc.frequency.setValueAtTime(1200, ctx.currentTime);
+    gain.gain.setValueAtTime(0.04, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.045);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.045);
+  } catch (e) {}
+}
+
+// ── Signal bars component ─────────────────────────────────────────────────────
+function SignalBars() {
+  const [heights, setHeights] = useState([0.4, 0.7, 0.5, 0.9]);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setHeights([
+        0.2 + Math.random() * 0.8,
+        0.2 + Math.random() * 0.8,
+        0.2 + Math.random() * 0.8,
+        0.2 + Math.random() * 0.8,
+      ]);
+    }, 220);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <div style={{ display: "flex", alignItems: "flex-end", gap: 2, height: 16 }}>
+      {heights.map((h, i) => (
+        <div
+          key={i}
+          style={{
+            width: 4,
+            height: `${Math.round(h * 16)}px`,
+            background: "#dc2626",
+            borderRadius: 1,
+            transition: "height 0.18s ease",
+            opacity: 0.7 + h * 0.3,
+          }}
+        ></div>
+      ))}
+    </div>
+  );
+}
+
+// ── Hex trace scrambler ───────────────────────────────────────────────────────
+function HexTrace() {
+  const [trace, setTrace] = useState(randomHex(6));
+  useEffect(() => {
+    const id = setInterval(() => setTrace(randomHex(6)), 280);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <span style={{ fontSize: 10, color: "#92400e", letterSpacing: "0.1em", opacity: 0.7 }}>
+      TRACE: {trace}
+    </span>
+  );
+}
+
+// ── Typewriter hook ───────────────────────────────────────────────────────────
 function useTypewriter(text, speed = 38, withSound = false) {
   const [displayed, setDisplayed] = useState("");
   const [done, setDone] = useState(false);
@@ -114,18 +180,41 @@ function useTypewriter(text, speed = 38, withSound = false) {
 }
 
 function TypewriterLine({ text, speed = 30, onDone }) {
-  const { done } = useTypewriter(text, speed, true);
+  const { done, displayed } = useTypewriter(text, speed, true);
   useEffect(() => { if (done && onDone) onDone(); }, [done]);
-  const { displayed } = useTypewriter(text, speed, false);
   return <span>{displayed}{!done && <span style={{ opacity: 0.7 }}>▌</span>}</span>;
 }
 
-function TypewriterMessage({ text }) {
-  const { displayed } = useTypewriter(text, 35, true);
-  return <span>{displayed}<span style={{ opacity: 0.5 }}>▌</span></span>;
+// ── Scan message with slide-up transition ─────────────────────────────────────
+function ScanMessage({ text, step }) {
+  const [displayed, setDisplayed] = useState("");
+  useEffect(() => {
+    setDisplayed("");
+    let i = 0;
+    const id = setInterval(() => {
+      i++;
+      setDisplayed(text.slice(0, i));
+      if (i >= text.length) clearInterval(id);
+    }, 30);
+    return () => clearInterval(id);
+  }, [text]);
+  return (
+    <AnimatePresence mode="wait">
+      <motion.p
+        key={step}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.2 }}
+        style={styles.scanMessage}
+      >
+        {displayed}<span style={{ opacity: 0.5 }}>▌</span>
+      </motion.p>
+    </AnimatePresence>
+  );
 }
 
-// ── Redacted reveal ──────────────────────────────────────────────────────────
+// ── Redacted reveal ───────────────────────────────────────────────────────────
 function RedactedReveal({ text }) {
   return (
     <span style={{ position: "relative", display: "inline-block", fontFamily: "'Courier New', Courier, monospace", fontSize: 14, fontWeight: 700, color: "#15803d", letterSpacing: "0.03em" }}>
@@ -135,7 +224,7 @@ function RedactedReveal({ text }) {
   );
 }
 
-// ── Boot sequence ────────────────────────────────────────────────────────────
+// ── Boot sequence ─────────────────────────────────────────────────────────────
 function BootSequence({ onComplete }) {
   const [lineIndex, setLineIndex] = useState(0);
   const [lines, setLines] = useState([]);
@@ -153,11 +242,7 @@ function BootSequence({ onComplete }) {
   };
 
   return (
-    <motion.div
-      animate={{ opacity: fading ? 0 : 1 }}
-      transition={{ duration: 0.5 }}
-      style={styles.bootOverlay}
-    >
+    <motion.div animate={{ opacity: fading ? 0 : 1 }} transition={{ duration: 0.5 }} style={styles.bootOverlay}>
       <div style={styles.bootBox}>
         <div style={styles.bootHeader}>
           <span style={styles.bootHeaderDot}></span>
@@ -171,18 +256,38 @@ function BootSequence({ onComplete }) {
           ))}
           {lineIndex < bootLines.length && (
             <p style={styles.bootLine}>
-              <TypewriterLine
-                key={lineIndex}
-                text={bootLines[lineIndex]}
-                speed={28}
-                onDone={advance}
-              />
+              <TypewriterLine key={lineIndex} text={bootLines[lineIndex]} speed={28} onDone={advance} />
             </p>
           )}
         </div>
       </div>
     </motion.div>
   );
+}
+
+// ── Chunky progress bar ───────────────────────────────────────────────────────
+function useChunkyProgress(active, duration) {
+  const [progress, setProgress] = useState(0);
+  const progressRef = useRef(0);
+
+  useEffect(() => {
+    if (!active) { setProgress(0); progressRef.current = 0; return; }
+    const schedule = () => {
+      const remaining = 99 - progressRef.current;
+      if (remaining <= 0) return;
+      const chunk = Math.max(1, Math.floor(Math.random() * Math.min(remaining * 0.35, 8)));
+      const delay = 150 + Math.random() * 400;
+      setTimeout(() => {
+        progressRef.current = Math.min(99, progressRef.current + chunk);
+        setProgress(progressRef.current);
+        schedule();
+      }, delay);
+    };
+    schedule();
+    return () => { progressRef.current = 0; };
+  }, [active]);
+
+  return progress;
 }
 
 export default function CarmenGame() {
@@ -195,45 +300,45 @@ export default function CarmenGame() {
   const [submitting, setSubmitting] = useState(false);
   const [caseNumber] = useState(generateCaseNumber());
   const [scanStep, setScanStep] = useState(0);
-  const [scanProgress, setScanProgress] = useState(0);
   const [lockedOut, setLockedOut] = useState(false);
   const [flashGreen, setFlashGreen] = useState(false);
   const [flashRed, setFlashRed] = useState(false);
   const [radarFast, setRadarFast] = useState(false);
   const [booting, setBooting] = useState(true);
+  const pingRef = useRef(null);
+
+  const scanProgress = useChunkyProgress(scanning, 8000);
 
   useEffect(() => {
     const played = localStorage.getItem(LOCKOUT_KEY);
     if (played === getTodayString()) setLockedOut(true);
   }, []);
 
+  // Radar ping every 2s during scan
+  useEffect(() => {
+    if (scanning) {
+      playPing();
+      pingRef.current = setInterval(playPing, 2000);
+    } else {
+      clearInterval(pingRef.current);
+    }
+    return () => clearInterval(pingRef.current);
+  }, [scanning]);
+
   const handleSubmit = () => {
     if (!answer.trim()) return;
     setScanning(true);
     setRadarFast(true);
     setScanStep(0);
-    setScanProgress(0);
 
     let step = 0;
-    const SCAN_DURATION = 8000;
-    const TICK = 80;
-    const totalTicks = SCAN_DURATION / TICK;
-    let tick = 0;
-
     const stepInterval = setInterval(() => {
       step++;
       if (step < scanMessages.length) setScanStep(step);
     }, 1050);
 
-    const progressInterval = setInterval(() => {
-      tick++;
-      setScanProgress(Math.min(Math.round((tick / totalTicks) * 100), 99));
-    }, TICK);
-
     setTimeout(() => {
       clearInterval(stepInterval);
-      clearInterval(progressInterval);
-      setScanProgress(100);
       const normalized = answer.trim().toLowerCase();
       const match = correctAnswers.includes(normalized);
       localStorage.setItem(LOCKOUT_KEY, getTodayString());
@@ -253,7 +358,7 @@ export default function CarmenGame() {
         setShowName(true);
         setScanning(false);
       }, match ? 1400 : 1100);
-    }, SCAN_DURATION);
+    }, 8000);
   };
 
   const handleFinalSubmit = async () => {
@@ -276,7 +381,6 @@ export default function CarmenGame() {
     @keyframes redFlash { 0%{opacity:0} 15%{opacity:0.5} 70%{opacity:0.5} 100%{opacity:0} }
     @keyframes stampIn { 0%{opacity:0;transform:rotate(-4deg) scale(1.4)} 60%{opacity:1;transform:rotate(-2deg) scale(0.95)} 100%{opacity:1;transform:rotate(-2deg) scale(1)} }
     @keyframes unredact { 0%{width:100%} 100%{width:0%} }
-    @keyframes bootBlink { 0%,100%{opacity:1} 50%{opacity:0} }
   `;
 
   if (submitted) {
@@ -372,7 +476,7 @@ export default function CarmenGame() {
                 </div>
               </div>
               <div style={styles.folderFooter}>
-                <span style={styles.folderFooterText}>Sun Country Airlines · SC Pursuit Division · {new Date().getFullYear()}</span>
+                <span style={styles.folderFooterText}>Sun Country Airlines · Pursuit Division · {new Date().getFullYear()}</span>
               </div>
             </div>
           </motion.div>
@@ -407,7 +511,7 @@ export default function CarmenGame() {
           <div style={styles.headerLeft}>
             <span style={styles.orgLabel}>SUN COUNTRY AIRLINES</span>
             <span style={styles.divider}>|</span>
-            <span style={styles.orgLabel}>PURSUIT DIVISION</span>
+            <span style={styles.orgLabel}>SC PURSUIT DIVISION</span>
           </div>
           <div style={styles.caseTag}>CASE {caseNumber}</div>
         </div>
@@ -485,17 +589,29 @@ export default function CarmenGame() {
 
             {scanning && (
               <motion.div key="scanning" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={styles.scanSection}>
+
+                {/* Header row — dot, SCANNING, signal bars */}
                 <div style={styles.scanHeader}>
                   <span style={{ ...styles.scanDot, animation: "pulse 1.2s ease-in-out infinite" }}></span>
                   <span style={styles.scanTitle}>SCANNING...</span>
+                  <div style={{ marginLeft: "auto" }}>
+                    <SignalBars />
+                  </div>
                 </div>
-                <p style={styles.scanMessage}>
-                  <TypewriterMessage key={scanStep} text={scanMessages[scanStep]} />
-                </p>
+
+                {/* Slide-up animated message */}
+                <ScanMessage text={scanMessages[scanStep]} step={scanStep} />
+
+                {/* Hex trace */}
+                <div style={{ marginBottom: 12 }}>
+                  <HexTrace />
+                </div>
+
+                {/* Chunky progress bar */}
                 <div style={styles.progressBar}>
-                  <motion.div style={styles.progressFill} animate={{ width: `${scanProgress}%` }} transition={{ ease: "linear" }}></motion.div>
+                  <div style={{ ...styles.progressFill, width: `${scanProgress}%`, transition: "width 0.15s ease-out" }}></div>
                 </div>
-                <p style={styles.scanProgress}>{Math.round(scanProgress)}%</p>
+                <p style={styles.scanProgress}>{scanProgress}%</p>
               </motion.div>
             )}
 
@@ -508,7 +624,7 @@ export default function CarmenGame() {
                     </span>
                   </div>
                   <p style={{ ...styles.resultTitle, color: isCorrect ? "#166534" : "#991b1b" }}>
-                    {isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. A new case awaits you tonorrow, Agent."}
+                    {isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. A new case awaits tomorrow, Agent."}
                   </p>
                   {isCorrect && <p style={styles.resultSub}>Suspect located in Orlando, FL (MCO)</p>}
                 </div>
@@ -547,7 +663,7 @@ export default function CarmenGame() {
   );
 }
 
-// ── Radar ────────────────────────────────────────────────────────────────────
+// ── Radar ─────────────────────────────────────────────────────────────────────
 function RadarBackground({ fast }) {
   return (
     <div style={styles.radarContainer}>
@@ -576,56 +692,18 @@ function RadarBackground({ fast }) {
   );
 }
 
-// ── Styles ───────────────────────────────────────────────────────────────────
+// ── Styles ────────────────────────────────────────────────────────────────────
 const styles = {
-  root: {
-    minHeight: "100vh", background: "#050505",
-    backgroundImage: "url('https://i.wpfc.ml/h7/uxapf2.png')",
-    backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat",
-    display: "flex", alignItems: "center", justifyContent: "center",
-    fontFamily: "'Courier New', Courier, monospace",
-    padding: "24px 16px", position: "relative", overflow: "hidden",
-  },
+  root: { minHeight: "100vh", background: "#050505", backgroundImage: "url('https://i.wpfc.ml/h7/uxapf2.png')", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Courier New', Courier, monospace", padding: "24px 16px", position: "relative", overflow: "hidden" },
 
-  // Boot sequence
-  bootOverlay: {
-    position: "fixed", inset: 0, zIndex: 50,
-    background: "#000",
-    display: "flex", alignItems: "center", justifyContent: "center",
-  },
-  bootBox: {
-    width: "100%", maxWidth: 540,
-    border: "1px solid rgba(0,255,80,0.3)",
-    borderRadius: 4,
-    overflow: "hidden",
-  },
-  bootHeader: {
-    background: "rgba(0,255,80,0.08)",
-    borderBottom: "1px solid rgba(0,255,80,0.2)",
-    padding: "8px 14px",
-    display: "flex", alignItems: "center", gap: 8,
-  },
-  bootHeaderDot: {
-    width: 10, height: 10, borderRadius: "50%",
-    background: "rgba(0,255,80,0.4)", display: "inline-block",
-  },
-  bootHeaderTitle: {
-    fontSize: 10, color: "rgba(0,255,80,0.6)",
-    letterSpacing: "0.12em", marginLeft: 6,
-  },
-  bootBody: {
-    background: "#000",
-    padding: "20px 24px",
-    minHeight: 140,
-  },
-  bootLine: {
-    fontSize: 13, color: "#a3e635",
-    fontFamily: "'Courier New', Courier, monospace",
-    letterSpacing: "0.06em", margin: "0 0 10px",
-    lineHeight: 1.4,
-  },
+  bootOverlay: { position: "fixed", inset: 0, zIndex: 50, background: "#000", display: "flex", alignItems: "center", justifyContent: "center" },
+  bootBox: { width: "100%", maxWidth: 540, border: "1px solid rgba(0,255,80,0.3)", borderRadius: 4, overflow: "hidden" },
+  bootHeader: { background: "rgba(0,255,80,0.08)", borderBottom: "1px solid rgba(0,255,80,0.2)", padding: "8px 14px", display: "flex", alignItems: "center", gap: 8 },
+  bootHeaderDot: { width: 10, height: 10, borderRadius: "50%", background: "rgba(0,255,80,0.4)", display: "inline-block" },
+  bootHeaderTitle: { fontSize: 10, color: "rgba(0,255,80,0.6)", letterSpacing: "0.12em", marginLeft: 6 },
+  bootBody: { background: "#000", padding: "20px 24px", minHeight: 140 },
+  bootLine: { fontSize: 13, color: "#a3e635", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.06em", margin: "0 0 10px", lineHeight: 1.4 },
 
-  // Radar
   radarContainer: { position: "fixed", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", zIndex: 1 },
   radarSvg: { position: "absolute", width: "min(120vw, 120vh)", height: "min(120vw, 120vh)" },
   sweepWrap: { position: "absolute", width: "min(120vw, 120vh)", height: "min(120vw, 120vh)", display: "flex", alignItems: "center", justifyContent: "center" },
@@ -642,18 +720,7 @@ const styles = {
 
   card: { background: "#fefce8", border: "2px solid #92400e", borderTop: "none", borderRadius: "0 0 12px 12px", padding: "28px 32px 24px", boxShadow: "0 24px 60px rgba(0,0,0,0.75)", position: "relative", overflow: "hidden" },
 
-  paperLines: {
-    position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0,
-    backgroundImage: [
-      "repeating-linear-gradient(transparent, transparent 27px, rgba(146,64,14,0.07) 27px, rgba(146,64,14,0.07) 28px)",
-      "radial-gradient(ellipse at 0% 0%, rgba(120,53,15,0.09) 0%, transparent 55%)",
-      "radial-gradient(ellipse at 100% 0%, rgba(120,53,15,0.07) 0%, transparent 50%)",
-      "radial-gradient(ellipse at 100% 100%, rgba(120,53,15,0.1) 0%, transparent 55%)",
-      "radial-gradient(ellipse at 0% 100%, rgba(120,53,15,0.09) 0%, transparent 55%)",
-    ].join(","),
-    backgroundSize: "100% 28px, 100% 100%, 100% 100%, 100% 100%, 100% 100%",
-    backgroundPositionY: "8px, 0, 0, 0, 0",
-  },
+  paperLines: { position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0, backgroundImage: ["repeating-linear-gradient(transparent, transparent 27px, rgba(146,64,14,0.07) 27px, rgba(146,64,14,0.07) 28px)", "radial-gradient(ellipse at 0% 0%, rgba(120,53,15,0.09) 0%, transparent 55%)", "radial-gradient(ellipse at 100% 0%, rgba(120,53,15,0.07) 0%, transparent 50%)", "radial-gradient(ellipse at 100% 100%, rgba(120,53,15,0.1) 0%, transparent 55%)", "radial-gradient(ellipse at 0% 100%, rgba(120,53,15,0.09) 0%, transparent 55%)"].join(","), backgroundSize: "100% 28px, 100% 100%, 100% 100%, 100% 100%, 100% 100%", backgroundPositionY: "8px, 0, 0, 0, 0" },
 
   cardTopStrip: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20, position: "relative", zIndex: 1 },
   classifiedBadge: { color: "#dc2626", fontSize: 14, fontWeight: 700, letterSpacing: "0.18em", padding: "4px 10px", border: "3px solid #dc2626", borderRadius: 3, display: "inline-block", opacity: 0.85, animation: "stampIn 0.5s ease-out forwards", transformOrigin: "center" },
@@ -685,12 +752,12 @@ const styles = {
   trackBtn: { padding: "10px 20px", background: "#dc2626", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" },
 
   scanSection: { padding: "20px 0", position: "relative", zIndex: 1 },
-  scanHeader: { display: "flex", alignItems: "center", gap: 10, marginBottom: 8 },
-  scanDot: { width: 8, height: 8, borderRadius: "50%", background: "#dc2626", display: "inline-block", boxShadow: "0 0 6px #dc2626" },
+  scanHeader: { display: "flex", alignItems: "center", gap: 10, marginBottom: 10 },
+  scanDot: { width: 8, height: 8, borderRadius: "50%", background: "#dc2626", display: "inline-block", boxShadow: "0 0 6px #dc2626", flexShrink: 0 },
   scanTitle: { fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", color: "#991b1b" },
-  scanMessage: { fontSize: 13, color: "#78350f", fontFamily: "'Courier New', Courier, monospace", margin: "0 0 14px", letterSpacing: "0.04em", minHeight: 20 },
-  progressBar: { height: 6, background: "rgba(0,0,0,0.1)", borderRadius: 3, overflow: "hidden", marginBottom: 6 },
-  progressFill: { height: "100%", background: "linear-gradient(90deg,#991b1b,#dc2626)", borderRadius: 3 },
+  scanMessage: { fontSize: 13, color: "#78350f", fontFamily: "'Courier New', Courier, monospace", margin: "0 0 6px", letterSpacing: "0.04em", minHeight: 20 },
+  progressBar: { height: 8, background: "rgba(0,0,0,0.1)", borderRadius: 2, overflow: "hidden", marginBottom: 6, marginTop: 4 },
+  progressFill: { height: "100%", background: "linear-gradient(90deg,#991b1b,#dc2626)", borderRadius: 2 },
   scanProgress: { fontSize: 11, color: "#991b1b", margin: 0, textAlign: "right", letterSpacing: "0.08em" },
 
   resultSection: { marginBottom: 4, position: "relative", zIndex: 1 },
