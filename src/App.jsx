@@ -159,7 +159,7 @@ export default function CarmenGame() {
           <div style={styles.headerLeft}>
             <span style={styles.orgLabel}></span>
             <span style={styles.divider}>|</span>
-            <span style={styles.orgLabel}>/span>
+            <span style={styles.orgLabel}></span>
           </div>
           <div style={styles.caseTag}>
             CASE #{caseNumber}
