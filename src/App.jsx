@@ -20,7 +20,7 @@ const scanMessages = [
 ];
 
 const prompt =
-  "Your sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen in bulk, had a frozen drink in hand, and kept asking where they could find the warmest place Minnesotans escape to when winter hits hard. They disappeared into a crowd of flipflops, palm trees, and travelers wearing mouse ears..";
+  "Your sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen in bulk, had a frozen drink in hand, and kept asking where they could find the warmest place Minnesotans escape to when winter hits hard. They disappeared into a crowd of flipflops, palm trees, and travelers wearing mouse ears...";
 
 const LOCKOUT_KEY = "carmen_played_date";
 
@@ -186,23 +186,23 @@ export default function CarmenGame() {
 
           {/* Suspect header */}
           <div style={styles.suspectHeader}>
-            <div style={styles.suspectPhotoWrap}>
-              <div style={styles.suspectPhoto}>
-                <Fingerprint />
+            <p style={styles.suspectName}>Carmen Sandiego</p>
+            <div style={styles.suspectFieldRow}>
+              <div style={styles.suspectField}>
+                <span style={styles.fieldLabel}>ALIAS</span>
+                <span style={styles.fieldValue}>"The Red Shadow"</span>
               </div>
-              <div style={styles.photoLabel}>PRINT ON FILE</div>
-            </div>
-            <div style={styles.suspectInfo}>
-              <p style={styles.suspectName}>Carmen Sandiego</p>
-              <p style={styles.suspectAlias}>ALIAS: "The Red Shadow"</p>
-              <div style={styles.threatRow}>
-                <span style={styles.threatBadge}>THREAT LEVEL: HIGH</span>
-                <span style={styles.statusBadge}>STATUS: AT LARGE</span>
+              <div style={styles.suspectField}>
+                <span style={styles.fieldLabel}>STATUS</span>
+                <span style={{ ...styles.fieldValue, color: "#dc2626" }}>AT LARGE</span>
               </div>
-              <div style={styles.traitRow}>
-                <span style={styles.traitPill}>Evasive</span>
-                <span style={styles.traitPill}>Resourceful</span>
-                <span style={styles.traitPill}>Traveler</span>
+              <div style={styles.suspectField}>
+                <span style={styles.fieldLabel}>THREAT</span>
+                <span style={{ ...styles.fieldValue, color: "#dc2626" }}>HIGH</span>
+              </div>
+              <div style={styles.suspectField}>
+                <span style={styles.fieldLabel}>KNOWN FOR</span>
+                <span style={styles.fieldValue}>Evasion · Deception · Travel</span>
               </div>
             </div>
           </div>
@@ -615,90 +615,45 @@ const styles = {
 
   // Suspect block
   suspectHeader: {
-    display: "flex",
-    gap: 20,
     marginBottom: 20,
-    padding: "16px",
+    padding: "16px 18px",
     background: "rgba(0,0,0,0.05)",
     borderRadius: 8,
     border: "1px solid rgba(146,64,14,0.25)",
   },
-  suspectPhotoWrap: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: 6,
-    flexShrink: 0,
-  },
-  suspectPhoto: {
-    width: 88,
-    height: 104,
-    background: "#0d0000",
-    border: "2px solid #92400e",
-    borderRadius: 4,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-  },
-  photoLabel: {
-    fontSize: 9,
-    fontWeight: 700,
-    letterSpacing: "0.12em",
-    color: "#78350f",
-  },
-  suspectInfo: {
-    flex: 1,
-  },
   suspectName: {
-    fontSize: 22,
+    fontSize: 26,
     fontWeight: 700,
     color: "#1c0a00",
-    margin: "0 0 2px",
+    margin: "0 0 14px",
     letterSpacing: "0.02em",
+    borderBottom: "1px solid rgba(146,64,14,0.2)",
+    paddingBottom: 12,
   },
-  suspectAlias: {
-    fontSize: 11,
-    color: "#78350f",
-    margin: "0 0 10px",
-    letterSpacing: "0.08em",
-  },
-  threatRow: {
+  suspectFieldRow: {
     display: "flex",
-    gap: 8,
-    marginBottom: 8,
+    gap: 0,
     flexWrap: "wrap",
   },
-  threatBadge: {
-    fontSize: 9,
-    fontWeight: 700,
-    letterSpacing: "0.1em",
-    color: "#dc2626",
-    border: "1px solid #dc2626",
-    padding: "2px 8px",
-    borderRadius: 2,
-  },
-  statusBadge: {
-    fontSize: 9,
-    fontWeight: 700,
-    letterSpacing: "0.1em",
-    color: "#b45309",
-    border: "1px solid #b45309",
-    padding: "2px 8px",
-    borderRadius: 2,
-  },
-  traitRow: {
+  suspectField: {
     display: "flex",
-    gap: 6,
-    flexWrap: "wrap",
+    flexDirection: "column",
+    gap: 3,
+    flex: "1 1 120px",
+    paddingRight: 20,
   },
-  traitPill: {
-    fontSize: 9,
-    color: "#44403c",
-    background: "rgba(0,0,0,0.07)",
-    padding: "2px 8px",
-    borderRadius: 10,
-    letterSpacing: "0.06em",
+  fieldLabel: {
+    fontSize: 8,
+    fontWeight: 700,
+    letterSpacing: "0.14em",
+    color: "#a16207",
+  },
+  fieldValue: {
+    fontSize: 12,
+    fontWeight: 700,
+    color: "#1c0a00",
+    fontFamily: "'Courier New', Courier, monospace",
+    letterSpacing: "0.03em",
   },
 
   // Section divider
