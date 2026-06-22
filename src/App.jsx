@@ -108,7 +108,7 @@ function SignalBars() {
         0.2 + Math.random() * 0.8,
         0.2 + Math.random() * 0.8,
       ]);
-    }, 220);
+    }, 350);
     return () => clearInterval(id);
   }, []);
   return (
@@ -134,7 +134,7 @@ function SignalBars() {
 function HexTrace() {
   const [trace, setTrace] = useState(randomHex(6));
   useEffect(() => {
-    const id = setInterval(() => setTrace(randomHex(6)), 280);
+    const id = setInterval(() => setTrace(randomHex(6)), 600);
     return () => clearInterval(id);
   }, []);
   return (
@@ -186,7 +186,15 @@ function ScanMessage({ text, step }) {
   );
 }
 
-// ── Redacted reveal ───────────────────────────────────────────────────────────
+// ── Verdict typewriter ────────────────────────────────────────────────────────
+function VerdictLine({ text, color }) {
+  const { displayed } = useTypewriter(text, 28, false);
+  return (
+    <p style={{ fontSize: 15, fontWeight: 700, margin: "0 0 4px", letterSpacing: "0.02em", fontFamily: "'Courier New', Courier, monospace", color }}>
+      {displayed}<span style={{ opacity: displayed.length < text.length ? 0.5 : 0 }}>▌</span>
+    </p>
+  );
+}
 function RedactedReveal({ text }) {
   return (
     <span style={{ position: "relative", display: "inline-block", fontFamily: "'Courier New', Courier, monospace", fontSize: 14, fontWeight: 700, color: "#15803d", letterSpacing: "0.03em" }}>
@@ -386,7 +394,7 @@ export default function CarmenGame() {
                 <div style={styles.folderField}>
                   <span style={styles.folderFieldLabel}>OUTCOME</span>
                   {isCorrect ? (
-                    <RedactedReveal text="Target Located" />
+                    <RedactedReveal text="Orlando, FL (MCO) — Target Located" />
                   ) : (
                     <span style={{ ...styles.folderFieldValue, color: "#dc2626" }}>Suspect Evaded — Location Unknown</span>
                   )}
@@ -438,7 +446,7 @@ export default function CarmenGame() {
                 </div>
               </div>
               <div style={styles.folderFooter}>
-                <span style={styles.folderFooterText}>Sun Country Airlines · Pursuit Division · {new Date().getFullYear()}</span>
+                <span style={styles.folderFooterText}>Sun Country Airlines · SC Pursuit Division · {new Date().getFullYear()}</span>
               </div>
             </div>
           </motion.div>
@@ -473,7 +481,7 @@ export default function CarmenGame() {
           <div style={styles.headerLeft}>
             <span style={styles.orgLabel}>SUN COUNTRY AIRLINES</span>
             <span style={styles.divider}>|</span>
-            <span style={styles.orgLabel}>PURSUIT DIVISION</span>
+            <span style={styles.orgLabel}>SC PURSUIT DIVISION</span>
           </div>
           <div style={styles.caseTag}>CASE {caseNumber}</div>
         </div>
@@ -585,9 +593,10 @@ export default function CarmenGame() {
                       {isCorrect ? "TARGET LOCKED" : "SUSPECT EVADED"}
                     </span>
                   </div>
-                  <p style={{ ...styles.resultTitle, color: isCorrect ? "#166534" : "#991b1b" }}>
-                    {isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. A new case awaits tomorrow, Agent."}
-                  </p>
+                  <VerdictLine
+                    text={isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. A new case awaits tomorrow, Agent."}
+                    color={isCorrect ? "#166534" : "#991b1b"}
+                  />
                   {isCorrect && <p style={styles.resultSub}>Suspect located in Orlando, FL (MCO)</p>}
                 </div>
                 <div style={styles.agentSection}>
@@ -617,6 +626,7 @@ export default function CarmenGame() {
 
           <div style={styles.cardFooter}>
             <span style={styles.footerText}>Sun Country Airlines · Eyes Only · Destroy After Reading</span>
+            <span style={{ ...styles.footerText, color: "rgba(161,98,7,0.35)" }}>·</span>
             <span style={styles.footerText}>REF-{caseNumber}</span>
           </div>
         </div>
@@ -730,9 +740,9 @@ const styles = {
   resultSub: { fontSize: 12, color: "#166534", margin: 0, letterSpacing: "0.06em" },
 
   agentSection: { marginTop: 4, position: "relative", zIndex: 1 },
-  submitBtn: { padding: "10px 20px", background: "#166534", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" },
+  submitBtn: { padding: "10px 20px", background: "#7f1d1d", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" },
 
-  cardFooter: { display: "flex", justifyContent: "space-between", marginTop: 20, paddingTop: 12, borderTop: "1px solid rgba(146,64,14,0.2)", position: "relative", zIndex: 1 },
+  cardFooter: { display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 20, paddingTop: 12, borderTop: "1px solid rgba(146,64,14,0.2)", position: "relative", zIndex: 1 },
   footerText: { fontSize: 9, color: "#a16207", letterSpacing: "0.08em" },
 
   folderWrap: { width: "100%", maxWidth: 520, position: "relative", zIndex: 10 },
