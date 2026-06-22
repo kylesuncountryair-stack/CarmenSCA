@@ -33,7 +33,7 @@ export default function CarmenGame() {
   ];
 
   const prompt =
-    "YYour sneaky traveler has vanished again! Rumor has it; they were last seen buying sunscreen, holding a frozen drink, and asking where Minnesotans escape winter. Surrounded by palm trees, flip flops, and mouse ears... Where in the Sun Country world did they go?";
+    "Your sneaky traveler has vanished again! Rumor has it; they were last seen buying sunscreen, holding a frozen drink, and asking where Minnesotans escape winter. Surrounded by palm trees, flip flops, and mouse ears... Where in the Sun Country world did they go?";
 
   const handleSubmit = () => {
     setScanning(true);
