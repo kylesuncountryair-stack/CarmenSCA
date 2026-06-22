@@ -494,7 +494,7 @@ export default function CarmenGame() {
                   <p style={{ ...styles.resultTitle, color: isCorrect ? "#166534" : "#991b1b" }}>
                     {isCorrect
                       ? "Excellent work, Gumshoe. Case closed."
-                      : "Carmen slipped away. Better luck next time, Agent."}
+                      : "Carmen slipped away. A new case awaits tomorrow, Agent."}
                   </p>
                   {isCorrect && (
                     <p style={styles.resultSub}>Suspect located in Orlando, FL (MCO)</p>
@@ -588,6 +588,7 @@ const styles = {
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     display: "flex",
+    opacity: "75%",
     alignItems: "center",
     justifyContent: "center",
     fontFamily: "'Courier New', Courier, monospace",
