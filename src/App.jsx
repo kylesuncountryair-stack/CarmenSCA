@@ -680,7 +680,7 @@ export default function CarmenGame() {
 
 // ── Radar with phosphor trail ─────────────────────────────────────────────────
 function RadarBackground({ fast }) {
-  const dur = fast ? 2.5 : 6;
+  const dur = fast ? 4 : 9;
   return (
     <div style={styles.radarContainer}>
       {/* Static rings */}
