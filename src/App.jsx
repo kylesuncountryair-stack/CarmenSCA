@@ -28,7 +28,7 @@ const scanMessages = [
 const bootLines = [
   "INITIALIZING SECURE CONNECTION...",
   "AUTHENTICATING AGENT CREDENTIALS...",
-  "ACCESSING SC PURSUIT DIVISION DATABASE...",
+  "ACCESSING PURSUIT DIVISION DATABASE...",
   "CONNECTION ESTABLISHED. ACCESS GRANTED.",
 ];
 
@@ -80,24 +80,6 @@ function playChime(correct) {
       gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + i * 0.13 + 0.35);
       osc.start(ctx.currentTime + i * 0.13);
       osc.stop(ctx.currentTime + i * 0.13 + 0.35);
-    });
-  } catch (e) {}
-}
-
-function playAccessGranted() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const gain = ctx.createGain();
-    gain.connect(ctx.destination);
-    [[440, 0], [554, 0.18]].forEach(([freq, delay]) => {
-      const osc = ctx.createOscillator();
-      osc.connect(gain);
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
-      gain.gain.setValueAtTime(0.12, ctx.currentTime + delay);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + delay + 0.5);
-      osc.start(ctx.currentTime + delay);
-      osc.stop(ctx.currentTime + delay + 0.5);
     });
   } catch (e) {}
 }
@@ -234,7 +216,7 @@ const BOOT_CHECKS = [
   "ENCRYPTION MODULE................. OK",
   "INITIALIZING SECURE CONNECTION...",
   "AUTHENTICATING AGENT CREDENTIALS...",
-  "ACCESSING SC PURSUIT DIVISION DATABASE...",
+  "ACCESSING PURSUIT DIVISION DATABASE...",
 ];
 
 function BootSequence({ onComplete }) {
@@ -254,7 +236,6 @@ function BootSequence({ onComplete }) {
         setPhase("wipe");
         setTimeout(() => {
           setPhase("granted");
-          playAccessGranted();
           setTimeout(() => {
             setFading(true);
             setTimeout(onComplete, 500);
@@ -299,7 +280,6 @@ function BootSequence({ onComplete }) {
                     text={BOOT_CHECKS[lineIndex]}
                     speed={12}
                     onDone={advance}
-                    soundFn={playBootTick}
                   />
                 </p>
               )}
@@ -318,7 +298,7 @@ function BootSequence({ onComplete }) {
                 ACCESS GRANTED
               </p>
               <p style={{ ...styles.bootLine, color: "rgba(74,222,128,0.5)", fontSize: 9, margin: 0, letterSpacing: "0.16em", textAlign: "center" }}>
-                SUN COUNTRY AIRLINES PURSUIT DIVISION · SECURE TERMINAL
+                PURSUIT DIVISION · SECURE TERMINAL
               </p>
             </motion.div>
           )}
@@ -410,7 +390,6 @@ export default function CarmenGame() {
 
       // Play chime and flash at 1100ms, reveal at 1800ms
       setTimeout(() => {
-        playChime(match);
         if (match) {
           setFlashGreen(true);
           setTimeout(() => setFlashGreen(false), 1200);
@@ -861,7 +840,7 @@ const styles = {
   bootHeader: { background: "rgba(0,255,80,0.08)", borderBottom: "1px solid rgba(0,255,80,0.2)", padding: "8px 14px", display: "flex", alignItems: "center", gap: 8 },
   bootHeaderDot: { width: 10, height: 10, borderRadius: "50%", background: "rgba(0,255,80,0.4)", display: "inline-block" },
   bootHeaderTitle: { fontSize: 10, color: "rgba(0,255,80,0.6)", letterSpacing: "0.12em", marginLeft: 6 },
-  bootBody: { background: "#000", padding: "20px 24px", minHeight: 200, height: 200, overflow: "hidden" },
+  bootBody: { background: "#000", padding: "20px 24px", minHeight: 240, height: 240, overflow: "hidden" },
   bootLine: { fontSize: 13, color: "#a3e635", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.06em", margin: "0 0 10px", lineHeight: 1.4 },
 
   radarContainer: { position: "fixed", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", zIndex: 1 },
