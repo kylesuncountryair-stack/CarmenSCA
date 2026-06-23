@@ -13,7 +13,7 @@ const generateCaseNumber = () => {
   return `SC-${y}-${m}${day}-${rand}`;
 };
 
-const correctAnswers = ["orlando", "mco", "orlando, fl", "orlando, florida"];
+const correctAnswers = ["las vegas", "las", "las vegas, nv", "las vegas, nevada", "LAS - Las Vegas"];
 
 const scanMessages = [
   "Scanning Sun Country Global Network...",
@@ -36,7 +36,7 @@ const HEX_CHARS = "0123456789ABCDEF";
 const randomHex = (len) => Array.from({ length: len }, () => HEX_CHARS[Math.floor(Math.random() * 16)]).join("");
 
 const prompt =
-  "Your sneaky traveler has vanished again! Rumor has it; they were last spotted boarding a bright orange tailed jet. Locals say they were buying sunscreen in bulk, had a frozen drink in hand, and kept asking where they could find the warmest place Minnesotans escape to when winter hits hard. They disappeared into a crowd of flipflops, palm trees, and travelers wearing mouse ears...";
+  "Alert, detective! She resurfaced in a desert city where the lights shine brighter than her criminal record. Surveillance caught her wandering a neon canyon filled with slot machines and Elvis impersonators. She inspected a pyramid, questioned a Roman statue, and asked a hotel concierge if the fountains "perform on command". Moments later, she disappeared behind a plume of casino smoke and a shower of glitter...";
 
 const LOCKOUT_KEY = "carmen_played_date";
 
@@ -502,7 +502,7 @@ export default function CarmenGame() {
                 <div style={styles.folderField}>
                   <span style={styles.folderFieldLabel}>OUTCOME</span>
                   {isCorrect ? (
-                    <RedactedReveal text="Orlando, FL (MCO) — Target Located" />
+                    <RedactedReveal text="Las Vegas, NV — Target Located" />
                   ) : (
                     <span style={{ ...styles.folderFieldValue, color: "#dc2626" }}>Suspect Evaded — Location Unknown</span>
                   )}
@@ -708,7 +708,7 @@ export default function CarmenGame() {
                     text={isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. Better luck next time, Agent."}
                     color={isCorrect ? "#166534" : "#991b1b"}
                   />
-                  {isCorrect && <p style={styles.resultSub}>Suspect located in Orlando, FL (MCO)</p>}
+                  {isCorrect && <p style={styles.resultSub}>Suspect located in Las Vegas, NV (LAS)</p>}
                 </div>
 
                 {/* Double or nothing */}
