@@ -474,7 +474,7 @@ export default function CarmenGame() {
         <div style={styles.centeredFill}>
           <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 160, damping: 18 }} style={styles.folderWrap}>
             <div style={styles.folderTab}>
-              <span style={styles.folderTabText}>SC PURSUIT DIVISION</span>
+              <span style={styles.folderTabText}>PURSUIT DIVISION</span>
               <span style={styles.folderTabCase}>REF-{caseNumber}</span>
             </div>
             <div style={styles.folderBody}>
@@ -554,7 +554,7 @@ export default function CarmenGame() {
                 </div>
               </div>
               <div style={styles.folderFooter}>
-                <span style={styles.folderFooterText}>Sun Country Airlines · SC Pursuit Division · {new Date().getFullYear()}</span>
+                <span style={styles.folderFooterText}>Sun Country Airlines · Pursuit Division · {new Date().getFullYear()}</span>
               </div>
             </div>
           </motion.div>
