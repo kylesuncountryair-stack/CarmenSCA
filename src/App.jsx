@@ -115,6 +115,8 @@ function playBootTick() {
     osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.06);
   } catch (e) {}
 }
+
+function playTick() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const osc = ctx.createOscillator();
@@ -390,7 +392,7 @@ export default function CarmenGame() {
         setTimeout(() => setGlitch(false), 120);
       }, 300);
 
-      // Play chime and flash at 1000ms, reveal at 1600ms
+      // Play chime and flash at 1100ms, reveal at 1800ms
       setTimeout(() => {
         playChime(match);
         if (match) {
@@ -400,7 +402,7 @@ export default function CarmenGame() {
           setFlashRed(true);
           setTimeout(() => setFlashRed(false), 1000);
         }
-      }, 1000);
+      }, 1100);
 
       setTimeout(() => {
         setDecrypting(false);
@@ -417,7 +419,7 @@ export default function CarmenGame() {
             setCanRetry(true);
           }
         }
-      }, 1600);
+      }, 1800);
 
     }, 8000);
   };
