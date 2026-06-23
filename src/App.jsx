@@ -84,7 +84,37 @@ function playChime(correct) {
   } catch (e) {}
 }
 
-function playTick() {
+function playAccessGranted() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const gain = ctx.createGain();
+    gain.connect(ctx.destination);
+    [[440, 0], [554, 0.18]].forEach(([freq, delay]) => {
+      const osc = ctx.createOscillator();
+      osc.connect(gain);
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+      gain.gain.setValueAtTime(0.12, ctx.currentTime + delay);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + delay + 0.5);
+      osc.start(ctx.currentTime + delay);
+      osc.stop(ctx.currentTime + delay + 0.5);
+    });
+  } catch (e) {}
+}
+
+function playBootTick() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = "square";
+    osc.frequency.setValueAtTime(680, ctx.currentTime);
+    gain.gain.setValueAtTime(0.025, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.06);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.06);
+  } catch (e) {}
+}
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const osc = ctx.createOscillator();
@@ -145,8 +175,20 @@ function useTypewriter(text, speed = 38, withSound = false) {
   return { displayed, done };
 }
 
-function TypewriterLine({ text, speed = 30, onDone }) {
-  const { done, displayed } = useTypewriter(text, speed, true);
+function TypewriterLine({ text, speed = 30, onDone, soundFn }) {
+  const [displayed, setDisplayed] = useState("");
+  const [done, setDone] = useState(false);
+  useEffect(() => {
+    setDisplayed(""); setDone(false);
+    let i = 0;
+    const id = setInterval(() => {
+      i++;
+      setDisplayed(text.slice(0, i));
+      if (soundFn) soundFn(); else playTick();
+      if (i >= text.length) { clearInterval(id); setDone(true); }
+    }, speed);
+    return () => clearInterval(id);
+  }, [text, speed]);
   useEffect(() => { if (done && onDone) onDone(); }, [done]);
   return <span>{displayed}{!done && <span style={{ opacity: 0.7 }}>▌</span>}</span>;
 }
@@ -182,22 +224,45 @@ function RedactedReveal({ text }) {
 }
 
 // ── Boot sequence ─────────────────────────────────────────────────────────────
+const BOOT_LINES = [
+  { text: "SC-TERMINAL v2.4.1",                         speed: 22, pause: 180, dim: true  },
+  { text: "BIOS CHECK.................... OK",           speed: 18, pause: 120, dim: true  },
+  { text: "MEMORY CHECK.................. OK",           speed: 18, pause: 120, dim: true  },
+  { text: "NETWORK INTERFACE............. OK",           speed: 18, pause: 200, dim: true  },
+  { text: "",                                            speed: 0,  pause: 150, dim: true  },
+  { text: "INITIALIZING SECURE CONNECTION...",           speed: 22, pause: 100, dim: false },
+  { text: "AUTHENTICATING AGENT CREDENTIALS...",         speed: 22, pause: 100, dim: false },
+  { text: "ACCESSING SC PURSUIT DIVISION DATABASE...",   speed: 22, pause: 100, dim: false },
+  { text: "",                                            speed: 0,  pause: 120, dim: false },
+  { text: "CONNECTION ESTABLISHED. ACCESS GRANTED.",     speed: 20, pause: 500, dim: false, green: true },
+];
+
 function BootSequence({ onComplete }) {
   const [lineIndex, setLineIndex] = useState(0);
-  const [lines, setLines] = useState([]);
+  const [completedLines, setCompletedLines] = useState([]);
   const [fading, setFading] = useState(false);
+
   const advance = () => {
-    const next = lineIndex + 1;
-    if (next < bootLines.length) {
-      setLines(prev => [...prev, bootLines[lineIndex]]);
-      setLineIndex(next);
-    } else {
-      setLines(prev => [...prev, bootLines[lineIndex]]);
-      setTimeout(() => { setFading(true); setTimeout(onComplete, 400); }, 300);
-    }
+    const line = BOOT_LINES[lineIndex];
+    const isLast = lineIndex === BOOT_LINES.length - 1;
+
+    if (line.green) playAccessGranted();
+
+    setTimeout(() => {
+      setCompletedLines(prev => [...prev, line]);
+      const next = lineIndex + 1;
+      if (!isLast) {
+        setLineIndex(next);
+      } else {
+        setTimeout(() => { setFading(true); setTimeout(onComplete, 500); }, line.pause);
+      }
+    }, line.pause);
   };
+
+  const currentLine = BOOT_LINES[lineIndex];
+
   return (
-    <motion.div animate={{ opacity: fading ? 0 : 1 }} transition={{ duration: 0.5 }} style={styles.bootOverlay}>
+    <motion.div animate={{ opacity: fading ? 0 : 1 }} transition={{ duration: 0.4 }} style={styles.bootOverlay}>
       <div style={styles.bootBox}>
         <div style={styles.bootHeader}>
           <span style={styles.bootHeaderDot}></span>
@@ -206,18 +271,43 @@ function BootSequence({ onComplete }) {
           <span style={styles.bootHeaderTitle}>SC-TERMINAL v2.4.1</span>
         </div>
         <div style={styles.bootBody}>
-          {lines.map((l, i) => (
-            <p key={i} style={{ ...styles.bootLine, color: i === lines.length - 1 && l === bootLines[bootLines.length - 1] ? "#4ade80" : "#a3e635" }}>{l}</p>
+          {completedLines.map((l, i) => (
+            <p key={i} style={{
+              ...styles.bootLine,
+              color: l.green ? "#4ade80" : l.dim ? "rgba(163,230,53,0.45)" : "#a3e635",
+              margin: l.text === "" ? "0 0 6px" : "0 0 4px",
+            }}>{l.text}</p>
           ))}
-          {lineIndex < bootLines.length && (
-            <p style={styles.bootLine}>
-              <TypewriterLine key={lineIndex} text={bootLines[lineIndex]} speed={16} onDone={advance} />
+          {lineIndex < BOOT_LINES.length && currentLine.text !== "" && (
+            <p style={{
+              ...styles.bootLine,
+              color: currentLine.green ? "#4ade80" : currentLine.dim ? "rgba(163,230,53,0.45)" : "#a3e635",
+              margin: "0 0 4px",
+            }}>
+              <TypewriterLine
+                key={lineIndex}
+                text={currentLine.text}
+                speed={currentLine.speed}
+                onDone={advance}
+                soundFn={playBootTick}
+              />
             </p>
+          )}
+          {lineIndex < BOOT_LINES.length && currentLine.text === "" && (
+            <EmptyLine onDone={advance} pause={currentLine.pause} />
           )}
         </div>
       </div>
     </motion.div>
   );
+}
+
+function EmptyLine({ onDone, pause }) {
+  useEffect(() => {
+    const id = setTimeout(onDone, pause);
+    return () => clearTimeout(id);
+  }, []);
+  return null;
 }
 
 // ── Chunky progress ───────────────────────────────────────────────────────────
@@ -300,7 +390,7 @@ export default function CarmenGame() {
         setTimeout(() => setGlitch(false), 120);
       }, 300);
 
-      // Play chime and flash at 700ms, reveal at 800ms
+      // Play chime and flash at 1000ms, reveal at 1600ms
       setTimeout(() => {
         playChime(match);
         if (match) {
@@ -310,7 +400,7 @@ export default function CarmenGame() {
           setFlashRed(true);
           setTimeout(() => setFlashRed(false), 1000);
         }
-      }, 700);
+      }, 1000);
 
       setTimeout(() => {
         setDecrypting(false);
@@ -327,7 +417,7 @@ export default function CarmenGame() {
             setCanRetry(true);
           }
         }
-      }, 900);
+      }, 1600);
 
     }, 8000);
   };
@@ -636,7 +726,12 @@ export default function CarmenGame() {
                       <span style={styles.retryLabel}>REASSIGNMENT AVAILABLE</span>
                       <p style={styles.retryText}>One retry permitted. Your first attempt will remain on record.</p>
                     </div>
-                    <button onClick={handleRetry} style={styles.retryBtn}>
+                    <button
+                      onClick={handleRetry}
+                      onMouseEnter={(e) => { e.target.style.background = "rgba(127,29,29,0.1)"; e.target.style.color = "#991b1b"; }}
+                      onMouseLeave={(e) => { e.target.style.background = "transparent"; e.target.style.color = "#7f1d1d"; }}
+                      style={styles.retryBtn}
+                    >
                       Request Reassignment
                     </button>
                   </motion.div>
@@ -748,7 +843,7 @@ const styles = {
   bootHeader: { background: "rgba(0,255,80,0.08)", borderBottom: "1px solid rgba(0,255,80,0.2)", padding: "8px 14px", display: "flex", alignItems: "center", gap: 8 },
   bootHeaderDot: { width: 10, height: 10, borderRadius: "50%", background: "rgba(0,255,80,0.4)", display: "inline-block" },
   bootHeaderTitle: { fontSize: 10, color: "rgba(0,255,80,0.6)", letterSpacing: "0.12em", marginLeft: 6 },
-  bootBody: { background: "#000", padding: "20px 24px", minHeight: 140 },
+  bootBody: { background: "#000", padding: "20px 24px", minHeight: 200 },
   bootLine: { fontSize: 13, color: "#a3e635", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.06em", margin: "0 0 10px", lineHeight: 1.4 },
 
   radarContainer: { position: "fixed", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", zIndex: 1 },
