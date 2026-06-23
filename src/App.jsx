@@ -226,45 +226,50 @@ function RedactedReveal({ text }) {
 }
 
 // ── Boot sequence ─────────────────────────────────────────────────────────────
-const BOOT_LINES = [
-  { text: "SC-TERMINAL v2.4.1",                         speed: 22, pause: 180, dim: true  },
-  { text: "BIOS CHECK.................... OK",           speed: 18, pause: 120, dim: true  },
-  { text: "MEMORY CHECK.................. OK",           speed: 18, pause: 120, dim: true  },
-  { text: "NETWORK INTERFACE............. OK",           speed: 18, pause: 200, dim: true  },
-  { text: "",                                            speed: 0,  pause: 150, dim: true  },
-  { text: "INITIALIZING SECURE CONNECTION...",           speed: 22, pause: 100, dim: false },
-  { text: "AUTHENTICATING AGENT CREDENTIALS...",         speed: 22, pause: 100, dim: false },
-  { text: "ACCESSING SC PURSUIT DIVISION DATABASE...",   speed: 22, pause: 100, dim: false },
-  { text: "",                                            speed: 0,  pause: 120, dim: false },
-  { text: "CONNECTION ESTABLISHED. ACCESS GRANTED.",     speed: 20, pause: 500, dim: false, green: true },
+const BOOT_CHECKS = [
+  "SC-TERMINAL v2.4.1",
+  "BIOS CHECK........................ OK",
+  "MEMORY CHECK...................... OK",
+  "NETWORK INTERFACE................. OK",
+  "ENCRYPTION MODULE................. OK",
+  "INITIALIZING SECURE CONNECTION...",
+  "AUTHENTICATING AGENT CREDENTIALS...",
+  "ACCESSING SC PURSUIT DIVISION DATABASE...",
 ];
 
 function BootSequence({ onComplete }) {
+  const [phase, setPhase] = useState("checks"); // checks | wipe | granted
   const [lineIndex, setLineIndex] = useState(0);
   const [completedLines, setCompletedLines] = useState([]);
   const [fading, setFading] = useState(false);
 
   const advance = () => {
-    const line = BOOT_LINES[lineIndex];
-    const isLast = lineIndex === BOOT_LINES.length - 1;
-
-    if (line.green) playAccessGranted();
-
-    setTimeout(() => {
-      setCompletedLines(prev => [...prev, line]);
-      const next = lineIndex + 1;
-      if (!isLast) {
-        setLineIndex(next);
-      } else {
-        setTimeout(() => { setFading(true); setTimeout(onComplete, 500); }, line.pause);
-      }
-    }, line.pause);
+    setCompletedLines(prev => [...prev, BOOT_CHECKS[lineIndex]]);
+    const next = lineIndex + 1;
+    if (next < BOOT_CHECKS.length) {
+      setLineIndex(next);
+    } else {
+      // All checks done — wipe after a short pause
+      setTimeout(() => {
+        setPhase("wipe");
+        setTimeout(() => {
+          setPhase("granted");
+          playAccessGranted();
+          setTimeout(() => {
+            setFading(true);
+            setTimeout(onComplete, 500);
+          }, 900);
+        }, 300);
+      }, 200);
+    }
   };
 
-  const currentLine = BOOT_LINES[lineIndex];
-
   return (
-    <motion.div animate={{ opacity: fading ? 0 : 1 }} transition={{ duration: 0.4 }} style={styles.bootOverlay}>
+    <motion.div
+      animate={{ opacity: fading ? 0 : 1 }}
+      transition={{ duration: 0.4 }}
+      style={styles.bootOverlay}
+    >
       <div style={styles.bootBox}>
         <div style={styles.bootHeader}>
           <span style={styles.bootHeaderDot}></span>
@@ -272,44 +277,55 @@ function BootSequence({ onComplete }) {
           <span style={styles.bootHeaderDot}></span>
           <span style={styles.bootHeaderTitle}>SC-TERMINAL v2.4.1</span>
         </div>
-        <div style={styles.bootBody}>
-          {completedLines.map((l, i) => (
-            <p key={i} style={{
-              ...styles.bootLine,
-              color: l.green ? "#4ade80" : l.dim ? "rgba(163,230,53,0.45)" : "#a3e635",
-              margin: l.text === "" ? "0 0 6px" : "0 0 4px",
-            }}>{l.text}</p>
-          ))}
-          {lineIndex < BOOT_LINES.length && currentLine.text !== "" && (
-            <p style={{
-              ...styles.bootLine,
-              color: currentLine.green ? "#4ade80" : currentLine.dim ? "rgba(163,230,53,0.45)" : "#a3e635",
-              margin: "0 0 4px",
-            }}>
-              <TypewriterLine
-                key={lineIndex}
-                text={currentLine.text}
-                speed={currentLine.speed}
-                onDone={advance}
-                soundFn={playBootTick}
-              />
-            </p>
+
+        <AnimatePresence mode="wait">
+          {phase === "checks" && (
+            <motion.div
+              key="checks"
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              style={styles.bootBody}
+            >
+              {completedLines.map((l, i) => (
+                <p key={i} style={{
+                  ...styles.bootLine,
+                  color: i === 0 ? "rgba(163,230,53,0.4)" : "rgba(163,230,53,0.75)",
+                }}>{l}</p>
+              ))}
+              {lineIndex < BOOT_CHECKS.length && (
+                <p style={{ ...styles.bootLine, color: "#a3e635" }}>
+                  <TypewriterLine
+                    key={lineIndex}
+                    text={BOOT_CHECKS[lineIndex]}
+                    speed={12}
+                    onDone={advance}
+                    soundFn={playBootTick}
+                  />
+                </p>
+              )}
+            </motion.div>
           )}
-          {lineIndex < BOOT_LINES.length && currentLine.text === "" && (
-            <EmptyLine onDone={advance} pause={currentLine.pause} />
+
+          {phase === "granted" && (
+            <motion.div
+              key="granted"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+              style={{ ...styles.bootBody, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 12 }}
+            >
+              <p style={{ ...styles.bootLine, color: "#4ade80", fontSize: 18, fontWeight: 700, letterSpacing: "0.2em", margin: 0, textAlign: "center" }}>
+                ACCESS GRANTED
+              </p>
+              <p style={{ ...styles.bootLine, color: "rgba(74,222,128,0.5)", fontSize: 9, margin: 0, letterSpacing: "0.16em", textAlign: "center" }}>
+                SUN COUNTRY AIRLINES PURSUIT DIVISION · SECURE TERMINAL
+              </p>
+            </motion.div>
           )}
-        </div>
+        </AnimatePresence>
       </div>
     </motion.div>
   );
-}
-
-function EmptyLine({ onDone, pause }) {
-  useEffect(() => {
-    const id = setTimeout(onDone, pause);
-    return () => clearTimeout(id);
-  }, []);
-  return null;
 }
 
 // ── Chunky progress ───────────────────────────────────────────────────────────
@@ -532,7 +548,7 @@ export default function CarmenGame() {
         <div style={styles.centeredFill}>
           <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 160, damping: 18 }} style={styles.folderWrap}>
             <div style={styles.folderTab}>
-              <span style={styles.folderTabText}>SC PURSUIT DIVISION</span>
+              <span style={styles.folderTabText}>PURSUIT DIVISION</span>
               <span style={styles.folderTabCase}>DAILY BRIEFING</span>
             </div>
             <div style={styles.folderBody}>
@@ -594,7 +610,7 @@ export default function CarmenGame() {
           <div style={styles.headerLeft}>
             <span style={styles.orgLabel}>SUN COUNTRY AIRLINES</span>
             <span style={styles.divider}>|</span>
-            <span style={styles.orgLabel}>SC PURSUIT DIVISION</span>
+            <span style={styles.orgLabel}>PURSUIT DIVISION</span>
           </div>
           <div style={styles.caseTag}>CASE {caseNumber}</div>
         </div>
@@ -845,7 +861,7 @@ const styles = {
   bootHeader: { background: "rgba(0,255,80,0.08)", borderBottom: "1px solid rgba(0,255,80,0.2)", padding: "8px 14px", display: "flex", alignItems: "center", gap: 8 },
   bootHeaderDot: { width: 10, height: 10, borderRadius: "50%", background: "rgba(0,255,80,0.4)", display: "inline-block" },
   bootHeaderTitle: { fontSize: 10, color: "rgba(0,255,80,0.6)", letterSpacing: "0.12em", marginLeft: 6 },
-  bootBody: { background: "#000", padding: "20px 24px", minHeight: 200 },
+  bootBody: { background: "#000", padding: "20px 24px", minHeight: 200, height: 200, overflow: "hidden" },
   bootLine: { fontSize: 13, color: "#a3e635", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.06em", margin: "0 0 10px", lineHeight: 1.4 },
 
   radarContainer: { position: "fixed", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", zIndex: 1 },
