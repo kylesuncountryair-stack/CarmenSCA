@@ -683,64 +683,48 @@ function RadarBackground({ fast }) {
   const dur = fast ? 2.5 : 6;
   return (
     <div style={styles.radarContainer}>
+      {/* Static rings */}
       <svg style={styles.radarSvg} viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="400" cy="400" r="380" fill="none" stroke="rgba(220,38,38,0.3)" strokeWidth="1" />
+        <circle cx="400" cy="400" r="380" fill="none" stroke="rgba(220,38,38,0.3)"  strokeWidth="1" />
         <circle cx="400" cy="400" r="280" fill="none" stroke="rgba(220,38,38,0.25)" strokeWidth="1" />
-        <circle cx="400" cy="400" r="180" fill="none" stroke="rgba(220,38,38,0.2)" strokeWidth="1" />
+        <circle cx="400" cy="400" r="180" fill="none" stroke="rgba(220,38,38,0.2)"  strokeWidth="1" />
         <circle cx="400" cy="400" r="90"  fill="none" stroke="rgba(220,38,38,0.15)" strokeWidth="1" />
-        <line x1="400" y1="20" x2="400" y2="780" stroke="rgba(220,38,38,0.1)" strokeWidth="0.5" />
-        <line x1="20" y1="400" x2="780" y2="400" stroke="rgba(220,38,38,0.1)" strokeWidth="0.5" />
+        <line x1="400" y1="20"  x2="400" y2="780" stroke="rgba(220,38,38,0.1)" strokeWidth="0.5" />
+        <line x1="20"  y1="400" x2="780" y2="400" stroke="rgba(220,38,38,0.1)" strokeWidth="0.5" />
       </svg>
 
-      {/* Phosphor trail — sits behind the leading edge, decays quickly */}
-      {[
-        { offset: -6,  opacity: 0.14 },
-        { offset: -13, opacity: 0.07 },
-        { offset: -20, opacity: 0.03 },
-        { offset: -27, opacity: 0.01 },
-      ].map((t, i) => (
-        <motion.div
-          key={i}
-          style={{ ...styles.sweepWrap }}
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: dur, ease: "linear" }}
-        >
-          <svg style={styles.radarSvg} viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id={`trailFade${i}`} cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="rgba(0,220,80,0)" />
-                <stop offset="40%" stopColor={`rgba(0,220,80,${t.opacity})`} />
-                <stop offset="100%" stopColor={`rgba(0,220,80,${t.opacity})`} />
-              </radialGradient>
-            </defs>
-            <g transform={`rotate(${t.offset} 400 400)`}>
-              <path d="M400,400 L210,71 A380,380 0 0,1 400,20 Z" fill={`url(#trailFade${i})`} />
-            </g>
-          </svg>
-        </motion.div>
-      ))}
+      {/* Conic sweep — angular gradient that decays like real phosphor */}
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: dur, ease: "linear" }}
+        style={{
+          position: "absolute",
+          width: "min(120vw, 120vh)",
+          height: "min(120vw, 120vh)",
+          borderRadius: "50%",
+          background: [
+            "conic-gradient(",
+            "  from 0deg,",
+            "  transparent         0deg,",
+            "  rgba(0,255,80,0.00) 326deg,",
+            "  rgba(0,255,80,0.03) 336deg,",
+            "  rgba(0,255,80,0.08) 344deg,",
+            "  rgba(0,255,80,0.18) 351deg,",
+            "  rgba(0,255,80,0.32) 356deg,",
+            "  rgba(0,255,80,0.50) 360deg",
+            ")",
+          ].join(""),
+        }}
+      ></motion.div>
 
-      {/* Main sweep — sharp bright leading edge fading angularly backward */}
-      <motion.div style={styles.sweepWrap} animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: dur, ease: "linear" }}>
+      {/* Hard leading edge line on top of the conic sweep */}
+      <motion.div
+        style={{ ...styles.sweepWrap }}
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: dur, ease: "linear" }}
+      >
         <svg style={styles.radarSvg} viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="sweepRadial" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="rgba(0,255,80,0)" />
-              <stop offset="25%" stopColor="rgba(0,255,80,0.55)" />
-              <stop offset="100%" stopColor="rgba(0,255,80,0.35)" />
-            </radialGradient>
-            {/* Bright at leading edge (right side = line), fades left into trail */}
-            <linearGradient id="sweepAngular" x1="1" y1="0" x2="0" y2="0">
-              <stop offset="0%"   stopColor="white" stopOpacity="1" />
-              <stop offset="50%"  stopColor="white" stopOpacity="0.12" />
-              <stop offset="100%" stopColor="white" stopOpacity="0" />
-            </linearGradient>
-            <mask id="sweepMask">
-              <path d="M400,400 L210,71 A380,380 0 0,1 400,20 Z" fill="url(#sweepAngular)" />
-            </mask>
-          </defs>
-          <circle cx="400" cy="400" r="380" fill="url(#sweepRadial)" mask="url(#sweepMask)" />
-          <line x1="400" y1="400" x2="400" y2="20" stroke="rgba(0,255,80,0.7)" strokeWidth="1.5" />
+          <line x1="400" y1="400" x2="400" y2="20" stroke="rgba(0,255,80,0.85)" strokeWidth="1.5" />
         </svg>
       </motion.div>
 
