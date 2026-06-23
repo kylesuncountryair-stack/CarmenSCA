@@ -258,8 +258,11 @@ export default function CarmenGame() {
   const [flashRed, setFlashRed] = useState(false);
   const [radarFast, setRadarFast] = useState(false);
   const [booting, setBooting] = useState(true);
+  const [bgFilter, setBgFilter] = useState("none");
   const [glitch, setGlitch] = useState(false);
 
+  const [firstAnswer, setFirstAnswer] = useState(null);
+  const [canRetry, setCanRetry] = useState(false);
   const scanProgress = useChunkyProgress(scanning);
 
   useEffect(() => {
@@ -313,6 +316,17 @@ export default function CarmenGame() {
         setDecrypting(false);
         setIsCorrect(match);
         setShowName(true);
+        if (match) {
+          setBgFilter("sepia(0.3) hue-rotate(80deg) saturate(1.4)");
+          setTimeout(() => setBgFilter("none"), 2500);
+        } else {
+          setBgFilter("sepia(0.5) hue-rotate(320deg) saturate(1.6)");
+          setTimeout(() => setBgFilter("none"), 2500);
+          if (!firstAnswer) {
+            setFirstAnswer(answer);
+            setCanRetry(true);
+          }
+        }
       }, 900);
 
     }, 8000);
@@ -331,6 +345,20 @@ export default function CarmenGame() {
     setTimeout(() => setSubmitted(true), 800);
   };
 
+  const handleRetry = () => {
+    localStorage.removeItem(LOCKOUT_KEY);
+    setAnswer("");
+    setIsCorrect(null);
+    setShowName(false);
+    setScanning(false);
+    setDecrypting(false);
+    setCanRetry(false);
+    setScanStep(0);
+    setFlashGreen(false);
+    setFlashRed(false);
+    setBgFilter("none");
+  };
+
   const keyframes = `
     @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.85)} }
     @keyframes btnPulse { 0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0.5)} 50%{box-shadow:0 0 0 8px rgba(220,38,38,0)} }
@@ -342,7 +370,7 @@ export default function CarmenGame() {
     @keyframes scanlines { 0%{background-position:0 0} 100%{background-position:0 4px} }
     @keyframes glitchShift { 0%{transform:translate(0)} 20%{transform:translate(-3px,1px)} 40%{transform:translate(3px,-1px)} 60%{transform:translate(-2px,0)} 80%{transform:translate(2px,1px)} 100%{transform:translate(0)} }
     @keyframes barFlash { 0%,100%{background:linear-gradient(90deg,#991b1b,#dc2626)} 50%{background:#fff} }
-    @keyframes decryptPulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    @keyframes bgFilterFade { 0%{opacity:0} 15%{opacity:1} 75%{opacity:1} 100%{opacity:0} }
   `;
 
   if (submitted) {
@@ -354,7 +382,7 @@ export default function CarmenGame() {
         <div style={styles.centeredFill}>
           <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 160, damping: 18 }} style={styles.folderWrap}>
             <div style={styles.folderTab}>
-              <span style={styles.folderTabText}>SC PURSUIT DIVISION</span>
+              <span style={styles.folderTabText}>PURSUIT DIVISION</span>
               <span style={styles.folderTabCase}>REF-{caseNumber}</span>
             </div>
             <div style={styles.folderBody}>
@@ -378,6 +406,12 @@ export default function CarmenGame() {
                   <span style={styles.folderFieldLabel}>{isCorrect ? "LOCATION CONFIRMED" : "SUBMITTED LOCATION"}</span>
                   <span style={styles.folderFieldValue}>{answer.toUpperCase()}</span>
                 </div>
+                {firstAnswer && (
+                  <div style={styles.folderField}>
+                    <span style={styles.folderFieldLabel}>PRIOR ATTEMPT</span>
+                    <span style={{ ...styles.folderFieldValue, color: "#dc2626", textDecoration: "line-through", opacity: 0.7 }}>{firstAnswer.toUpperCase()}</span>
+                  </div>
+                )}
                 <div style={styles.folderField}>
                   <span style={styles.folderFieldLabel}>OUTCOME</span>
                   {isCorrect ? (
@@ -428,7 +462,7 @@ export default function CarmenGame() {
                 </div>
               </div>
               <div style={styles.folderFooter}>
-                <span style={styles.folderFooterText}>Sun Country Airlines · SC Pursuit Division · {new Date().getFullYear()}</span>
+                <span style={styles.folderFooterText}>Sun Country Airlines · Pursuit Division · {new Date().getFullYear()}</span>
               </div>
             </div>
           </motion.div>
@@ -440,6 +474,14 @@ export default function CarmenGame() {
   return (
     <div style={{ ...styles.root, animation: "flicker 8s ease-in-out infinite" }}>
       <style>{keyframes}</style>
+      {/* Background image layer with reactive filter */}
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
+        backgroundImage: "url('https://i.wpfc.ml/h7/uxapf2.png')",
+        backgroundSize: "cover", backgroundPosition: "center",
+        filter: bgFilter,
+        transition: "filter 0.4s ease",
+      }}></div>
       <div style={styles.crtOverlay}></div>
       <RadarBackground fast={radarFast} />
 
@@ -576,11 +618,30 @@ export default function CarmenGame() {
                     </span>
                   </div>
                   <VerdictLine
-                    text={isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. A new case awaits tomorrow, Agent."}
+                    text={isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. Better luck next time, Agent."}
                     color={isCorrect ? "#166534" : "#991b1b"}
                   />
                   {isCorrect && <p style={styles.resultSub}>Suspect located in Orlando, FL (MCO)</p>}
                 </div>
+
+                {/* Double or nothing */}
+                {!isCorrect && canRetry && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    style={styles.retryBox}
+                  >
+                    <div style={styles.retryLeft}>
+                      <span style={styles.retryLabel}>REASSIGNMENT AVAILABLE</span>
+                      <p style={styles.retryText}>One retry permitted. Your first attempt will remain on record.</p>
+                    </div>
+                    <button onClick={handleRetry} style={styles.retryBtn}>
+                      Request Reassignment
+                    </button>
+                  </motion.div>
+                )}
+
                 <div style={styles.agentSection}>
                   <label style={styles.inputLabel}>Agent Full Name</label>
                   <div style={styles.inputRow}>
@@ -672,7 +733,7 @@ function RadarBackground({ fast }) {
 
 // ── Styles ────────────────────────────────────────────────────────────────────
 const styles = {
-  root: { minHeight: "100vh", background: "#050505", backgroundImage: "url('https://i.wpfc.ml/h7/uxapf2.png')", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Courier New', Courier, monospace", padding: "24px 16px", position: "relative", overflow: "hidden" },
+  root: { minHeight: "100vh", background: "#050505", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Courier New', Courier, monospace", padding: "24px 16px", position: "relative", overflow: "hidden" },
 
   crtOverlay: {
     position: "fixed", inset: 0, zIndex: 99, pointerEvents: "none",
@@ -752,6 +813,28 @@ const styles = {
   resultSub: { fontSize: 12, color: "#166534", margin: 0, letterSpacing: "0.06em" },
 
   agentSection: { marginTop: 4, position: "relative", zIndex: 1 },
+
+  retryBox: {
+    display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16,
+    background: "rgba(127,29,29,0.06)", border: "1px solid rgba(127,29,29,0.2)",
+    borderLeft: "3px solid #7f1d1d", borderRadius: 4,
+    padding: "12px 14px", marginBottom: 14, position: "relative", zIndex: 1,
+  },
+  retryLeft: { flex: 1 },
+  retryLabel: {
+    display: "block", fontSize: 8, fontWeight: 700, letterSpacing: "0.14em",
+    color: "#7f1d1d", marginBottom: 4,
+  },
+  retryText: {
+    fontSize: 11, color: "#78350f", margin: 0,
+    fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.02em", lineHeight: 1.4,
+  },
+  retryBtn: {
+    padding: "8px 14px", background: "transparent", color: "#7f1d1d",
+    border: "1.5px solid #7f1d1d", borderRadius: 4, fontSize: 10,
+    fontWeight: 700, letterSpacing: "0.1em", fontFamily: "'Courier New', Courier, monospace",
+    cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0,
+  },
   submitBtn: { padding: "10px 20px", background: "#7f1d1d", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" },
 
   cardFooter: { display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 20, paddingTop: 12, borderTop: "1px solid rgba(146,64,14,0.2)", position: "relative", zIndex: 1 },
