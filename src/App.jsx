@@ -45,6 +45,29 @@ function getTodayString() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
+// ── Map waypoints — SVG coords in a 320x280 viewBox of the Americas ──────────
+// x increases east, y increases south
+const WAYPOINTS = [
+  { id: "msp", label: "Minneapolis", x: 142, y: 72 },
+  { id: "ord", label: "Chicago",     x: 155, y: 82 },
+  { id: "nyc", label: "New York",    x: 182, y: 84 },
+  { id: "lax", label: "Los Angeles", x: 72,  y: 112 },
+  { id: "mex", label: "Mexico City", x: 118, y: 152 },
+  { id: "mia", label: "Miami",       x: 178, y: 140 },
+  { id: "mco", label: "Orlando",     x: 170, y: 130 },  // correct
+  { id: "bog", label: "Bogotá",      x: 158, y: 198 },
+  { id: "can", label: "Cancún",      x: 138, y: 148 },
+];
+const DECOY_CITIES = [
+  { id: "mia", label: "Miami, FL" },
+  { id: "can", label: "Cancún, MX" },
+  { id: "bog", label: "Bogotá, CO" },
+];
+
+// Sequence of waypoint IDs the dot visits during the 8s scan
+const SCAN_PATH = ["msp", "lax", "ord", "mex", "nyc", "can", "bog", "mia"];
+
+// ── Web Audio ─────────────────────────────────────────────────────────────────
 function playStamp() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -97,50 +120,98 @@ function playTick() {
   } catch (e) {}
 }
 
-// ── Signal bars component ─────────────────────────────────────────────────────
+// ── Signal bars ───────────────────────────────────────────────────────────────
 function SignalBars() {
   const [heights, setHeights] = useState([0.4, 0.7, 0.5, 0.9]);
   useEffect(() => {
     const id = setInterval(() => {
-      setHeights([
-        0.2 + Math.random() * 0.8,
-        0.2 + Math.random() * 0.8,
-        0.2 + Math.random() * 0.8,
-        0.2 + Math.random() * 0.8,
-      ]);
+      setHeights([0.2 + Math.random() * 0.8, 0.2 + Math.random() * 0.8,
+                  0.2 + Math.random() * 0.8, 0.2 + Math.random() * 0.8]);
     }, 350);
     return () => clearInterval(id);
   }, []);
   return (
     <div style={{ display: "flex", alignItems: "flex-end", gap: 2, height: 16 }}>
       {heights.map((h, i) => (
-        <div
-          key={i}
-          style={{
-            width: 4,
-            height: `${Math.round(h * 16)}px`,
-            background: "#dc2626",
-            borderRadius: 1,
-            transition: "height 0.18s ease",
-            opacity: 0.7 + h * 0.3,
-          }}
-        ></div>
+        <div key={i} style={{ width: 4, height: `${Math.round(h * 16)}px`, background: "#dc2626", borderRadius: 1, transition: "height 0.28s ease", opacity: 0.7 + h * 0.3 }}></div>
       ))}
     </div>
   );
 }
 
-// ── Hex trace scrambler ───────────────────────────────────────────────────────
+// ── Hex trace ─────────────────────────────────────────────────────────────────
 function HexTrace() {
   const [trace, setTrace] = useState(randomHex(6));
   useEffect(() => {
     const id = setInterval(() => setTrace(randomHex(6)), 600);
     return () => clearInterval(id);
   }, []);
+  return <span style={{ fontSize: 10, color: "#92400e", letterSpacing: "0.1em", opacity: 0.7 }}>TRACE: {trace}</span>;
+}
+
+// ── World map component ───────────────────────────────────────────────────────
+function TrackingMap({ dotIndex, finalCity, locked }) {
+  const current = dotIndex < SCAN_PATH.length
+    ? WAYPOINTS.find(w => w.id === SCAN_PATH[dotIndex])
+    : locked
+      ? WAYPOINTS.find(w => w.id === "mco")
+      : WAYPOINTS.find(w => w.id === (finalCity || "mia"));
+
   return (
-    <span style={{ fontSize: 10, color: "#92400e", letterSpacing: "0.1em", opacity: 0.7 }}>
-      TRACE: {trace}
-    </span>
+    <div style={{ background: "#0a1a0a", border: "1px solid rgba(0,180,60,0.3)", borderRadius: 4, marginBottom: 10, overflow: "hidden", position: "relative" }}>
+      <div style={{ position: "absolute", top: 4, left: 6, fontSize: 8, color: "rgba(0,200,60,0.6)", letterSpacing: "0.12em", fontFamily: "'Courier New', Courier, monospace" }}>
+        TRACKING GRID — WESTERN HEMISPHERE
+      </div>
+      <svg viewBox="0 0 320 200" width="100%" style={{ display: "block" }}>
+        {/* Grid lines */}
+        {[40,80,120,160].map(y => (
+          <line key={y} x1="0" y1={y} x2="320" y2={y} stroke="rgba(0,180,60,0.08)" strokeWidth="0.5" />
+        ))}
+        {[64,128,192,256].map(x => (
+          <line key={x} x1={x} y1="0" x2={x} y2="200" stroke="rgba(0,180,60,0.08)" strokeWidth="0.5" />
+        ))}
+
+        {/* Landmass shapes — simplified Americas */}
+        {/* North America */}
+        <path d="M60 20 L90 18 L130 22 L160 30 L190 40 L200 60 L195 80 L180 95 L165 110 L150 115 L135 120 L120 118 L105 125 L95 140 L85 145 L80 135 L75 120 L70 100 L65 80 L55 60 L50 40 Z" fill="rgba(0,120,40,0.25)" stroke="rgba(0,180,60,0.35)" strokeWidth="0.8" />
+        {/* Central America */}
+        <path d="M120 118 L130 125 L135 135 L130 145 L120 148 L115 140 L112 128 Z" fill="rgba(0,120,40,0.2)" stroke="rgba(0,180,60,0.3)" strokeWidth="0.8" />
+        {/* South America */}
+        <path d="M135 155 L160 148 L185 155 L200 175 L205 200 L195 230 L175 250 L155 255 L140 245 L125 225 L118 200 L120 175 Z" fill="rgba(0,120,40,0.2)" stroke="rgba(0,180,60,0.3)" strokeWidth="0.8" />
+
+        {/* Waypoint dots — dim */}
+        {WAYPOINTS.filter(w => w.id !== "mco").map(w => (
+          <circle key={w.id} cx={w.x} cy={w.y} r="2" fill="rgba(0,180,60,0.2)" stroke="rgba(0,180,60,0.4)" strokeWidth="0.5" />
+        ))}
+
+        {/* Orlando marker — always shown, dim until locked */}
+        <circle cx={WAYPOINTS.find(w=>w.id==="mco").x} cy={WAYPOINTS.find(w=>w.id==="mco").y}
+          r="3" fill={locked ? "rgba(74,222,128,0.9)" : "rgba(0,180,60,0.15)"}
+          stroke={locked ? "#4ade80" : "rgba(0,180,60,0.3)"} strokeWidth="0.8" />
+
+        {/* Tracking dot + ripple */}
+        {current && (
+          <g>
+            <circle cx={current.x} cy={current.y} r="6" fill="none" stroke="rgba(220,38,38,0.3)" strokeWidth="0.8">
+              <animate attributeName="r" from="4" to="12" dur="1.2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" from="0.6" to="0" dur="1.2s" repeatCount="indefinite" />
+            </circle>
+            <circle cx={current.x} cy={current.y} r="3.5" fill="#dc2626" stroke="#ff6060" strokeWidth="0.8" />
+            <text x={current.x + 5} y={current.y - 4} fontSize="6" fill="rgba(220,38,38,0.85)" fontFamily="Courier New">{current.label}</text>
+          </g>
+        )}
+
+        {/* Lock-on crosshair when final */}
+        {locked && current && (
+          <g stroke="#4ade80" strokeWidth="0.8" opacity="0.7">
+            <line x1={current.x - 8} y1={current.y} x2={current.x - 4} y2={current.y} />
+            <line x1={current.x + 4} y1={current.y} x2={current.x + 8} y2={current.y} />
+            <line x1={current.x} y1={current.y - 8} x2={current.x} y2={current.y - 4} />
+            <line x1={current.x} y1={current.y + 4} x2={current.x} y2={current.y + 8} />
+          </g>
+        )}
+      </svg>
+    </div>
   );
 }
 
@@ -168,25 +239,6 @@ function TypewriterLine({ text, speed = 30, onDone }) {
   return <span>{displayed}{!done && <span style={{ opacity: 0.7 }}>▌</span>}</span>;
 }
 
-// ── Scan message with slide-up transition ─────────────────────────────────────
-function ScanMessage({ text, step }) {
-  return (
-    <AnimatePresence mode="wait">
-      <motion.p
-        key={step}
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -6 }}
-        transition={{ duration: 0.18, ease: "easeOut" }}
-        style={styles.scanMessage}
-      >
-        {text}
-      </motion.p>
-    </AnimatePresence>
-  );
-}
-
-// ── Verdict typewriter ────────────────────────────────────────────────────────
 function VerdictLine({ text, color }) {
   const { displayed } = useTypewriter(text, 28, false);
   return (
@@ -195,6 +247,19 @@ function VerdictLine({ text, color }) {
     </p>
   );
 }
+
+// ── Scan message ──────────────────────────────────────────────────────────────
+function ScanMessage({ text, step }) {
+  return (
+    <AnimatePresence mode="wait">
+      <motion.p key={step} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.18, ease: "easeOut" }} style={styles.scanMessage}>
+        {text}
+      </motion.p>
+    </AnimatePresence>
+  );
+}
+
+// ── Redacted reveal ───────────────────────────────────────────────────────────
 function RedactedReveal({ text }) {
   return (
     <span style={{ position: "relative", display: "inline-block", fontFamily: "'Courier New', Courier, monospace", fontSize: 14, fontWeight: 700, color: "#15803d", letterSpacing: "0.03em" }}>
@@ -209,7 +274,6 @@ function BootSequence({ onComplete }) {
   const [lineIndex, setLineIndex] = useState(0);
   const [lines, setLines] = useState([]);
   const [fading, setFading] = useState(false);
-
   const advance = () => {
     const next = lineIndex + 1;
     if (next < bootLines.length) {
@@ -220,7 +284,6 @@ function BootSequence({ onComplete }) {
       setTimeout(() => { setFading(true); setTimeout(onComplete, 400); }, 300);
     }
   };
-
   return (
     <motion.div animate={{ opacity: fading ? 0 : 1 }} transition={{ duration: 0.5 }} style={styles.bootOverlay}>
       <div style={styles.bootBox}>
@@ -245,17 +308,12 @@ function BootSequence({ onComplete }) {
   );
 }
 
-// ── Chunky progress bar ───────────────────────────────────────────────────────
+// ── Chunky progress ───────────────────────────────────────────────────────────
 function useChunkyProgress(active) {
   const [progress, setProgress] = useState(0);
   const stateRef = useRef({ value: 0, pauseUntil: 0 });
-
   useEffect(() => {
-    if (!active) {
-      stateRef.current = { value: 0, pauseUntil: 0 };
-      setProgress(0);
-      return;
-    }
+    if (!active) { stateRef.current = { value: 0, pauseUntil: 0 }; setProgress(0); return; }
     stateRef.current = { value: 0, pauseUntil: 0 };
     const id = setInterval(() => {
       const s = stateRef.current;
@@ -269,7 +327,6 @@ function useChunkyProgress(active) {
     }, 120);
     return () => clearInterval(id);
   }, [active]);
-
   return progress;
 }
 
@@ -280,6 +337,7 @@ export default function CarmenGame() {
   const [name, setName] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [scanning, setScanning] = useState(false);
+  const [decrypting, setDecrypting] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [caseNumber] = useState(generateCaseNumber());
   const [scanStep, setScanStep] = useState(0);
@@ -288,6 +346,11 @@ export default function CarmenGame() {
   const [flashRed, setFlashRed] = useState(false);
   const [radarFast, setRadarFast] = useState(false);
   const [booting, setBooting] = useState(true);
+  const [mapDotIndex, setMapDotIndex] = useState(0);
+  const [mapLocked, setMapLocked] = useState(false);
+  const [mapFinalCity, setMapFinalCity] = useState(null);
+  const [glitch, setGlitch] = useState(false);
+
   const scanProgress = useChunkyProgress(scanning);
 
   useEffect(() => {
@@ -299,8 +362,22 @@ export default function CarmenGame() {
     if (!answer.trim()) return;
     setScanning(true);
     setRadarFast(true);
+    setMapDotIndex(0);
+    setMapLocked(false);
     setScanStep(0);
 
+    // Advance map dot through waypoints
+    let dotStep = 0;
+    const dotInterval = setInterval(() => {
+      dotStep++;
+      if (dotStep < SCAN_PATH.length) {
+        setMapDotIndex(dotStep);
+      } else {
+        clearInterval(dotInterval);
+      }
+    }, 8000 / SCAN_PATH.length);
+
+    // Advance scan messages
     let step = 0;
     const stepInterval = setInterval(() => {
       step++;
@@ -309,25 +386,45 @@ export default function CarmenGame() {
 
     setTimeout(() => {
       clearInterval(stepInterval);
+      clearInterval(dotInterval);
       const normalized = answer.trim().toLowerCase();
       const match = correctAnswers.includes(normalized);
       localStorage.setItem(LOCKOUT_KEY, getTodayString());
       setRadarFast(false);
-      playChime(match);
 
-      if (match) {
-        setFlashGreen(true);
-        setTimeout(() => setFlashGreen(false), 1200);
-      } else {
-        setFlashRed(true);
-        setTimeout(() => setFlashRed(false), 1000);
-      }
+      // Lock map dot to final city
+      const decoy = DECOY_CITIES[Math.floor(Math.random() * DECOY_CITIES.length)];
+      setMapFinalCity(match ? "mco" : decoy.id);
+      setMapLocked(true);
+
+      // DECRYPT phase
+      setScanning(false);
+      setDecrypting(true);
+
+      // Glitch once after 300ms
+      setTimeout(() => {
+        setGlitch(true);
+        setTimeout(() => setGlitch(false), 120);
+      }, 300);
+
+      // Play chime and flash at 700ms, reveal at 800ms
+      setTimeout(() => {
+        playChime(match);
+        if (match) {
+          setFlashGreen(true);
+          setTimeout(() => setFlashGreen(false), 1200);
+        } else {
+          setFlashRed(true);
+          setTimeout(() => setFlashRed(false), 1000);
+        }
+      }, 700);
 
       setTimeout(() => {
+        setDecrypting(false);
         setIsCorrect(match);
         setShowName(true);
-        setScanning(false);
-      }, match ? 1400 : 1100);
+      }, 900);
+
     }, 8000);
   };
 
@@ -351,12 +448,18 @@ export default function CarmenGame() {
     @keyframes redFlash { 0%{opacity:0} 15%{opacity:0.5} 70%{opacity:0.5} 100%{opacity:0} }
     @keyframes stampIn { 0%{opacity:0;transform:rotate(-4deg) scale(1.4)} 60%{opacity:1;transform:rotate(-2deg) scale(0.95)} 100%{opacity:1;transform:rotate(-2deg) scale(1)} }
     @keyframes unredact { 0%{width:100%} 100%{width:0%} }
+    @keyframes flicker { 0%,100%{opacity:1} 92%{opacity:1} 93%{opacity:0.97} 94%{opacity:1} 97%{opacity:0.98} 98%{opacity:1} }
+    @keyframes scanlines { 0%{background-position:0 0} 100%{background-position:0 4px} }
+    @keyframes glitchShift { 0%{transform:translate(0)} 20%{transform:translate(-3px,1px)} 40%{transform:translate(3px,-1px)} 60%{transform:translate(-2px,0)} 80%{transform:translate(2px,1px)} 100%{transform:translate(0)} }
+    @keyframes barFlash { 0%,100%{background:linear-gradient(90deg,#991b1b,#dc2626)} 50%{background:#fff} }
+    @keyframes decryptPulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
   `;
 
   if (submitted) {
     return (
       <div style={styles.root}>
         <style>{keyframes}</style>
+        <div style={styles.crtOverlay}></div>
         <RadarBackground fast={false} />
         <div style={styles.centeredFill}>
           <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 160, damping: 18 }} style={styles.folderWrap}>
@@ -366,13 +469,7 @@ export default function CarmenGame() {
             </div>
             <div style={styles.folderBody}>
               <div style={styles.paperLines}></div>
-              <motion.div
-                initial={{ scale: 1.6, opacity: 0, rotate: -6 }}
-                animate={{ scale: 1, opacity: 1, rotate: -3 }}
-                transition={{ delay: 0.35, type: "spring", stiffness: 220, damping: 14 }}
-                onAnimationComplete={() => playStamp()}
-                style={{ ...styles.filedStamp, borderColor: isCorrect ? "#15803d" : "#dc2626", color: isCorrect ? "#15803d" : "#dc2626" }}
-              >
+              <motion.div initial={{ scale: 1.6, opacity: 0, rotate: -6 }} animate={{ scale: 1, opacity: 1, rotate: -3 }} transition={{ delay: 0.35, type: "spring", stiffness: 220, damping: 14 }} onAnimationComplete={() => playStamp()} style={{ ...styles.filedStamp, borderColor: isCorrect ? "#15803d" : "#dc2626", color: isCorrect ? "#15803d" : "#dc2626" }}>
                 {isCorrect ? "CASE CLOSED" : "CASE OPEN"}
               </motion.div>
               <p style={styles.folderTitle}>Pursuit Dossier</p>
@@ -414,6 +511,7 @@ export default function CarmenGame() {
     return (
       <div style={styles.root}>
         <style>{keyframes}</style>
+        <div style={styles.crtOverlay}></div>
         <RadarBackground fast={false} />
         <div style={styles.centeredFill}>
           <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 160, damping: 18 }} style={styles.folderWrap}>
@@ -423,13 +521,7 @@ export default function CarmenGame() {
             </div>
             <div style={styles.folderBody}>
               <div style={styles.paperLines}></div>
-              <motion.div
-                initial={{ scale: 1.6, opacity: 0, rotate: -6 }}
-                animate={{ scale: 1, opacity: 1, rotate: -3 }}
-                transition={{ delay: 0.35, type: "spring", stiffness: 220, damping: 14 }}
-                onAnimationComplete={() => playStamp()}
-                style={{ ...styles.filedStamp, borderColor: "#dc2626", color: "#dc2626" }}
-              >
+              <motion.div initial={{ scale: 1.6, opacity: 0, rotate: -6 }} animate={{ scale: 1, opacity: 1, rotate: -3 }} transition={{ delay: 0.35, type: "spring", stiffness: 220, damping: 14 }} onAnimationComplete={() => playStamp()} style={{ ...styles.filedStamp, borderColor: "#dc2626", color: "#dc2626" }}>
                 CASE CLOSED
               </motion.div>
               <p style={styles.folderTitle}>Access Denied</p>
@@ -456,23 +548,20 @@ export default function CarmenGame() {
   }
 
   return (
-    <div style={styles.root}>
+    <div style={{ ...styles.root, animation: "flicker 8s ease-in-out infinite" }}>
       <style>{keyframes}</style>
+      <div style={styles.crtOverlay}></div>
       <RadarBackground fast={radarFast} />
 
       <AnimatePresence>
         {booting && <BootSequence onComplete={() => setBooting(false)} />}
       </AnimatePresence>
 
-      {flashGreen && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 5, pointerEvents: "none", background: "rgba(34,197,94,0.3)", animation: "greenFlash 1.2s ease-in-out forwards" }}></div>
-      )}
-      {flashRed && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 5, pointerEvents: "none", background: "rgba(220,38,38,0.35)", animation: "redFlash 1.0s ease-in-out forwards" }}></div>
-      )}
+      {flashGreen && <div style={{ position: "fixed", inset: 0, zIndex: 5, pointerEvents: "none", background: "rgba(34,197,94,0.3)", animation: "greenFlash 1.2s ease-in-out forwards" }}></div>}
+      {flashRed && <div style={{ position: "fixed", inset: 0, zIndex: 5, pointerEvents: "none", background: "rgba(220,38,38,0.35)", animation: "redFlash 1.0s ease-in-out forwards" }}></div>}
 
       <motion.div
-        style={styles.outer}
+        style={{ ...styles.outer, animation: glitch ? "glitchShift 0.12s steps(4) forwards" : "none" }}
         initial={{ y: 32, opacity: 0 }}
         animate={{ y: booting ? 32 : 0, opacity: booting ? 0 : 1 }}
         transition={{ type: "spring", stiffness: 140, damping: 18 }}
@@ -533,7 +622,7 @@ export default function CarmenGame() {
           </div>
 
           <AnimatePresence mode="wait">
-            {!scanning && !showName && (
+            {!scanning && !decrypting && !showName && (
               <motion.div key="input" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} style={styles.inputSection}>
                 <label style={styles.inputLabel}>Input Suspect's Location</label>
                 <div style={styles.inputRow}>
@@ -559,29 +648,36 @@ export default function CarmenGame() {
 
             {scanning && (
               <motion.div key="scanning" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={styles.scanSection}>
-
-                {/* Header row — dot, SCANNING, signal bars */}
                 <div style={styles.scanHeader}>
                   <span style={{ ...styles.scanDot, animation: "pulse 1.2s ease-in-out infinite" }}></span>
                   <span style={styles.scanTitle}>SCANNING...</span>
-                  <div style={{ marginLeft: "auto" }}>
-                    <SignalBars />
-                  </div>
+                  <div style={{ marginLeft: "auto" }}><SignalBars /></div>
                 </div>
 
-                {/* Slide-up animated message */}
+                {/* World map */}
+                <TrackingMap dotIndex={mapDotIndex} finalCity={mapFinalCity} locked={mapLocked} />
+
                 <ScanMessage text={scanMessages[scanStep]} step={scanStep} />
 
-                {/* Hex trace */}
-                <div style={{ marginBottom: 12 }}>
-                  <HexTrace />
-                </div>
+                <div style={{ marginBottom: 12 }}><HexTrace /></div>
 
-                {/* Chunky progress bar */}
                 <div style={styles.progressBar}>
                   <div style={{ ...styles.progressFill, width: `${scanProgress}%`, transition: "width 0.15s ease-out" }}></div>
                 </div>
                 <p style={styles.scanProgress}>{scanProgress}%</p>
+              </motion.div>
+            )}
+
+            {decrypting && (
+              <motion.div key="decrypting" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={styles.scanSection}>
+                <div style={styles.scanHeader}>
+                  <span style={{ ...styles.scanDot, background: "#f59e0b", boxShadow: "0 0 6px #f59e0b", animation: "pulse 0.5s ease-in-out infinite" }}></span>
+                  <span style={{ ...styles.scanTitle, color: "#92400e", animation: "decryptPulse 0.5s ease-in-out infinite" }}>DECRYPTING...</span>
+                </div>
+                <TrackingMap dotIndex={SCAN_PATH.length} finalCity={mapFinalCity} locked={mapLocked} />
+                <div style={{ ...styles.progressBar, marginTop: 8 }}>
+                  <div style={{ ...styles.progressFill, width: "100%", animation: "barFlash 0.3s steps(2) infinite" }}></div>
+                </div>
               </motion.div>
             )}
 
@@ -635,8 +731,9 @@ export default function CarmenGame() {
   );
 }
 
-// ── Radar ─────────────────────────────────────────────────────────────────────
+// ── Radar with phosphor trail ─────────────────────────────────────────────────
 function RadarBackground({ fast }) {
+  const dur = fast ? 1.4 : 4;
   return (
     <div style={styles.radarContainer}>
       <svg style={styles.radarSvg} viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
@@ -644,10 +741,33 @@ function RadarBackground({ fast }) {
         <circle cx="400" cy="400" r="280" fill="none" stroke="rgba(220,38,38,0.6)" strokeWidth="1.5" />
         <circle cx="400" cy="400" r="180" fill="none" stroke="rgba(220,38,38,0.5)" strokeWidth="1.5" />
         <circle cx="400" cy="400" r="90"  fill="none" stroke="rgba(220,38,38,0.4)" strokeWidth="1.5" />
-        <line x1="400" y1="20"  x2="400" y2="780" stroke="rgba(220,38,38,0.3)" strokeWidth="0.75" />
-        <line x1="20"  y1="400" x2="780" y2="400" stroke="rgba(220,38,38,0.3)" strokeWidth="0.75" />
+        <line x1="400" y1="20" x2="400" y2="780" stroke="rgba(220,38,38,0.3)" strokeWidth="0.75" />
+        <line x1="20" y1="400" x2="780" y2="400" stroke="rgba(220,38,38,0.3)" strokeWidth="0.75" />
       </svg>
-      <motion.div style={styles.sweepWrap} animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: fast ? 1.4 : 4, ease: "linear" }}>
+
+      {/* Phosphor trail wedges — offset behind the main sweep */}
+      {[
+        { offset: -18, opacity: 0.38 },
+        { offset: -34, opacity: 0.22 },
+        { offset: -50, opacity: 0.12 },
+        { offset: -66, opacity: 0.06 },
+      ].map((t, i) => (
+        <motion.div
+          key={i}
+          style={{ ...styles.sweepWrap }}
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: dur, ease: "linear" }}
+        >
+          <svg style={styles.radarSvg} viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+            <g transform={`rotate(${t.offset} 400 400)`}>
+              <path d="M400,400 L400,20 A380,380 0 0,1 752,540 Z" fill={`rgba(0,220,80,${t.opacity})`} />
+            </g>
+          </svg>
+        </motion.div>
+      ))}
+
+      {/* Main sweep with leading edge */}
+      <motion.div style={styles.sweepWrap} animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: dur, ease: "linear" }}>
         <svg style={styles.radarSvg} viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <radialGradient id="sweepFade" cx="50%" cy="50%" r="50%">
@@ -659,6 +779,7 @@ function RadarBackground({ fast }) {
           <line x1="400" y1="400" x2="400" y2="20" stroke="rgba(0,255,80,0.9)" strokeWidth="2" />
         </svg>
       </motion.div>
+
       <div style={styles.darkOverlay}></div>
     </div>
   );
@@ -667,6 +788,12 @@ function RadarBackground({ fast }) {
 // ── Styles ────────────────────────────────────────────────────────────────────
 const styles = {
   root: { minHeight: "100vh", background: "#050505", backgroundImage: "url('https://i.wpfc.ml/h7/uxapf2.png')", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Courier New', Courier, monospace", padding: "24px 16px", position: "relative", overflow: "hidden" },
+
+  crtOverlay: {
+    position: "fixed", inset: 0, zIndex: 99, pointerEvents: "none",
+    backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px)",
+    backgroundSize: "100% 4px",
+  },
 
   bootOverlay: { position: "fixed", inset: 0, zIndex: 50, background: "#000", display: "flex", alignItems: "center", justifyContent: "center" },
   bootBox: { width: "100%", maxWidth: 540, border: "1px solid rgba(0,255,80,0.3)", borderRadius: 4, overflow: "hidden" },
@@ -723,7 +850,7 @@ const styles = {
   input: { flex: 1, padding: "10px 14px", fontSize: 14, fontFamily: "'Courier New', Courier, monospace", border: "1.5px solid #92400e", borderRadius: 4, background: "rgba(255,255,255,0.8)", color: "#1c0a00", outline: "none", letterSpacing: "0.04em" },
   trackBtn: { padding: "10px 20px", background: "#dc2626", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" },
 
-  scanSection: { padding: "20px 0", position: "relative", zIndex: 1 },
+  scanSection: { padding: "16px 0", position: "relative", zIndex: 1 },
   scanHeader: { display: "flex", alignItems: "center", gap: 10, marginBottom: 10 },
   scanDot: { width: 8, height: 8, borderRadius: "50%", background: "#dc2626", display: "inline-block", boxShadow: "0 0 6px #dc2626", flexShrink: 0 },
   scanTitle: { fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", color: "#991b1b" },
