@@ -36,7 +36,7 @@ const HEX_CHARS = "0123456789ABCDEF";
 const randomHex = (len) => Array.from({ length: len }, () => HEX_CHARS[Math.floor(Math.random() * 16)]).join("");
 
 const prompt =
-  "Alert, detective! She resurfaced in a desert city where the lights shine brighter than her criminal record. Surveillance caught her wandering a neon canyon filled with slot machines and Elvis impersonators. She inspected a pyramid, questioned a Roman statue, and asked a hotel concierge if the fountains "perform on command". Moments later, she disappeared behind a plume of casino smoke and a shower of glitter...";
+  "Alert, detective! She resurfaced in a desert city where the lights shine brighter than her criminal record. Surveillance caught her wandering a neon canyon filled with slot machines and Elvis impersonators. She inspected a pyramid, questioned a Roman statue, and asked a hotel concierge if the fountains 'perform on command'. Moments later, she disappeared behind a plume of casino smoke and a shower of glitter...";
 
 const LOCKOUT_KEY = "carmen_played_date";
 
