@@ -45,28 +45,6 @@ function getTodayString() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
-// ── Map waypoints — SVG coords in a 320x280 viewBox of the Americas ──────────
-// x increases east, y increases south
-const WAYPOINTS = [
-  { id: "msp", label: "Minneapolis", x: 142, y: 72 },
-  { id: "ord", label: "Chicago",     x: 155, y: 82 },
-  { id: "nyc", label: "New York",    x: 182, y: 84 },
-  { id: "lax", label: "Los Angeles", x: 72,  y: 112 },
-  { id: "mex", label: "Mexico City", x: 118, y: 152 },
-  { id: "mia", label: "Miami",       x: 178, y: 140 },
-  { id: "mco", label: "Orlando",     x: 170, y: 130 },  // correct
-  { id: "bog", label: "Bogotá",      x: 158, y: 198 },
-  { id: "can", label: "Cancún",      x: 138, y: 148 },
-];
-const DECOY_CITIES = [
-  { id: "mia", label: "Miami, FL" },
-  { id: "can", label: "Cancún, MX" },
-  { id: "bog", label: "Bogotá, CO" },
-];
-
-// Sequence of waypoint IDs the dot visits during the 8s scan
-const SCAN_PATH = ["msp", "lax", "ord", "mex", "nyc", "can", "bog", "mia"];
-
 // ── Web Audio ─────────────────────────────────────────────────────────────────
 function playStamp() {
   try {
@@ -147,72 +125,6 @@ function HexTrace() {
     return () => clearInterval(id);
   }, []);
   return <span style={{ fontSize: 10, color: "#92400e", letterSpacing: "0.1em", opacity: 0.7 }}>TRACE: {trace}</span>;
-}
-
-// ── World map component ───────────────────────────────────────────────────────
-function TrackingMap({ dotIndex, finalCity, locked }) {
-  const current = dotIndex < SCAN_PATH.length
-    ? WAYPOINTS.find(w => w.id === SCAN_PATH[dotIndex])
-    : locked
-      ? WAYPOINTS.find(w => w.id === "mco")
-      : WAYPOINTS.find(w => w.id === (finalCity || "mia"));
-
-  return (
-    <div style={{ background: "#0a1a0a", border: "1px solid rgba(0,180,60,0.3)", borderRadius: 4, marginBottom: 10, overflow: "hidden", position: "relative" }}>
-      <div style={{ position: "absolute", top: 4, left: 6, fontSize: 8, color: "rgba(0,200,60,0.6)", letterSpacing: "0.12em", fontFamily: "'Courier New', Courier, monospace" }}>
-        TRACKING GRID — WESTERN HEMISPHERE
-      </div>
-      <svg viewBox="0 0 320 200" width="100%" style={{ display: "block" }}>
-        {/* Grid lines */}
-        {[40,80,120,160].map(y => (
-          <line key={y} x1="0" y1={y} x2="320" y2={y} stroke="rgba(0,180,60,0.08)" strokeWidth="0.5" />
-        ))}
-        {[64,128,192,256].map(x => (
-          <line key={x} x1={x} y1="0" x2={x} y2="200" stroke="rgba(0,180,60,0.08)" strokeWidth="0.5" />
-        ))}
-
-        {/* Landmass shapes — simplified Americas */}
-        {/* North America */}
-        <path d="M60 20 L90 18 L130 22 L160 30 L190 40 L200 60 L195 80 L180 95 L165 110 L150 115 L135 120 L120 118 L105 125 L95 140 L85 145 L80 135 L75 120 L70 100 L65 80 L55 60 L50 40 Z" fill="rgba(0,120,40,0.25)" stroke="rgba(0,180,60,0.35)" strokeWidth="0.8" />
-        {/* Central America */}
-        <path d="M120 118 L130 125 L135 135 L130 145 L120 148 L115 140 L112 128 Z" fill="rgba(0,120,40,0.2)" stroke="rgba(0,180,60,0.3)" strokeWidth="0.8" />
-        {/* South America */}
-        <path d="M135 155 L160 148 L185 155 L200 175 L205 200 L195 230 L175 250 L155 255 L140 245 L125 225 L118 200 L120 175 Z" fill="rgba(0,120,40,0.2)" stroke="rgba(0,180,60,0.3)" strokeWidth="0.8" />
-
-        {/* Waypoint dots — dim */}
-        {WAYPOINTS.filter(w => w.id !== "mco").map(w => (
-          <circle key={w.id} cx={w.x} cy={w.y} r="2" fill="rgba(0,180,60,0.2)" stroke="rgba(0,180,60,0.4)" strokeWidth="0.5" />
-        ))}
-
-        {/* Orlando marker — always shown, dim until locked */}
-        <circle cx={WAYPOINTS.find(w=>w.id==="mco").x} cy={WAYPOINTS.find(w=>w.id==="mco").y}
-          r="3" fill={locked ? "rgba(74,222,128,0.9)" : "rgba(0,180,60,0.15)"}
-          stroke={locked ? "#4ade80" : "rgba(0,180,60,0.3)"} strokeWidth="0.8" />
-
-        {/* Tracking dot + ripple */}
-        {current && (
-          <g>
-            <circle cx={current.x} cy={current.y} r="6" fill="none" stroke="rgba(220,38,38,0.3)" strokeWidth="0.8">
-              <animate attributeName="r" from="4" to="12" dur="1.2s" repeatCount="indefinite" />
-              <animate attributeName="opacity" from="0.6" to="0" dur="1.2s" repeatCount="indefinite" />
-            </circle>
-            <circle cx={current.x} cy={current.y} r="3.5" fill="#dc2626" stroke="#ff6060" strokeWidth="0.8" />
-            <text x={current.x + 5} y={current.y - 4} fontSize="6" fill="rgba(220,38,38,0.85)" fontFamily="Courier New">{current.label}</text>
-          </g>
-        )}
-
-        {/* Lock-on crosshair when final */}
-        {locked && current && (
-          <g stroke="#4ade80" strokeWidth="0.8" opacity="0.7">
-            <line x1={current.x - 8} y1={current.y} x2={current.x - 4} y2={current.y} />
-            <line x1={current.x + 4} y1={current.y} x2={current.x + 8} y2={current.y} />
-            <line x1={current.x} y1={current.y - 8} x2={current.x} y2={current.y - 4} />
-            <line x1={current.x} y1={current.y + 4} x2={current.x} y2={current.y + 8} />
-          </g>
-        )}
-      </svg>
-    </div>
-  );
 }
 
 // ── Typewriter hook ───────────────────────────────────────────────────────────
@@ -346,9 +258,6 @@ export default function CarmenGame() {
   const [flashRed, setFlashRed] = useState(false);
   const [radarFast, setRadarFast] = useState(false);
   const [booting, setBooting] = useState(true);
-  const [mapDotIndex, setMapDotIndex] = useState(0);
-  const [mapLocked, setMapLocked] = useState(false);
-  const [mapFinalCity, setMapFinalCity] = useState(null);
   const [glitch, setGlitch] = useState(false);
 
   const scanProgress = useChunkyProgress(scanning);
@@ -362,20 +271,7 @@ export default function CarmenGame() {
     if (!answer.trim()) return;
     setScanning(true);
     setRadarFast(true);
-    setMapDotIndex(0);
-    setMapLocked(false);
     setScanStep(0);
-
-    // Advance map dot through waypoints
-    let dotStep = 0;
-    const dotInterval = setInterval(() => {
-      dotStep++;
-      if (dotStep < SCAN_PATH.length) {
-        setMapDotIndex(dotStep);
-      } else {
-        clearInterval(dotInterval);
-      }
-    }, 8000 / SCAN_PATH.length);
 
     // Advance scan messages
     let step = 0;
@@ -386,16 +282,10 @@ export default function CarmenGame() {
 
     setTimeout(() => {
       clearInterval(stepInterval);
-      clearInterval(dotInterval);
       const normalized = answer.trim().toLowerCase();
       const match = correctAnswers.includes(normalized);
       localStorage.setItem(LOCKOUT_KEY, getTodayString());
       setRadarFast(false);
-
-      // Lock map dot to final city
-      const decoy = DECOY_CITIES[Math.floor(Math.random() * DECOY_CITIES.length)];
-      setMapFinalCity(match ? "mco" : decoy.id);
-      setMapLocked(true);
 
       // DECRYPT phase
       setScanning(false);
@@ -654,9 +544,6 @@ export default function CarmenGame() {
                   <div style={{ marginLeft: "auto" }}><SignalBars /></div>
                 </div>
 
-                {/* World map */}
-                <TrackingMap dotIndex={mapDotIndex} finalCity={mapFinalCity} locked={mapLocked} />
-
                 <ScanMessage text={scanMessages[scanStep]} step={scanStep} />
 
                 <div style={{ marginBottom: 12 }}><HexTrace /></div>
@@ -674,7 +561,6 @@ export default function CarmenGame() {
                   <span style={{ ...styles.scanDot, background: "#f59e0b", boxShadow: "0 0 6px #f59e0b", animation: "pulse 0.5s ease-in-out infinite" }}></span>
                   <span style={{ ...styles.scanTitle, color: "#92400e", animation: "decryptPulse 0.5s ease-in-out infinite" }}>DECRYPTING...</span>
                 </div>
-                <TrackingMap dotIndex={SCAN_PATH.length} finalCity={mapFinalCity} locked={mapLocked} />
                 <div style={{ ...styles.progressBar, marginTop: 8 }}>
                   <div style={{ ...styles.progressFill, width: "100%", animation: "barFlash 0.3s steps(2) infinite" }}></div>
                 </div>
@@ -737,20 +623,20 @@ function RadarBackground({ fast }) {
   return (
     <div style={styles.radarContainer}>
       <svg style={styles.radarSvg} viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="400" cy="400" r="380" fill="none" stroke="rgba(220,38,38,0.7)" strokeWidth="1.5" />
-        <circle cx="400" cy="400" r="280" fill="none" stroke="rgba(220,38,38,0.6)" strokeWidth="1.5" />
-        <circle cx="400" cy="400" r="180" fill="none" stroke="rgba(220,38,38,0.5)" strokeWidth="1.5" />
-        <circle cx="400" cy="400" r="90"  fill="none" stroke="rgba(220,38,38,0.4)" strokeWidth="1.5" />
-        <line x1="400" y1="20" x2="400" y2="780" stroke="rgba(220,38,38,0.3)" strokeWidth="0.75" />
-        <line x1="20" y1="400" x2="780" y2="400" stroke="rgba(220,38,38,0.3)" strokeWidth="0.75" />
+        <circle cx="400" cy="400" r="380" fill="none" stroke="rgba(220,38,38,0.3)" strokeWidth="1" />
+        <circle cx="400" cy="400" r="280" fill="none" stroke="rgba(220,38,38,0.25)" strokeWidth="1" />
+        <circle cx="400" cy="400" r="180" fill="none" stroke="rgba(220,38,38,0.2)" strokeWidth="1" />
+        <circle cx="400" cy="400" r="90"  fill="none" stroke="rgba(220,38,38,0.15)" strokeWidth="1" />
+        <line x1="400" y1="20" x2="400" y2="780" stroke="rgba(220,38,38,0.1)" strokeWidth="0.5" />
+        <line x1="20" y1="400" x2="780" y2="400" stroke="rgba(220,38,38,0.1)" strokeWidth="0.5" />
       </svg>
 
-      {/* Phosphor trail wedges — offset behind the main sweep */}
+      {/* Phosphor trail — positive offsets so wedges sit BEHIND the sweep direction */}
       {[
-        { offset: -18, opacity: 0.38 },
-        { offset: -34, opacity: 0.22 },
-        { offset: -50, opacity: 0.12 },
-        { offset: -66, opacity: 0.06 },
+        { offset: 8,  opacity: 0.18 },
+        { offset: 16, opacity: 0.10 },
+        { offset: 24, opacity: 0.05 },
+        { offset: 32, opacity: 0.02 },
       ].map((t, i) => (
         <motion.div
           key={i}
@@ -760,23 +646,22 @@ function RadarBackground({ fast }) {
         >
           <svg style={styles.radarSvg} viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
             <g transform={`rotate(${t.offset} 400 400)`}>
-              <path d="M400,400 L400,20 A380,380 0 0,1 752,540 Z" fill={`rgba(0,220,80,${t.opacity})`} />
+              <path d="M400,400 L400,20 A380,380 0 0,1 590,71 Z" fill={`rgba(0,220,80,${t.opacity})`} />
             </g>
           </svg>
         </motion.div>
       ))}
 
-      {/* Main sweep with leading edge */}
+      {/* Main sweep — ~25 degree wedge, no leading edge line */}
       <motion.div style={styles.sweepWrap} animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: dur, ease: "linear" }}>
         <svg style={styles.radarSvg} viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <radialGradient id="sweepFade" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="rgba(0,220,80,0)" />
-              <stop offset="100%" stopColor="rgba(0,220,80,0.55)" />
+              <stop offset="100%" stopColor="rgba(0,220,80,0.3)" />
             </radialGradient>
           </defs>
-          <path d="M400,400 L400,20 A380,380 0 0,1 752,540 Z" fill="url(#sweepFade)" opacity="1" />
-          <line x1="400" y1="400" x2="400" y2="20" stroke="rgba(0,255,80,0.9)" strokeWidth="2" />
+          <path d="M400,400 L400,20 A380,380 0 0,1 590,71 Z" fill="url(#sweepFade)" opacity="1" />
         </svg>
       </motion.div>
 
