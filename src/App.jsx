@@ -13,7 +13,7 @@ const generateCaseNumber = () => {
   return `SC-${y}-${m}${day}-${rand}`;
 };
 
-const correctAnswers = ["SEA", "Seattle", "Seattle, Washington", "Seattle, WA", "Seattle Wa", "Seattle Washington", "seatac", "Sea - Washington"];
+const correctAnswers = ["sea", "seattle", "seattle, Washington", "seattle, was", "seattle wa", "seattle washington", "seatac", "sea - washington"];
 
 const scanMessages = [
   "Scanning Sun Country Global Network...",
