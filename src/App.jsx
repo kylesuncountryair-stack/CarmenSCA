@@ -958,7 +958,9 @@ const styles = {
     transition: "background 0.15s",
     position: "relative",
     zIndex: 1,
-  }, { width: "100%", maxWidth: 520, position: "relative", zIndex: 10 },
+  },
+
+  folderWrap: { width: "100%", maxWidth: 520, position: "relative", zIndex: 10 },
   folderTab: { display: "flex", justifyContent: "space-between", alignItems: "center", background: "#b91c1c", borderBottom: "3px solid #7f1d1d", borderRadius: "6px 6px 0 0", padding: "8px 18px", width: "55%" },
   folderTabText: { color: "#fff", fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", fontFamily: "'Courier New', Courier, monospace" },
   folderTabCase: { color: "rgba(255,255,255,0.6)", fontSize: 9, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace" },
