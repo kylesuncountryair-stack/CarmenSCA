@@ -550,8 +550,6 @@ export default function CarmenGame() {
               </div>
               <button
                 onClick={() => { localStorage.removeItem(LOCKOUT_KEY); window.location.reload(); }}
-                onMouseEnter={e => e.target.style.background = "rgba(127,29,29,0.12)"}
-                onMouseLeave={e => e.target.style.background = "transparent"}
                 style={styles.newMissionBtn}
               >
                 Assign Me A New Mission
@@ -946,16 +944,16 @@ const styles = {
     marginTop: 20,
     width: "100%",
     padding: "10px 0",
-    background: "transparent",
-    color: "#7f1d1d",
-    border: "1.5px solid #7f1d1d",
+    background: "#dc2626",
+    color: "#fff",
+    border: "none",
     borderRadius: 4,
     fontSize: 11,
     fontWeight: 700,
     letterSpacing: "0.1em",
     fontFamily: "'Courier New', Courier, monospace",
     cursor: "pointer",
-    transition: "background 0.15s",
+    animation: "btnPulse 1.8s ease-in-out infinite",
     position: "relative",
     zIndex: 1,
   },
