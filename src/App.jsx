@@ -36,7 +36,7 @@ const HEX_CHARS = "0123456789ABCDEF";
 const randomHex = (len) => Array.from({ length: len }, () => HEX_CHARS[Math.floor(Math.random() * 16)]).join("");
 
 const prompt =
-  "Our target vanished into a land of perpetual drizzle and suspiciously good coffee. She was last spotted buying a raincoat, staring up at a futuristic tower that reaches toward space, and asking fishermen why they were throwing their catch.Before backup arrived, a thick fog rolled in and when it lifted, she was gone, leaving only the faint scent of espresso behind...";
+  "Our target vanished into a land of perpetual drizzle and suspiciously good coffee. She was last spotted buying a raincoat, staring up at a futuristic tower that reaches toward space, and asking fishermen why they were throwing their catch. Before backup arrived, a thick fog rolled in and when it lifted, she was gone, leaving only the faint scent of espresso behind...";
 
 const LOCKOUT_KEY = "carmen_played_date";
 
@@ -502,7 +502,7 @@ export default function CarmenGame() {
                 <div style={styles.folderField}>
                   <span style={styles.folderFieldLabel}>OUTCOME</span>
                   {isCorrect ? (
-                    <RedactedReveal text="Seattle, WA — Target Located" />
+                    <RedactedReveal text="Seattle, WA (SEA) — Target Located" />
                   ) : (
                     <span style={{ ...styles.folderFieldValue, color: "#dc2626" }}>Suspect Evaded — Location Unknown</span>
                   )}
@@ -548,6 +548,14 @@ export default function CarmenGame() {
                   <span style={styles.folderFieldValue}>Tomorrow — New Case Awaits</span>
                 </div>
               </div>
+              <button
+                onClick={() => { localStorage.removeItem(LOCKOUT_KEY); window.location.reload(); }}
+                onMouseEnter={e => e.target.style.background = "rgba(127,29,29,0.12)"}
+                onMouseLeave={e => e.target.style.background = "transparent"}
+                style={styles.newMissionBtn}
+              >
+                Assign Me A New Mission
+              </button>
               <div style={styles.folderFooter}>
                 <span style={styles.folderFooterText}>Sun Country Airlines · Pursuit Division · {new Date().getFullYear()}</span>
               </div>
@@ -934,7 +942,23 @@ const styles = {
   cardFooter: { display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 20, paddingTop: 12, borderTop: "1px solid rgba(146,64,14,0.2)", position: "relative", zIndex: 1 },
   footerText: { fontSize: 9, color: "#a16207", letterSpacing: "0.08em" },
 
-  folderWrap: { width: "100%", maxWidth: 520, position: "relative", zIndex: 10 },
+  newMissionBtn: {
+    marginTop: 20,
+    width: "100%",
+    padding: "10px 0",
+    background: "transparent",
+    color: "#7f1d1d",
+    border: "1.5px solid #7f1d1d",
+    borderRadius: 4,
+    fontSize: 11,
+    fontWeight: 700,
+    letterSpacing: "0.1em",
+    fontFamily: "'Courier New', Courier, monospace",
+    cursor: "pointer",
+    transition: "background 0.15s",
+    position: "relative",
+    zIndex: 1,
+  }, { width: "100%", maxWidth: 520, position: "relative", zIndex: 10 },
   folderTab: { display: "flex", justifyContent: "space-between", alignItems: "center", background: "#b91c1c", borderBottom: "3px solid #7f1d1d", borderRadius: "6px 6px 0 0", padding: "8px 18px", width: "55%" },
   folderTabText: { color: "#fff", fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", fontFamily: "'Courier New', Courier, monospace" },
   folderTabCase: { color: "rgba(255,255,255,0.6)", fontSize: 9, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace" },
