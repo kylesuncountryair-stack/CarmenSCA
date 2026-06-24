@@ -13,7 +13,7 @@ const generateCaseNumber = () => {
   return `SC-${y}-${m}${day}-${rand}`;
 };
 
-const correctAnswers = ["las vegas", "las", "las vegas, nv", "las vegas, nevada", "LAS - Las Vegas"];
+const correctAnswers = ["SEA", "Seattle", "Seattle, Washington", "Seattle, WA", "Seattle Wa", "Seattle Washington", "seatac", "Sea - Washington"];
 
 const scanMessages = [
   "Scanning Sun Country Global Network...",
@@ -36,7 +36,7 @@ const HEX_CHARS = "0123456789ABCDEF";
 const randomHex = (len) => Array.from({ length: len }, () => HEX_CHARS[Math.floor(Math.random() * 16)]).join("");
 
 const prompt =
-  "Alert, detective! She resurfaced in a desert city where the lights shine brighter than her criminal record. Surveillance caught her wandering a neon canyon filled with slot machines and Elvis impersonators. She inspected a pyramid, questioned a Roman statue, and asked a hotel concierge if the fountains 'perform on command'. Moments later, she disappeared behind a plume of casino smoke and a shower of glitter...";
+  "Our target vanished into a land of perpetual drizzle and suspiciously good coffee. She was last spotted buying a raincoat, staring up at a futuristic tower that reaches toward space, and asking fishermen why they were throwing their catch.Before backup arrived, a thick fog rolled in and when it lifted, she was gone, leaving only the faint scent of espresso behind...";
 
 const LOCKOUT_KEY = "carmen_played_date";
 
@@ -502,7 +502,7 @@ export default function CarmenGame() {
                 <div style={styles.folderField}>
                   <span style={styles.folderFieldLabel}>OUTCOME</span>
                   {isCorrect ? (
-                    <RedactedReveal text="Las Vegas, NV — Target Located" />
+                    <RedactedReveal text="Seattle, WA — Target Located" />
                   ) : (
                     <span style={{ ...styles.folderFieldValue, color: "#dc2626" }}>Suspect Evaded — Location Unknown</span>
                   )}
@@ -708,7 +708,7 @@ export default function CarmenGame() {
                     text={isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. Better luck next time, Agent."}
                     color={isCorrect ? "#166534" : "#991b1b"}
                   />
-                  {isCorrect && <p style={styles.resultSub}>Suspect located in Las Vegas, NV (LAS)</p>}
+                  {isCorrect && <p style={styles.resultSub}>Suspect located in Seattle, WA (SEA)</p>}
                 </div>
 
                 {/* Double or nothing */}
