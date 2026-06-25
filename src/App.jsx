@@ -609,7 +609,7 @@ export default function CarmenGame() {
       </AnimatePresence>
 
       {flashGreen && <div style={{ position: "fixed", inset: 0, zIndex: 3, pointerEvents: "none", background: "rgba(34,197,94,0.35)", animation: "greenFlash 1.2s ease-in-out forwards" }}></div>}
-      {flashRed && <div style={{ position: "fixed", inset: 0, zIndex: 3, pointerEvents: "none", background: "rgba(160,0,0,0.65)", animation: "redFlash 1.0s ease-in-out forwards" }}></div>}
+      {flashRed && <div style={{ position: "fixed", inset: 0, zIndex: 3, pointerEvents: "none", background: "rgba(160,0,0,0.65)" }}></div>}
 
       <motion.div
         style={{ ...styles.outer, animation: glitch ? "glitchShift 0.12s steps(4) forwards" : "none" }}
