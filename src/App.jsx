@@ -13,7 +13,7 @@ const generateCaseNumber = () => {
   return `SC-${y}-${m}${day}-${rand}`;
 };
 
-const correctAnswers = ["msy", "orleans", "new orleans, louisiana", "new orleans, la", "new orleans la", "new orleans louisiana", "neworleans", "msy - new orleans", "nawlins"];
+const correctAnswers = ["msy", "orleans", "new orleans, louisiana", "new orleans, la", "new orleans la", "new orleans louisiana", "neworleans", "msy - new orleans", "nawlins", "new orleans"];
 
 // ── Update this list each day ─────────────────────────────────────────────────
 const PRIOR_SIGHTINGS = [
