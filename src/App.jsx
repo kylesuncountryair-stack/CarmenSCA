@@ -202,7 +202,7 @@ function TypewriterLine({ text, speed = 30, onDone }) {
 function VerdictLine({ text, color }) {
   const { displayed } = useTypewriter(text, 28, false);
   return (
-    <p style={{ fontSize: 15, fontWeight: 700, margin: "0 0 4px", letterSpacing: "0.02em", fontFamily: "'Courier New', Courier, monospace", color }}>
+    <p style={{ fontSize: 16, fontWeight: 400, margin: "0 0 4px", letterSpacing: "0.02em", fontFamily: "'Special Elite', cursive", color }}>
       {displayed}<span style={{ opacity: displayed.length < text.length ? 0.5 : 0 }}>▌</span>
     </p>
   );
@@ -288,10 +288,10 @@ function BootSequence({ onComplete }) {
               style={styles.bootBody}
             >
               {completedLines.map((l, i) => (
-                <p key={i} style={{ ...styles.bootLine, color: "rgba(255,255,255,0.28)" }}>{l}</p>
+                <p key={i} style={{ ...styles.bootLine, color: "rgba(255,255,255,0.28)", fontFamily: "'VT323', monospace", fontSize: 15 }}>{l}</p>
               ))}
               {lineIndex < BOOT_CHECKS.length && (
-                <p style={{ ...styles.bootLine, color: "rgba(255,255,255,0.9)" }}>
+                <p style={{ ...styles.bootLine, color: "rgba(255,255,255,0.9)", fontFamily: "'VT323', monospace", fontSize: 15 }}>
                   <span style={{ color: "#dc2626", marginRight: 6 }}>›</span>
                   <TypewriterLine
                     key={lineIndex}
@@ -312,10 +312,10 @@ function BootSequence({ onComplete }) {
               transition={{ duration: 0.3 }}
               style={{ ...styles.bootBody, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 10 }}
             >
-              <p style={{ ...styles.bootLine, color: "#fff", fontSize: 17, fontWeight: 700, letterSpacing: "0.22em", margin: 0, textAlign: "center" }}>
+              <p style={{ ...styles.bootLine, color: "#fff", fontSize: 22, fontFamily: "'VT323', monospace", letterSpacing: "0.22em", margin: 0, textAlign: "center" }}>
                 ACCESS GRANTED
               </p>
-              <p style={{ ...styles.bootLine, color: "rgba(255,255,255,0.35)", fontSize: 9, margin: 0, letterSpacing: "0.18em", textAlign: "center" }}>
+              <p style={{ ...styles.bootLine, color: "rgba(255,255,255,0.35)", fontSize: 13, fontFamily: "'VT323', monospace", margin: 0, letterSpacing: "0.18em", textAlign: "center" }}>
                 PURSUIT DIVISION · SECURE TERMINAL
               </p>
             </motion.div>
@@ -757,13 +757,17 @@ export default function CarmenGame() {
                     <span style={styles.fieldLabel}>KNOWN FOR</span>
                     <span style={styles.fieldValue}>Forgery · Theft</span>
                   </div>
-                  <div style={styles.suspectGridItem}>
-                    <span style={{ ...styles.fieldLabel, color: "#dc2626", fontSize: 11 }}>ARMED</span>
-                    <span style={{ ...styles.fieldValue, color: "#dc2626", fontSize: 15 }}>UNKNOWN</span>
-                  </div>
-                  <div style={styles.suspectGridItem}>
-                    <span style={{ ...styles.fieldLabel, color: "#dc2626", fontSize: 11 }}>APPROACH</span>
-                    <span style={{ ...styles.fieldValue, color: "#dc2626", fontSize: 15 }}>WITH CAUTION</span>
+                  <div style={{ ...styles.suspectGridItem, gridColumn: "1 / -1", background: "rgba(220,38,38,0.07)", border: "1px solid rgba(220,38,38,0.2)", borderRadius: 4, padding: "8px 10px", marginTop: 4 }}>
+                    <div style={{ display: "flex", gap: 20 }}>
+                      <div>
+                        <span style={{ ...styles.fieldLabel, color: "#dc2626", fontSize: 13 }}>ARMED</span>
+                        <span style={{ display: "block", color: "#b91c1c", fontSize: 18, fontFamily: "'Special Elite', cursive", lineHeight: 1.2 }}>UNKNOWN</span>
+                      </div>
+                      <div>
+                        <span style={{ ...styles.fieldLabel, color: "#dc2626", fontSize: 13 }}>APPROACH</span>
+                        <span style={{ display: "block", color: "#b91c1c", fontSize: 18, fontFamily: "'Special Elite', cursive", lineHeight: 1.2 }}>WITH CAUTION</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -881,10 +885,10 @@ export default function CarmenGame() {
                 {decrypting && (
                   <motion.div key="decrypting" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={styles.scanSection}>
                     <div style={styles.scanHeader}>
-                      <span style={{ ...styles.scanDot, background: "#f59e0b", boxShadow: "0 0 6px #f59e0b", animation: "pulse 0.5s ease-in-out infinite" }}></span>
-                      <span style={{ ...styles.scanTitle, color: "#92400e", animation: "decryptPulse 0.5s ease-in-out infinite" }}>DECRYPTING...</span>
+                      <span style={{ ...styles.scanDot, background: "#facc15", boxShadow: "0 0 6px #facc15", animation: "pulse 0.5s ease-in-out infinite" }}></span>
+                      <span style={{ ...styles.scanTitle, color: "#facc15", animation: "decryptPulse 0.5s ease-in-out infinite" }}>DECRYPTING...</span>
                     </div>
-                    <p style={{ ...styles.scanMessage, color: "#92400e", marginBottom: 10 }}>ANALYZING RESULTS...</p>
+                    <p style={{ ...styles.scanMessage, color: "#fef08a", marginBottom: 10 }}>ANALYZING RESULTS...</p>
                     <div style={{ ...styles.progressBar, marginTop: 0 }}>
                       <div style={{ ...styles.progressFill, width: "100%", animation: "barFlash 0.3s steps(2) infinite" }}></div>
                     </div>
@@ -1061,7 +1065,7 @@ const styles = {
   card: { background: "linear-gradient(160deg, #fdf4e0 0%, #f8ebca 40%, #f4e4b8 100%)", border: "2px solid #92400e", borderTop: "none", borderRadius: "0 0 12px 12px", padding: "24px 28px 20px", boxShadow: "4px 8px 0 rgba(0,0,0,0.15), 0 24px 60px rgba(0,0,0,0.75), inset 0 0 40px rgba(120,60,0,0.08)", position: "relative", overflow: "hidden" },
 
   folderColumns: { display: "flex", gap: 0, alignItems: "flex-start", marginBottom: 0 },
-  folderLeft: { flex: "0 0 36%", paddingRight: 20, boxShadow: "4px 0 12px rgba(0,0,0,0.06)" },
+  folderLeft: { flex: "0 0 42%", paddingRight: 20, boxShadow: "4px 0 12px rgba(0,0,0,0.06)" },
   folderSpine: { flex: "0 0 1px", background: "rgba(146,64,14,0.2)", alignSelf: "stretch", margin: "0 20px" },
   folderRight: { flex: 1, minWidth: 0 },
 
@@ -1071,7 +1075,7 @@ const styles = {
 
   paperYellow: { position: "absolute", left: 0, right: 0, top: 0, height: "45%", pointerEvents: "none", zIndex: 0, background: "linear-gradient(to bottom, rgba(180,120,40,0.07) 0%, transparent 100%)" },
 
-  paperMargin: { position: "absolute", top: 0, bottom: 0, left: "calc(36% + 27px)", width: "1px", background: "rgba(185,28,28,0.2)", pointerEvents: "none", zIndex: 1 },
+  paperMargin: { position: "absolute", top: 0, bottom: 0, left: "calc(42% + 27px)", width: "1px", background: "rgba(185,28,28,0.2)", pointerEvents: "none", zIndex: 1 },
 
 
   cardTopStrip: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20, position: "relative", zIndex: 1 },
@@ -1123,16 +1127,17 @@ const styles = {
     overflow: "hidden",
     boxShadow: "1px 2px 8px rgba(0,0,0,0.08)",
     backgroundImage: [
-      "repeating-linear-gradient(transparent, transparent 27px, rgba(100,140,220,0.35) 27px, rgba(100,140,220,0.35) 28px)",
+      "repeating-linear-gradient(transparent, transparent 31px, rgba(100,140,220,0.35) 31px, rgba(100,140,220,0.35) 32px)",
       "linear-gradient(to right, rgba(220,38,38,0.5) 0px, rgba(220,38,38,0.5) 1px, transparent 1px)",
     ].join(","),
-    backgroundSize: "100% 28px, 100% 100%",
-    backgroundPositionY: "14px, 0",
+    backgroundSize: "100% 32px, 100% 100%",
+    backgroundPositionY: "0px, 0",
+    lineHeight: "32px",
   },
-  clueTitle: { display: "inline-block", fontSize: 9, fontWeight: 700, letterSpacing: "0.16em", color: "#fff", background: "#b91c1c", padding: "3px 10px", borderRadius: 2, marginBottom: 12 },
-  clueText: { fontSize: 15, lineHeight: 1.8, color: "#0f0500", margin: "0 0 14px", fontFamily: "'Lora', Georgia, serif", fontStyle: "italic", fontWeight: 700 },
-  directiveLine: { height: 1, background: "rgba(220,38,38,0.3)", marginBottom: 12, borderTop: "1px dashed rgba(220,38,38,0.35)" },
-  clueQuestion: { fontSize: 15, fontWeight: 700, color: "#b91c1c", margin: 0, letterSpacing: "0.02em", fontFamily: "'Special Elite', 'Courier New', cursive" },
+  clueTitle: { display: "inline-block", fontSize: 14, fontWeight: 400, letterSpacing: "0.16em", color: "#fff", background: "#b91c1c", padding: "2px 10px", borderRadius: 2, marginBottom: 8, fontFamily: "'VT323', monospace" },
+  clueText: { fontSize: 15, lineHeight: "32px", color: "#0f0500", margin: "0 0 0px", fontFamily: "'Lora', Georgia, serif", fontStyle: "italic", fontWeight: 700 },
+  directiveLine: { height: 1, background: "rgba(220,38,38,0.3)", margin: "8px 0", borderTop: "1px dashed rgba(220,38,38,0.35)" },
+  clueQuestion: { fontSize: 15, fontWeight: 700, color: "#b91c1c", margin: 0, letterSpacing: "0.02em", fontFamily: "'Special Elite', 'Courier New', cursive", lineHeight: "32px" },
 
   inputSection: { marginBottom: 8, paddingTop: 14, borderTop: "1px dashed rgba(146,64,14,0.15)", position: "relative", zIndex: 1 },
   inputLabel: { display: "block", fontSize: 14, fontWeight: 400, letterSpacing: "0.08em", color: "#78350f", marginBottom: 8, fontFamily: "'Special Elite', 'Courier New', cursive" },
@@ -1140,21 +1145,21 @@ const styles = {
   input: { width: "100%", boxSizing: "border-box", padding: "10px 14px", fontSize: 14, fontFamily: "'Courier New', Courier, monospace", border: "1.5px solid #92400e", borderRadius: 4, background: "rgba(255,255,255,0.8)", color: "#1c0a00", outline: "none", letterSpacing: "0.04em" },
   trackBtn: { width: "100%", padding: "10px 0", background: "#dc2626", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap", textAlign: "center" },
 
-  scanSection: { padding: "14px 16px", margin: "0 0 8px", background: "rgba(0,0,0,0.04)", border: "1px solid rgba(146,64,14,0.15)", borderRadius: 4, position: "relative", zIndex: 1 },
+  scanSection: { padding: "14px 16px", margin: "0 0 8px", background: "#0a120a", border: "1px solid rgba(0,180,60,0.25)", borderRadius: 4, position: "relative", zIndex: 1, boxShadow: "inset 0 0 20px rgba(0,0,0,0.5)" },
   scanHeader: { display: "flex", alignItems: "center", gap: 10, marginBottom: 10 },
-  scanDot: { width: 8, height: 8, borderRadius: "50%", background: "#dc2626", display: "inline-block", boxShadow: "0 0 6px #dc2626", flexShrink: 0 },
-  scanTitle: { fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", color: "#991b1b" },
-  scanMessage: { fontSize: 13, color: "#78350f", fontFamily: "'Courier New', Courier, monospace", margin: "0 0 6px", letterSpacing: "0.04em", minHeight: 20 },
-  progressBar: { height: 8, background: "rgba(0,0,0,0.1)", borderRadius: 2, overflow: "hidden", marginBottom: 6, marginTop: 4 },
-  progressFill: { height: "100%", borderRadius: 2, backgroundImage: "linear-gradient(90deg,#991b1b,#dc2626), repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)", backgroundBlendMode: "multiply" },
-  scanProgress: { fontSize: 11, color: "#991b1b", margin: 0, textAlign: "right", letterSpacing: "0.08em" },
+  scanDot: { width: 8, height: 8, borderRadius: "50%", background: "#22c55e", display: "inline-block", boxShadow: "0 0 6px #22c55e", flexShrink: 0 },
+  scanTitle: { fontSize: 15, fontWeight: 400, letterSpacing: "0.16em", color: "#4ade80", fontFamily: "'VT323', monospace" },
+  scanMessage: { fontSize: 15, color: "#86efac", fontFamily: "'VT323', monospace", margin: "0 0 6px", letterSpacing: "0.06em", minHeight: 20 },
+  progressBar: { height: 8, background: "rgba(0,0,0,0.4)", borderRadius: 2, overflow: "hidden", marginBottom: 6, marginTop: 4, border: "1px solid rgba(0,180,60,0.2)" },
+  progressFill: { height: "100%", borderRadius: 2, backgroundImage: "linear-gradient(90deg, #15803d, #22c55e), repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)", backgroundBlendMode: "multiply" },
+  scanProgress: { fontSize: 14, color: "#4ade80", margin: 0, textAlign: "right", letterSpacing: "0.08em", fontFamily: "'VT323', monospace" },
 
   resultSection: { marginBottom: 4, position: "relative", zIndex: 1 },
-  resultBanner: { border: "1.5px solid", borderRadius: 6, padding: "14px 18px", marginBottom: 16 },
+  resultBanner: { border: "1.5px solid", borderRadius: 4, padding: "14px 18px", marginBottom: 16 },
   resultTagRow: { marginBottom: 8 },
-  resultTag: { display: "inline-block", color: "#fff", fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", padding: "3px 10px", borderRadius: 2 },
-  resultTitle: { fontSize: 15, fontWeight: 700, margin: "0 0 4px", letterSpacing: "0.02em", fontFamily: "'Courier New', Courier, monospace" },
-  resultSub: { fontSize: 12, color: "#166534", margin: 0, letterSpacing: "0.06em" },
+  resultTag: { display: "inline-block", color: "#fff", fontSize: 16, fontFamily: "'VT323', monospace", letterSpacing: "0.14em", padding: "2px 12px", borderRadius: 2 },
+  resultTitle: { fontSize: 16, fontWeight: 400, margin: "0 0 4px", letterSpacing: "0.02em", fontFamily: "'Special Elite', cursive" },
+  resultSub: { fontSize: 12, color: "#166534", margin: 0, letterSpacing: "0.06em", fontFamily: "'VT323', monospace", fontSize: 14 },
 
   agentSection: { marginTop: 4, position: "relative", zIndex: 1 },
 
@@ -1166,8 +1171,8 @@ const styles = {
   },
   retryLeft: { flex: 1 },
   retryLabel: {
-    display: "block", fontSize: 8, fontWeight: 700, letterSpacing: "0.14em",
-    color: "#7f1d1d", marginBottom: 4,
+    display: "block", fontSize: 14, fontWeight: 400, letterSpacing: "0.14em",
+    color: "#7f1d1d", marginBottom: 4, fontFamily: "'VT323', monospace",
   },
   retryText: {
     fontSize: 11, color: "#78350f", margin: 0,
@@ -1182,7 +1187,7 @@ const styles = {
   submitBtn: { width: "100%", padding: "10px 0", background: "#7f1d1d", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap", textAlign: "center" },
 
   cardFooter: { display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 20, paddingTop: 12, borderTop: "1px solid rgba(146,64,14,0.2)", position: "relative", zIndex: 1 },
-  footerText: { fontSize: 9, color: "#a16207", letterSpacing: "0.08em" },
+  footerText: { fontSize: 13, color: "#a16207", letterSpacing: "0.08em", fontFamily: "'VT323', monospace" },
 
   newMissionBtn: {
     marginTop: 20,
@@ -1214,7 +1219,7 @@ const styles = {
   folderFields: { display: "flex", flexDirection: "column", gap: 14, position: "relative", zIndex: 1 },
   folderField: { display: "flex", flexDirection: "column", gap: 3, paddingBottom: 14, borderBottom: "1px solid rgba(146,64,14,0.12)" },
   folderFieldLabel: { fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", color: "#a16207", fontFamily: "'VT323', 'Courier New', monospace" },
-  folderFieldValue: { fontSize: 14, fontWeight: 700, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.03em" },
+  folderFieldValue: { fontSize: 15, fontWeight: 400, color: "#1c0a00", fontFamily: "'Special Elite', cursive", letterSpacing: "0.02em" },
   folderFooter: { marginTop: 20, paddingTop: 12, borderTop: "1px solid rgba(146,64,14,0.15)", position: "relative", zIndex: 1 },
   folderFooterText: { fontSize: 9, color: "#a16207", letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace" },
 };
