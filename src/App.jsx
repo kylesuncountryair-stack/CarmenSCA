@@ -13,12 +13,13 @@ const generateCaseNumber = () => {
   return `SC-${y}-${m}${day}-${rand}`;
 };
 
-const correctAnswers = ["sea", "seattle", "seattle, washington", "seattle, was", "seattle wa", "seattle washington", "seatac", "sea - washington"];
+const correctAnswers = ["msy", "orleans", "new orleans, louisiana", "new orleans, la", "new orleans la", "new orleans louisiana", "neworleans", "msy - new orleans", "nawlins"];
 
 // ── Update this list each day ─────────────────────────────────────────────────
 const PRIOR_SIGHTINGS = [
   { city: "Orlando, FL", code: "MCO", date: "JUN 22, 2026", status: "ESCAPED" },
   { city: "Las Vegas, NV", code: "LAS", date: "JUN 23, 2026", status: "ESCAPED" },
+   { city: "Seattle, WA", code: "SEA", date: "JUN 24, 2026", status: "ESCAPED" },
 ];
 
 const scanMessages = [
@@ -42,7 +43,7 @@ const HEX_CHARS = "0123456789ABCDEF";
 const randomHex = (len) => Array.from({ length: len }, () => HEX_CHARS[Math.floor(Math.random() * 16)]).join("");
 
 const prompt =
-  "Our target vanished into a land of perpetual drizzle and suspiciously good coffee. She was last spotted buying a raincoat, staring up at a futuristic tower that reaches toward space, and asking fishermen why they were throwing their catch. Before backup arrived, a thick fog rolled in and when it lifted, she was gone, leaving only the faint scent of espresso behind...";
+  "Our latest lead came with a soundtrack. Carmen surfaced in a city where every few blocks seem to have their own band, balconies are dressed in intricate ironwork, and the air somehow smells like both chicory and spicy cooking. Witnesses watched her duck into a hidden courtyard, admire a grand cathedral overlooking a lively square, and strike up a conversation with a captain preparing a paddlewheel riverboat for departure. When our agents finally caught up, the music had changed, the crowd had shifted and Carmen had vanished without a trace except for a trail of powdered sugar leading nowhere.";
 
 const LOCKOUT_KEY = "carmen_played_date";
 
@@ -526,7 +527,7 @@ export default function CarmenGame() {
                     <div style={styles.folderField}>
                       <span style={styles.folderFieldLabel}>OUTCOME</span>
                       {isCorrect ? (
-                        <RedactedReveal text="Seattle, WA (SEA) — Target Located" />
+                        <RedactedReveal text="New Orleans, LA - (MSY) — Target Located" />
                       ) : (
                         <span style={{ ...styles.folderFieldValue, color: "#dc2626" }}>Suspect Evaded — Location Unknown</span>
                       )}
@@ -860,7 +861,7 @@ export default function CarmenGame() {
                           text={isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. Better luck next time, Agent."}
                           color={isCorrect ? "#166534" : "#991b1b"}
                         />
-                        {isCorrect && <p style={styles.resultSub}>Suspect located in Seattle, WA (SEA)</p>}
+                        {isCorrect && <p style={styles.resultSub}>Suspect located in New orleans, LA (MSY)</p>}
                       </motion.div>
                     </div>
                     {!isCorrect && canRetry && (
