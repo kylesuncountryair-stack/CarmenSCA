@@ -868,29 +868,46 @@ export default function CarmenGame() {
 
                 {scanning && (
                   <motion.div key="scanning" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={styles.scanSection}>
-                    <div style={styles.scanHeader}>
-                      <span style={{ ...styles.scanDot, animation: "pulse 1.2s ease-in-out infinite" }}></span>
-                      <span style={styles.scanTitle}>SCANNING...</span>
-                      <div style={{ marginLeft: "auto" }}><SignalBars /></div>
+                    {/* Terminal title bar */}
+                    <div style={styles.scanTitleBar}>
+                      <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#dc2626", display: "inline-block" }}></span>
+                      <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#facc15", display: "inline-block" }}></span>
+                      <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e", display: "inline-block" }}></span>
+                      <span style={{ fontSize: 11, color: "rgba(0,180,60,0.5)", letterSpacing: "0.1em", marginLeft: 6, fontFamily: "'VT323', monospace" }}>SC-PURSUIT-TERMINAL — ACTIVE TRACE</span>
                     </div>
-                    <ScanMessage text={scanMessages[scanStep]} step={scanStep} />
-                    <CoordTracker locked={coordLocked} isCorrect={coordCorrect} />
-                    <div style={styles.progressBar}>
-                      <div style={{ ...styles.progressFill, width: `${scanProgress}%`, transition: "width 0.15s ease-out" }}></div>
+                    <div style={styles.scanBody}>
+                      <div style={styles.scanHeader}>
+                        <span style={{ ...styles.scanDot, animation: "pulse 1.2s ease-in-out infinite" }}></span>
+                        <span style={styles.scanTitle}>SCANNING...</span>
+                        <div style={{ marginLeft: "auto" }}><SignalBars /></div>
+                      </div>
+                      <ScanMessage text={scanMessages[scanStep]} step={scanStep} />
+                      <CoordTracker locked={coordLocked} isCorrect={coordCorrect} />
+                      <div style={styles.progressBar}>
+                        <div style={{ ...styles.progressFill, width: `${scanProgress}%`, transition: "width 0.15s ease-out" }}></div>
+                      </div>
+                      <p style={styles.scanProgress}>{scanProgress}%</p>
                     </div>
-                    <p style={styles.scanProgress}>{scanProgress}%</p>
                   </motion.div>
                 )}
 
                 {decrypting && (
                   <motion.div key="decrypting" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={styles.scanSection}>
-                    <div style={styles.scanHeader}>
-                      <span style={{ ...styles.scanDot, background: "#facc15", boxShadow: "0 0 6px #facc15", animation: "pulse 0.5s ease-in-out infinite" }}></span>
-                      <span style={{ ...styles.scanTitle, color: "#facc15", animation: "decryptPulse 0.5s ease-in-out infinite" }}>DECRYPTING...</span>
+                    <div style={styles.scanTitleBar}>
+                      <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#dc2626", display: "inline-block" }}></span>
+                      <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#facc15", display: "inline-block" }}></span>
+                      <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e", display: "inline-block" }}></span>
+                      <span style={{ fontSize: 11, color: "rgba(250,204,21,0.5)", letterSpacing: "0.1em", marginLeft: 6, fontFamily: "'VT323', monospace" }}>SC-PURSUIT-TERMINAL — DECRYPTING</span>
                     </div>
-                    <p style={{ ...styles.scanMessage, color: "#fef08a", marginBottom: 10 }}>ANALYZING RESULTS...</p>
-                    <div style={{ ...styles.progressBar, marginTop: 0 }}>
-                      <div style={{ ...styles.progressFill, width: "100%", animation: "barFlash 0.3s steps(2) infinite" }}></div>
+                    <div style={styles.scanBody}>
+                      <div style={styles.scanHeader}>
+                        <span style={{ ...styles.scanDot, background: "#facc15", boxShadow: "0 0 6px #facc15", animation: "pulse 0.5s ease-in-out infinite" }}></span>
+                        <span style={{ ...styles.scanTitle, color: "#facc15", animation: "decryptPulse 0.5s ease-in-out infinite" }}>DECRYPTING...</span>
+                      </div>
+                      <p style={{ ...styles.scanMessage, color: "#fef08a", marginBottom: 10 }}>ANALYZING RESULTS...</p>
+                      <div style={{ ...styles.progressBar, marginTop: 0 }}>
+                        <div style={{ ...styles.progressFill, width: "100%", animation: "barFlash 0.3s steps(2) infinite" }}></div>
+                      </div>
                     </div>
                   </motion.div>
                 )}
@@ -1145,10 +1162,32 @@ const styles = {
   input: { width: "100%", boxSizing: "border-box", padding: "10px 14px", fontSize: 14, fontFamily: "'Courier New', Courier, monospace", border: "1.5px solid #92400e", borderRadius: 4, background: "rgba(255,255,255,0.8)", color: "#1c0a00", outline: "none", letterSpacing: "0.04em" },
   trackBtn: { width: "100%", padding: "10px 0", background: "#dc2626", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap", textAlign: "center" },
 
-  scanSection: { padding: "14px 16px", margin: "0 0 8px", background: "#0a120a", border: "1px solid rgba(0,180,60,0.25)", borderRadius: 4, position: "relative", zIndex: 1, boxShadow: "inset 0 0 20px rgba(0,0,0,0.5)" },
+  scanSection: {
+    margin: "0 0 8px",
+    border: "1px solid rgba(0,180,60,0.35)",
+    borderRadius: 4,
+    position: "relative",
+    zIndex: 1,
+    overflow: "hidden",
+    boxShadow: "0 4px 20px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,0,0,0.4)",
+    background: "#050e05",
+    backgroundImage: [
+      "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.18) 2px, rgba(0,0,0,0.18) 4px)",
+      "radial-gradient(ellipse at 50% 50%, rgba(0,40,0,0.0) 0%, rgba(0,0,0,0.35) 100%)",
+    ].join(","),
+  },
+  scanTitleBar: {
+    background: "rgba(0,180,60,0.12)",
+    borderBottom: "1px solid rgba(0,180,60,0.2)",
+    padding: "5px 12px",
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+  },
+  scanBody: { padding: "12px 16px" },
   scanHeader: { display: "flex", alignItems: "center", gap: 10, marginBottom: 10 },
-  scanDot: { width: 8, height: 8, borderRadius: "50%", background: "#22c55e", display: "inline-block", boxShadow: "0 0 6px #22c55e", flexShrink: 0 },
-  scanTitle: { fontSize: 15, fontWeight: 400, letterSpacing: "0.16em", color: "#4ade80", fontFamily: "'VT323', monospace" },
+  scanDot: { width: 7, height: 7, borderRadius: "50%", background: "#22c55e", display: "inline-block", boxShadow: "0 0 5px #22c55e", flexShrink: 0 },
+  scanTitle: { fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", color: "#4ade80", fontFamily: "'VT323', monospace" },
   scanMessage: { fontSize: 15, color: "#86efac", fontFamily: "'VT323', monospace", margin: "0 0 6px", letterSpacing: "0.06em", minHeight: 20 },
   progressBar: { height: 8, background: "rgba(0,0,0,0.4)", borderRadius: 2, overflow: "hidden", marginBottom: 6, marginTop: 4, border: "1px solid rgba(0,180,60,0.2)" },
   progressFill: { height: "100%", borderRadius: 2, backgroundImage: "linear-gradient(90deg, #15803d, #22c55e), repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)", backgroundBlendMode: "multiply" },
