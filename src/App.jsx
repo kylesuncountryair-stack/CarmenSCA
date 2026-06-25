@@ -833,7 +833,7 @@ export default function CarmenGame() {
                 <span style={styles.clueTitle}>INTEL REPORT</span>
                 <p style={styles.clueText}>{prompt}</p>
                 <div style={styles.directiveLine}></div>
-                <p style={styles.clueQuestion}>Where in the Sun Country world did they go?</p>
+                <p style={styles.clueQuestion}>Where in the Sun Country World is Carmen Sandiego?</p>
               </div>
 
               <AnimatePresence mode="wait">
@@ -1084,7 +1084,7 @@ const styles = {
 
   suspectProfileRow: { display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 12, paddingBottom: 12, borderBottom: "1px solid rgba(146,64,14,0.15)" },
   suspectNameBlock: { flex: 1, minWidth: 0 },
-  suspectName: { fontSize: 22, fontWeight: 700, color: "#1c0a00", margin: "0 0 2px", letterSpacing: "0.01em", fontFamily: "'Playfair Display', Georgia, serif" },
+  suspectName: { fontSize: 22, fontWeight: 700, color: "#1c0a00", margin: "0 0 2px", letterSpacing: "0.02em", fontFamily: "'Special Elite', 'Courier New', cursive" },
   suspectAlias: { fontSize: 12, color: "#78350f", fontStyle: "italic", margin: "0 0 8px", fontFamily: "'Lora', Georgia, serif", letterSpacing: "0.02em" },
   suspectBadges: { display: "flex", gap: 5, flexWrap: "wrap" },
   suspectBadgeDanger: { fontSize: 8, fontWeight: 700, letterSpacing: "0.12em", color: "#fff", background: "#dc2626", padding: "2px 7px", borderRadius: 2 },
@@ -1095,21 +1095,21 @@ const styles = {
 
   suspectFieldRow: { display: "flex", flexWrap: "wrap" },
   suspectField: { display: "flex", flexDirection: "column", gap: 3, flex: "1 1 120px", paddingRight: 20 },
-  fieldLabel: { fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", color: "#a16207", fontFamily: "'Space Mono', 'Courier New', monospace" },
+  fieldLabel: { fontSize: 13, fontWeight: 400, letterSpacing: "0.14em", color: "#a16207", fontFamily: "'VT323', 'Courier New', monospace" },
   fieldValue: { fontSize: 13, fontWeight: 700, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.03em" },
 
   sectionDivider: { display: "flex", alignItems: "center", gap: 10, marginBottom: 14, position: "relative", zIndex: 1 },
 
   sightingsTable: { marginBottom: 0, position: "relative", zIndex: 1, border: "1px solid rgba(146,64,14,0.2)", borderRadius: 4, overflow: "hidden" },
   sightingsHeader: { display: "flex", padding: "5px 10px", background: "rgba(146,64,14,0.08)", borderBottom: "1px solid rgba(146,64,14,0.15)" },
-  sightingsCell: { fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#78350f", fontFamily: "'Space Mono', 'Courier New', monospace" },
+  sightingsCell: { fontSize: 13, fontWeight: 400, letterSpacing: "0.12em", color: "#78350f", fontFamily: "'VT323', 'Courier New', monospace" },
   sightingsRow: { display: "flex", padding: "8px 10px", alignItems: "center" },
   sightingsDate: { fontSize: 11, color: "#78350f", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.02em", fontWeight: 600 },
   sightingsValue: { fontSize: 13, fontWeight: 700, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.02em" },
   sightingsCode: { fontSize: 12, fontWeight: 700, color: "#78350f", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.06em" },
   sightingsStatus: { fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", fontFamily: "'Courier New', Courier, monospace" },
   sectionRule: { flex: 1, height: 1, background: "rgba(146,64,14,0.3)" },
-  sectionLabel: { fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", color: "#78350f", whiteSpace: "nowrap", fontFamily: "'Space Mono', 'Courier New', monospace" },
+  sectionLabel: { fontSize: 13, fontWeight: 400, letterSpacing: "0.14em", color: "#78350f", whiteSpace: "nowrap", fontFamily: "'VT323', 'Courier New', monospace" },
 
   clueBox: {
     background: "#fff",
@@ -1132,10 +1132,10 @@ const styles = {
   clueTitle: { display: "inline-block", fontSize: 9, fontWeight: 700, letterSpacing: "0.16em", color: "#fff", background: "#b91c1c", padding: "3px 10px", borderRadius: 2, marginBottom: 12 },
   clueText: { fontSize: 15, lineHeight: 1.8, color: "#0f0500", margin: "0 0 14px", fontFamily: "'Lora', Georgia, serif", fontStyle: "italic", fontWeight: 700 },
   directiveLine: { height: 1, background: "rgba(220,38,38,0.3)", marginBottom: 12, borderTop: "1px dashed rgba(220,38,38,0.35)" },
-  clueQuestion: { fontSize: 14, fontWeight: 700, color: "#b91c1c", margin: 0, letterSpacing: "0.04em", fontFamily: "'Space Mono', 'Courier New', monospace" },
+  clueQuestion: { fontSize: 15, fontWeight: 700, color: "#b91c1c", margin: 0, letterSpacing: "0.02em", fontFamily: "'Special Elite', 'Courier New', cursive" },
 
   inputSection: { marginBottom: 8, paddingTop: 14, borderTop: "1px dashed rgba(146,64,14,0.15)", position: "relative", zIndex: 1 },
-  inputLabel: { display: "block", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#78350f", marginBottom: 8 },
+  inputLabel: { display: "block", fontSize: 14, fontWeight: 400, letterSpacing: "0.08em", color: "#78350f", marginBottom: 8, fontFamily: "'Special Elite', 'Courier New', cursive" },
   inputRow: { display: "flex", flexDirection: "column", gap: 8 },
   input: { width: "100%", boxSizing: "border-box", padding: "10px 14px", fontSize: 14, fontFamily: "'Courier New', Courier, monospace", border: "1.5px solid #92400e", borderRadius: 4, background: "rgba(255,255,255,0.8)", color: "#1c0a00", outline: "none", letterSpacing: "0.04em" },
   trackBtn: { width: "100%", padding: "10px 0", background: "#dc2626", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap", textAlign: "center" },
@@ -1208,12 +1208,12 @@ const styles = {
   folderTabCase: { color: "rgba(255,255,255,0.6)", fontSize: 9, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace" },
   folderBody: { background: "linear-gradient(160deg, #f7e8c8 0%, #f2ddb0 40%, #eedba8 100%)", border: "2px solid #92400e", borderTop: "2px solid #92400e", borderRadius: "0 8px 8px 8px", padding: "28px 32px 24px", position: "relative", overflow: "visible", boxShadow: "0 24px 60px rgba(0,0,0,0.75), inset 0 0 40px rgba(120,60,0,0.08)" },
   filedStamp: { position: "absolute", top: 20, right: 20, fontSize: 13, fontWeight: 700, letterSpacing: "0.2em", border: "3px solid", padding: "5px 12px", borderRadius: 3, opacity: 0.88, fontFamily: "'Courier New', Courier, monospace", transformOrigin: "center", zIndex: 2 },
-  folderTitle: { fontSize: 22, fontWeight: 700, color: "#1c0a00", margin: "0 0 2px", letterSpacing: "0.02em", position: "relative", zIndex: 1, fontFamily: "'Playfair Display', Georgia, serif" },
+  folderTitle: { fontSize: 22, fontWeight: 700, color: "#1c0a00", margin: "0 0 2px", letterSpacing: "0.02em", position: "relative", zIndex: 1, fontFamily: "'Special Elite', 'Courier New', cursive" },
   folderSuspect: { fontSize: 12, color: "#78350f", margin: "0 0 16px", letterSpacing: "0.04em", fontFamily: "'Lora', Georgia, serif", fontStyle: "italic", position: "relative", zIndex: 1 },
   folderDivider: { height: 1, background: "rgba(146,64,14,0.25)", marginBottom: 20, position: "relative", zIndex: 1 },
   folderFields: { display: "flex", flexDirection: "column", gap: 14, position: "relative", zIndex: 1 },
   folderField: { display: "flex", flexDirection: "column", gap: 3, paddingBottom: 14, borderBottom: "1px solid rgba(146,64,14,0.12)" },
-  folderFieldLabel: { fontSize: 9, fontWeight: 700, letterSpacing: "0.16em", color: "#a16207", fontFamily: "'Space Mono', 'Courier New', monospace" },
+  folderFieldLabel: { fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", color: "#a16207", fontFamily: "'VT323', 'Courier New', monospace" },
   folderFieldValue: { fontSize: 14, fontWeight: 700, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.03em" },
   folderFooter: { marginTop: 20, paddingTop: 12, borderTop: "1px solid rgba(146,64,14,0.15)", position: "relative", zIndex: 1 },
   folderFooterText: { fontSize: 9, color: "#a16207", letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace" },
