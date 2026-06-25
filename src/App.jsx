@@ -17,8 +17,8 @@ const correctAnswers = ["sea", "seattle", "seattle, washington", "seattle, was",
 
 // ── Update this list each day ─────────────────────────────────────────────────
 const PRIOR_SIGHTINGS = [
-  { city: "Orlando, FL", code: "MCO", date: "JUN 10, 2026", status: "ESCAPED" },
-  { city: "Las Vegas, NV", code: "LAS", date: "JUN 17, 2026", status: "ESCAPED" },
+  { city: "Orlando, FL", code: "MCO", date: "JUN 22, 2026", status: "ESCAPED" },
+  { city: "Las Vegas, NV", code: "LAS", date: "JUN 23, 2026", status: "ESCAPED" },
 ];
 
 const scanMessages = [
@@ -497,42 +497,71 @@ export default function CarmenGame() {
             </div>
             <div style={styles.folderBody}>
               <div style={styles.paperLines}></div>
-              <motion.div initial={{ scale: 1.6, opacity: 0, rotate: -6 }} animate={{ scale: 1, opacity: 1, rotate: -3 }} transition={{ delay: 0.35, type: "spring", stiffness: 220, damping: 14 }} onAnimationComplete={() => playStamp()} style={{ ...styles.filedStamp, borderColor: isCorrect ? "#15803d" : "#dc2626", color: isCorrect ? "#15803d" : "#dc2626" }}>
-                {isCorrect ? "CASE CLOSED" : "CASE OPEN"}
-              </motion.div>
-              <p style={styles.folderTitle}>Pursuit Dossier</p>
-              <p style={styles.folderSuspect}>Re: Carmen Sandiego</p>
-              <div style={styles.folderDivider}></div>
-              <div style={styles.folderFields}>
-                <div style={styles.folderField}>
-                  <span style={styles.folderFieldLabel}>REPORTING AGENT</span>
-                  <span style={styles.folderFieldValue}>{name}</span>
-                </div>
-                <div style={styles.folderField}>
-                  <span style={styles.folderFieldLabel}>FILED</span>
-                  <span style={styles.folderFieldValue}>{new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }).toUpperCase()}</span>
-                </div>
-                <div style={styles.folderField}>
-                  <span style={styles.folderFieldLabel}>{isCorrect ? "LOCATION CONFIRMED" : "SUBMITTED LOCATION"}</span>
-                  <span style={styles.folderFieldValue}>{answer.toUpperCase()}</span>
-                </div>
-                {firstAnswer && (
-                  <div style={styles.folderField}>
-                    <span style={styles.folderFieldLabel}>PRIOR ATTEMPT</span>
-                    <span style={{ ...styles.folderFieldValue, color: "#dc2626", textDecoration: "line-through", opacity: 0.7 }}>{firstAnswer.toUpperCase()}</span>
+              <div style={styles.folderColumns}>
+
+                {/* LEFT — case metadata */}
+                <div style={{ ...styles.folderLeft, boxShadow: "4px 0 12px rgba(0,0,0,0.06)" }}>
+                  <p style={styles.folderTitle}>Pursuit Dossier</p>
+                  <p style={styles.folderSuspect}>Re: Carmen Sandiego</p>
+                  <div style={styles.folderDivider}></div>
+                  <div style={styles.folderFields}>
+                    <div style={styles.folderField}>
+                      <span style={styles.folderFieldLabel}>REPORTING AGENT</span>
+                      <span style={styles.folderFieldValue}>{name}</span>
+                    </div>
+                    <div style={styles.folderField}>
+                      <span style={styles.folderFieldLabel}>FILED</span>
+                      <span style={styles.folderFieldValue}>{new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }).toUpperCase()}</span>
+                    </div>
+                    <div style={styles.folderField}>
+                      <span style={styles.folderFieldLabel}>{isCorrect ? "LOCATION CONFIRMED" : "SUBMITTED LOCATION"}</span>
+                      <span style={styles.folderFieldValue}>{answer.toUpperCase()}</span>
+                    </div>
+                    {firstAnswer && (
+                      <div style={styles.folderField}>
+                        <span style={styles.folderFieldLabel}>PRIOR ATTEMPT</span>
+                        <span style={{ ...styles.folderFieldValue, color: "#dc2626", textDecoration: "line-through", opacity: 0.7 }}>{firstAnswer.toUpperCase()}</span>
+                      </div>
+                    )}
+                    <div style={styles.folderField}>
+                      <span style={styles.folderFieldLabel}>OUTCOME</span>
+                      {isCorrect ? (
+                        <RedactedReveal text="Seattle, WA (SEA) — Target Located" />
+                      ) : (
+                        <span style={{ ...styles.folderFieldValue, color: "#dc2626" }}>Suspect Evaded — Location Unknown</span>
+                      )}
+                    </div>
                   </div>
-                )}
-                <div style={styles.folderField}>
-                  <span style={styles.folderFieldLabel}>OUTCOME</span>
-                  {isCorrect ? (
-                    <RedactedReveal text="Seattle, WA (SEA) — Target Located" />
-                  ) : (
-                    <span style={{ ...styles.folderFieldValue, color: "#dc2626" }}>Suspect Evaded — Location Unknown</span>
-                  )}
                 </div>
+
+                {/* Spine */}
+                <div style={styles.folderSpine}></div>
+
+                {/* RIGHT — stamp */}
+                <div style={{ ...styles.folderRight, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20, padding: "10px 0" }}>
+                  <motion.div
+                    initial={{ scale: 1.8, opacity: 0, rotate: -8 }}
+                    animate={{ scale: 1, opacity: 1, rotate: isCorrect ? -4 : -4 }}
+                    transition={{ delay: 0.3, type: "spring", stiffness: 220, damping: 14 }}
+                    onAnimationComplete={() => playStamp()}
+                    style={{ border: `4px solid ${isCorrect ? "#15803d" : "#dc2626"}`, padding: "10px 20px", opacity: 0.88 }}
+                  >
+                    <span style={{ fontSize: 20, fontWeight: 700, letterSpacing: "0.2em", color: isCorrect ? "#15803d" : "#dc2626", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" }}>
+                      {isCorrect ? "CASE CLOSED" : "CASE OPEN"}
+                    </span>
+                  </motion.div>
+                  <div style={{ height: 1, width: "80%", background: "rgba(146,64,14,0.15)" }}></div>
+                  <div style={{ textAlign: "center" }}>
+                    <span style={{ display: "block", fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", color: "#a16207", marginBottom: 4 }}>CASE REFERENCE</span>
+                    <span style={{ fontSize: 11, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace" }}>{caseNumber}</span>
+                  </div>
+                </div>
+
               </div>
               <div style={styles.folderFooter}>
                 <span style={styles.folderFooterText}>Sun Country Airlines · Eyes Only · Destroy After Reading</span>
+                <span style={{ ...styles.folderFooterText, color: "rgba(161,98,7,0.35)" }}>·</span>
+                <span style={styles.folderFooterText}>REF-{caseNumber}</span>
               </div>
             </div>
           </motion.div>
@@ -555,28 +584,50 @@ export default function CarmenGame() {
             </div>
             <div style={styles.folderBody}>
               <div style={styles.paperLines}></div>
-              <motion.div initial={{ scale: 1.6, opacity: 0, rotate: -6 }} animate={{ scale: 1, opacity: 1, rotate: -3 }} transition={{ delay: 0.35, type: "spring", stiffness: 220, damping: 14 }} onAnimationComplete={() => playStamp()} style={{ ...styles.filedStamp, borderColor: "#dc2626", color: "#dc2626" }}>
-                CASE CLOSED
-              </motion.div>
-              <p style={styles.folderTitle}>Access Denied</p>
-              <p style={styles.folderSuspect}>Re: Carmen Sandiego</p>
-              <div style={styles.folderDivider}></div>
-              <div style={styles.folderFields}>
-                <div style={styles.folderField}>
-                  <span style={styles.folderFieldLabel}>STATUS</span>
-                  <span style={{ ...styles.folderFieldValue, color: "#dc2626" }}>Report Already Filed Today</span>
+              <div style={styles.folderColumns}>
+
+                {/* LEFT — status info */}
+                <div style={{ ...styles.folderLeft, boxShadow: "4px 0 12px rgba(0,0,0,0.06)" }}>
+                  <p style={styles.folderTitle}>Access Denied</p>
+                  <p style={styles.folderSuspect}>Re: Carmen Sandiego</p>
+                  <div style={styles.folderDivider}></div>
+                  <div style={styles.folderFields}>
+                    <div style={styles.folderField}>
+                      <span style={styles.folderFieldLabel}>STATUS</span>
+                      <span style={{ ...styles.folderFieldValue, color: "#dc2626" }}>Report Already Filed Today</span>
+                    </div>
+                    <div style={styles.folderField}>
+                      <span style={styles.folderFieldLabel}>NEXT BRIEFING</span>
+                      <span style={styles.folderFieldValue}>Tomorrow — New Case Awaits</span>
+                    </div>
+                  </div>
                 </div>
-                <div style={styles.folderField}>
-                  <span style={styles.folderFieldLabel}>NEXT BRIEFING</span>
-                  <span style={styles.folderFieldValue}>Tomorrow — New Case Awaits</span>
+
+                {/* Spine */}
+                <div style={styles.folderSpine}></div>
+
+                {/* RIGHT — stamp + new mission */}
+                <div style={{ ...styles.folderRight, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20, padding: "10px 0" }}>
+                  <motion.div
+                    initial={{ scale: 1.8, opacity: 0, rotate: -8 }}
+                    animate={{ scale: 1, opacity: 1, rotate: -4 }}
+                    transition={{ delay: 0.3, type: "spring", stiffness: 220, damping: 14 }}
+                    onAnimationComplete={() => playStamp()}
+                    style={{ border: "4px solid #dc2626", padding: "10px 20px", opacity: 0.88 }}
+                  >
+                    <span style={{ fontSize: 20, fontWeight: 700, letterSpacing: "0.2em", color: "#dc2626", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" }}>
+                      CASE CLOSED
+                    </span>
+                  </motion.div>
+                  <button
+                    onClick={() => { localStorage.removeItem(LOCKOUT_KEY); window.location.reload(); }}
+                    style={styles.newMissionBtn}
+                  >
+                    Assign Me A New Mission
+                  </button>
                 </div>
+
               </div>
-              <button
-                onClick={() => { localStorage.removeItem(LOCKOUT_KEY); window.location.reload(); }}
-                style={styles.newMissionBtn}
-              >
-                Assign Me A New Mission
-              </button>
               <div style={styles.folderFooter}>
                 <span style={styles.folderFooterText}>Sun Country Airlines · Pursuit Division · {new Date().getFullYear()}</span>
               </div>
@@ -794,15 +845,23 @@ export default function CarmenGame() {
                   <motion.div key="result" initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} style={styles.resultSection}>
                     <div style={{ ...styles.resultBanner, borderColor: isCorrect ? "#16a34a" : "#dc2626", background: isCorrect ? "rgba(74,222,128,0.08)" : "rgba(248,113,113,0.08)" }}>
                       <div style={styles.resultTagRow}>
-                        <span style={{ ...styles.resultTag, background: isCorrect ? "#16a34a" : "#dc2626" }}>
+                        <motion.span
+                          initial={{ scale: 1.8, opacity: 0, rotate: -6 }}
+                          animate={{ scale: 1, opacity: 1, rotate: -1 }}
+                          transition={{ delay: 0.1, type: "spring", stiffness: 280, damping: 16 }}
+                          onAnimationComplete={() => playStamp()}
+                          style={{ ...styles.resultTag, background: isCorrect ? "#16a34a" : "#dc2626", display: "inline-block", transformOrigin: "left center" }}
+                        >
                           {isCorrect ? "TARGET LOCKED" : "SUSPECT EVADED"}
-                        </span>
+                        </motion.span>
                       </div>
-                      <VerdictLine
-                        text={isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. Better luck next time, Agent."}
-                        color={isCorrect ? "#166534" : "#991b1b"}
-                      />
-                      {isCorrect && <p style={styles.resultSub}>Suspect located in Seattle, WA (SEA)</p>}
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+                        <VerdictLine
+                          text={isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. Better luck next time, Agent."}
+                          color={isCorrect ? "#166534" : "#991b1b"}
+                        />
+                        {isCorrect && <p style={styles.resultSub}>Suspect located in Seattle, WA (SEA)</p>}
+                      </motion.div>
                     </div>
                     {!isCorrect && canRetry && (
                       <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} style={styles.retryBox}>
@@ -1070,7 +1129,7 @@ const styles = {
     zIndex: 1,
   },
 
-  folderWrap: { width: "100%", maxWidth: 680, position: "relative", zIndex: 10 },
+  folderWrap: { width: "100%", maxWidth: 760, position: "relative", zIndex: 10 },
   folderTab: { display: "flex", justifyContent: "space-between", alignItems: "center", background: "#b91c1c", borderBottom: "3px solid #7f1d1d", borderRadius: "6px 6px 0 0", padding: "8px 18px", width: "38%" },
   folderTabText: { color: "#fff", fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", fontFamily: "'Courier New', Courier, monospace" },
   folderTabCase: { color: "rgba(255,255,255,0.6)", fontSize: 9, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace" },
