@@ -1046,7 +1046,7 @@ function RadarBackground({ fast }) {
 
 // ── Styles ────────────────────────────────────────────────────────────────────
 const styles = {
-  root: { minHeight: "100vh", background: "#050505", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Courier New', Courier, monospace", padding: "24px 16px", position: "relative", overflow: "hidden" },
+  root: { minHeight: "100vh", background: "#050505", display: "flex", alignItems: "flex-start", justifyContent: "center", fontFamily: "'Courier New', Courier, monospace", padding: "16px", position: "relative", overflow: "hidden" },
 
   crtOverlay: {
     position: "fixed", inset: 0, zIndex: 99, pointerEvents: "none",
@@ -1071,7 +1071,7 @@ const styles = {
   darkOverlay: { position: "absolute", inset: 0, background: "rgba(0,0,0,0.45)" },
 
   centeredFill: { display: "flex", alignItems: "center", justifyContent: "center", width: "100%", position: "relative", zIndex: 10 },
-  outer: { width: "100%", maxWidth: 960, position: "relative", zIndex: 10 },
+  outer: { width: "100%", maxWidth: 1100, position: "relative", zIndex: 10 },
 
   headerBar: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 20px", background: "#b91c1c", borderRadius: "6px 6px 0 0", borderBottom: "3px solid #7f1d1d" },
   headerLeft: { display: "flex", alignItems: "center", gap: 10 },
@@ -1081,8 +1081,8 @@ const styles = {
 
   card: { background: "linear-gradient(160deg, #fdf4e0 0%, #f8ebca 40%, #f4e4b8 100%)", border: "2px solid #92400e", borderTop: "none", borderRadius: "0 0 12px 12px", padding: "24px 28px 20px", boxShadow: "4px 8px 0 rgba(0,0,0,0.15), 0 24px 60px rgba(0,0,0,0.75), inset 0 0 40px rgba(120,60,0,0.08)", position: "relative", overflow: "hidden" },
 
-  folderColumns: { display: "flex", gap: 0, alignItems: "flex-start", marginBottom: 0 },
-  folderLeft: { flex: "0 0 38%", paddingRight: 20, boxShadow: "4px 0 12px rgba(0,0,0,0.06)" },
+  folderColumns: { display: "flex", gap: 0, alignItems: "stretch", marginBottom: 0 },
+  folderLeft: { flex: "0 0 30%", paddingRight: 20, boxShadow: "4px 0 12px rgba(0,0,0,0.06)" },
   folderSpine: { flex: "0 0 1px", background: "rgba(146,64,14,0.2)", alignSelf: "stretch", margin: "0 20px" },
   folderRight: { flex: 1, minWidth: 0 },
 
@@ -1092,7 +1092,7 @@ const styles = {
 
   paperYellow: { position: "absolute", left: 0, right: 0, top: 0, height: "45%", pointerEvents: "none", zIndex: 0, background: "linear-gradient(to bottom, rgba(180,120,40,0.07) 0%, transparent 100%)" },
 
-  paperMargin: { position: "absolute", top: 0, bottom: 0, left: "calc(38% + 27px)", width: "1px", background: "rgba(185,28,28,0.2)", pointerEvents: "none", zIndex: 1 },
+  paperMargin: { position: "absolute", top: 0, bottom: 0, left: "calc(30% + 27px)", width: "1px", background: "rgba(185,28,28,0.2)", pointerEvents: "none", zIndex: 1 },
 
 
   cardTopStrip: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20, position: "relative", zIndex: 1 },
