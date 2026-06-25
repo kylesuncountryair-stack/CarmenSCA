@@ -1130,9 +1130,9 @@ const styles = {
     backgroundPositionY: "14px, 0",
   },
   clueTitle: { display: "inline-block", fontSize: 9, fontWeight: 700, letterSpacing: "0.16em", color: "#fff", background: "#b91c1c", padding: "3px 10px", borderRadius: 2, marginBottom: 12 },
-  clueText: { fontSize: 15, lineHeight: 1.8, color: "#0f0500", margin: "0 0 14px", fontFamily: "'Lora', Georgia, serif", fontStyle: "italic" },
+  clueText: { fontSize: 15, lineHeight: 1.8, color: "#0f0500", margin: "0 0 14px", fontFamily: "'Lora', Georgia, serif", fontStyle: "italic", fontWeight: 700 },
   directiveLine: { height: 1, background: "rgba(220,38,38,0.3)", marginBottom: 12, borderTop: "1px dashed rgba(220,38,38,0.35)" },
-  clueQuestion: { fontSize: 16, fontWeight: 700, color: "#b91c1c", margin: 0, letterSpacing: "0.01em", fontFamily: "'Playfair Display', Georgia, serif" },
+  clueQuestion: { fontSize: 14, fontWeight: 700, color: "#b91c1c", margin: 0, letterSpacing: "0.04em", fontFamily: "'Space Mono', 'Courier New', monospace" },
 
   inputSection: { marginBottom: 8, paddingTop: 14, borderTop: "1px dashed rgba(146,64,14,0.15)", position: "relative", zIndex: 1 },
   inputLabel: { display: "block", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#78350f", marginBottom: 8 },
