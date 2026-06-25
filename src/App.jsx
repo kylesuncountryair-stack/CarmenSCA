@@ -429,8 +429,6 @@ export default function CarmenGame() {
           setBgFilter("sepia(0.3) hue-rotate(80deg) saturate(1.4)");
           setTimeout(() => setBgFilter("none"), 2500);
         } else {
-          setBgFilter("sepia(0.5) hue-rotate(320deg) saturate(1.6)");
-          setTimeout(() => setBgFilter("none"), 2500);
           if (!firstAnswer) {
             setFirstAnswer(answer);
             setCanRetry(true);
