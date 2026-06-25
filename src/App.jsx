@@ -94,8 +94,65 @@ function HexTrace() {
   return <span style={{ fontSize: 10, color: "#92400e", letterSpacing: "0.1em", opacity: 0.7 }}>TRACE: {trace}</span>;
 }
 
-// ── Typewriter hook ───────────────────────────────────────────────────────────
-function useTypewriter(text, speed = 38, withSound = false) {
+// ── Coordinate tracker ────────────────────────────────────────────────────────
+const CITY_COORDS = {
+  correct: { lat: 47.4502, lon: -122.3088, label: "SEA — LOCKED" },
+  decoys: [
+    { lat: 25.7959, lon: -80.2870, label: "MIA — LOCKED" },
+    { lat: 21.3187, lon: -157.9225, label: "HNL — LOCKED" },
+    { lat: 33.9425, lon: -118.4081, label: "LAX — LOCKED" },
+  ],
+};
+
+function CoordTracker({ locked, isCorrect }) {
+  const [lat, setLat] = useState(44.2 + Math.random() * 8);
+  const [lon, setLon] = useState(-110.5 - Math.random() * 20);
+
+  useEffect(() => {
+    if (locked) return;
+    const id = setInterval(() => {
+      setLat(prev => parseFloat((prev + (Math.random() - 0.5) * 0.8).toFixed(4)));
+      setLon(prev => parseFloat((prev + (Math.random() - 0.5) * 0.8).toFixed(4)));
+    }, 400);
+    return () => clearInterval(id);
+  }, [locked]);
+
+  const final = locked
+    ? isCorrect
+      ? CITY_COORDS.correct
+      : CITY_COORDS.decoys[Math.floor(Math.random() * CITY_COORDS.decoys.length)]
+    : null;
+
+  const displayLat = locked ? final.lat : lat;
+  const displayLon = locked ? final.lon : lon;
+  const latDir = displayLat >= 0 ? "N" : "S";
+  const lonDir = displayLon >= 0 ? "E" : "W";
+
+  return (
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+      <span style={{ fontSize: 11, color: locked ? (isCorrect ? "#16a34a" : "#dc2626") : "#92400e", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.08em", fontWeight: locked ? 700 : 400 }}>
+        LAT: {Math.abs(displayLat).toFixed(4)}°{latDir} · LON: {Math.abs(displayLon).toFixed(4)}°{lonDir}
+        {locked && <span style={{ marginLeft: 10, fontSize: 9, letterSpacing: "0.14em" }}>▸ {final.label}</span>}
+      </span>
+    </div>
+  );
+}
+
+// ── SVG stamp filter (injected once into DOM) ─────────────────────────────────
+function StampFilter() {
+  return (
+    <svg width="0" height="0" style={{ position: "absolute" }}>
+      <defs>
+        <filter id="stampFilter" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="turbulence" baseFrequency="0.065" numOctaves="4" seed="3" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.2" xChannelSelector="R" yChannelSelector="G" result="displaced" />
+          <feComposite in="displaced" in2="SourceGraphic" operator="in" />
+        </filter>
+      </defs>
+    </svg>
+  );
+}
+function useTypewriter(text, speed = 38) {
   const [displayed, setDisplayed] = useState("");
   const [done, setDone] = useState(false);
   useEffect(() => {
@@ -104,7 +161,6 @@ function useTypewriter(text, speed = 38, withSound = false) {
     const id = setInterval(() => {
       i++;
       setDisplayed(text.slice(0, i));
-      if (withSound) playTick();
       if (i >= text.length) { clearInterval(id); setDone(true); }
     }, speed);
     return () => clearInterval(id);
@@ -112,7 +168,7 @@ function useTypewriter(text, speed = 38, withSound = false) {
   return { displayed, done };
 }
 
-function TypewriterLine({ text, speed = 30, onDone, soundFn }) {
+function TypewriterLine({ text, speed = 30, onDone }) {
   const [displayed, setDisplayed] = useState("");
   const [done, setDone] = useState(false);
   useEffect(() => {
@@ -121,7 +177,6 @@ function TypewriterLine({ text, speed = 30, onDone, soundFn }) {
     const id = setInterval(() => {
       i++;
       setDisplayed(text.slice(0, i));
-      if (soundFn) soundFn(); else playTick();
       if (i >= text.length) { clearInterval(id); setDone(true); }
     }, speed);
     return () => clearInterval(id);
@@ -192,7 +247,7 @@ function BootSequence({ onComplete }) {
           setTimeout(() => {
             setFading(true);
             setTimeout(onComplete, 500);
-          }, 900);
+          }, 1900);
         }, 300);
       }, 200);
     }
@@ -206,10 +261,8 @@ function BootSequence({ onComplete }) {
     >
       <div style={styles.bootBox}>
         <div style={styles.bootHeader}>
+          <span style={styles.bootHeaderTitle}>SUN COUNTRY · PURSUIT DIVISION · SECURE TERMINAL</span>
           <span style={styles.bootHeaderDot}></span>
-          <span style={styles.bootHeaderDot}></span>
-          <span style={styles.bootHeaderDot}></span>
-          <span style={styles.bootHeaderTitle}>SC-TERMINAL v2.4.1</span>
         </div>
 
         <AnimatePresence mode="wait">
@@ -221,13 +274,11 @@ function BootSequence({ onComplete }) {
               style={styles.bootBody}
             >
               {completedLines.map((l, i) => (
-                <p key={i} style={{
-                  ...styles.bootLine,
-                  color: i === 0 ? "rgba(163,230,53,0.4)" : "rgba(163,230,53,0.75)",
-                }}>{l}</p>
+                <p key={i} style={{ ...styles.bootLine, color: "rgba(255,255,255,0.28)" }}>{l}</p>
               ))}
               {lineIndex < BOOT_CHECKS.length && (
-                <p style={{ ...styles.bootLine, color: "#a3e635" }}>
+                <p style={{ ...styles.bootLine, color: "rgba(255,255,255,0.9)" }}>
+                  <span style={{ color: "#dc2626", marginRight: 6 }}>›</span>
                   <TypewriterLine
                     key={lineIndex}
                     text={BOOT_CHECKS[lineIndex]}
@@ -245,12 +296,12 @@ function BootSequence({ onComplete }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
-              style={{ ...styles.bootBody, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 12 }}
+              style={{ ...styles.bootBody, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 10 }}
             >
-              <p style={{ ...styles.bootLine, color: "#4ade80", fontSize: 18, fontWeight: 700, letterSpacing: "0.2em", margin: 0, textAlign: "center" }}>
+              <p style={{ ...styles.bootLine, color: "#fff", fontSize: 17, fontWeight: 700, letterSpacing: "0.22em", margin: 0, textAlign: "center" }}>
                 ACCESS GRANTED
               </p>
-              <p style={{ ...styles.bootLine, color: "rgba(74,222,128,0.5)", fontSize: 9, margin: 0, letterSpacing: "0.16em", textAlign: "center" }}>
+              <p style={{ ...styles.bootLine, color: "rgba(255,255,255,0.35)", fontSize: 9, margin: 0, letterSpacing: "0.18em", textAlign: "center" }}>
                 PURSUIT DIVISION · SECURE TERMINAL
               </p>
             </motion.div>
@@ -304,6 +355,8 @@ export default function CarmenGame() {
 
   const [firstAnswer, setFirstAnswer] = useState(null);
   const [canRetry, setCanRetry] = useState(false);
+  const [coordLocked, setCoordLocked] = useState(false);
+  const [coordCorrect, setCoordCorrect] = useState(false);
   const scanProgress = useChunkyProgress(scanning);
   const inputRef = useRef(null);
 
@@ -338,6 +391,8 @@ export default function CarmenGame() {
       const match = correctAnswers.includes(normalized);
       localStorage.setItem(LOCKOUT_KEY, getTodayString());
       setRadarFast(false);
+      setCoordLocked(true);
+      setCoordCorrect(match);
 
       // DECRYPT phase
       setScanning(false);
@@ -405,6 +460,8 @@ export default function CarmenGame() {
     setFlashGreen(false);
     setFlashRed(false);
     setBgFilter("none");
+    setCoordLocked(false);
+    setCoordCorrect(false);
   };
 
   const keyframes = `
@@ -419,6 +476,7 @@ export default function CarmenGame() {
     @keyframes glitchShift { 0%{transform:translate(0)} 20%{transform:translate(-3px,1px)} 40%{transform:translate(3px,-1px)} 60%{transform:translate(-2px,0)} 80%{transform:translate(2px,1px)} 100%{transform:translate(0)} }
     @keyframes barFlash { 0%,100%{background:linear-gradient(90deg,#991b1b,#dc2626)} 50%{background:#fff} }
     @keyframes bgFilterFade { 0%{opacity:0} 15%{opacity:1} 75%{opacity:1} 100%{opacity:0} }
+    @keyframes stampBleed { 0%{filter:url(#stampFilter) opacity(0) blur(1px)} 100%{filter:url(#stampFilter) opacity(0.85) blur(0px)} }
   `;
 
   if (submitted) {
@@ -528,6 +586,7 @@ export default function CarmenGame() {
   return (
     <div style={{ ...styles.root, animation: "flicker 8s ease-in-out infinite" }}>
       <style>{keyframes}</style>
+      <StampFilter />
       {/* Background image layer with reactive filter */}
       <div style={{
         position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
@@ -644,7 +703,7 @@ export default function CarmenGame() {
 
                 <ScanMessage text={scanMessages[scanStep]} step={scanStep} />
 
-                <div style={{ marginBottom: 12 }}><HexTrace /></div>
+                <CoordTracker locked={coordLocked} isCorrect={coordCorrect} />
 
                 <div style={styles.progressBar}>
                   <div style={{ ...styles.progressFill, width: `${scanProgress}%`, transition: "width 0.15s ease-out" }}></div>
@@ -808,13 +867,13 @@ const styles = {
     backgroundSize: "100% 4px, 100% 100%",
   },
 
-  bootOverlay: { position: "fixed", inset: 0, zIndex: 50, background: "#000", display: "flex", alignItems: "center", justifyContent: "center" },
-  bootBox: { width: "100%", maxWidth: 540, border: "1px solid rgba(0,255,80,0.3)", borderRadius: 4, overflow: "hidden" },
-  bootHeader: { background: "rgba(0,255,80,0.08)", borderBottom: "1px solid rgba(0,255,80,0.2)", padding: "8px 14px", display: "flex", alignItems: "center", gap: 8 },
-  bootHeaderDot: { width: 10, height: 10, borderRadius: "50%", background: "rgba(0,255,80,0.4)", display: "inline-block" },
-  bootHeaderTitle: { fontSize: 10, color: "rgba(0,255,80,0.6)", letterSpacing: "0.12em", marginLeft: 6 },
-  bootBody: { background: "#000", padding: "20px 24px", minHeight: 240, height: 240, overflow: "hidden" },
-  bootLine: { fontSize: 13, color: "#a3e635", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.06em", margin: "0 0 10px", lineHeight: 1.4 },
+  bootOverlay: { position: "fixed", inset: 0, zIndex: 50, background: "#0a0402", display: "flex", alignItems: "center", justifyContent: "center" },
+  bootBox: { width: "100%", maxWidth: 560, border: "1px solid rgba(185,28,28,0.4)", borderRadius: 3, overflow: "hidden", boxShadow: "0 0 60px rgba(185,28,28,0.08)" },
+  bootHeader: { background: "#b91c1c", padding: "9px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" },
+  bootHeaderDot: { width: 8, height: 8, borderRadius: "50%", background: "rgba(255,255,255,0.3)", display: "inline-block" },
+  bootHeaderTitle: { fontSize: 10, color: "rgba(255,255,255,0.9)", letterSpacing: "0.14em", fontWeight: 700 },
+  bootBody: { background: "#0d0604", padding: "20px 24px", borderTop: "1px solid rgba(185,28,28,0.2)" },
+  bootLine: { fontSize: 12, color: "rgba(255,255,255,0.85)", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.04em", margin: "0 0 7px", lineHeight: 1.45 },
 
   radarContainer: { position: "fixed", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", zIndex: 1 },
   radarSvg: { position: "absolute", width: "min(120vw, 120vh)", height: "min(120vw, 120vh)" },
@@ -835,7 +894,7 @@ const styles = {
   paperLines: { position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0, backgroundImage: ["repeating-linear-gradient(transparent, transparent 27px, rgba(146,64,14,0.07) 27px, rgba(146,64,14,0.07) 28px)", "radial-gradient(ellipse at 0% 0%, rgba(120,53,15,0.09) 0%, transparent 55%)", "radial-gradient(ellipse at 100% 0%, rgba(120,53,15,0.07) 0%, transparent 50%)", "radial-gradient(ellipse at 100% 100%, rgba(120,53,15,0.1) 0%, transparent 55%)", "radial-gradient(ellipse at 0% 100%, rgba(120,53,15,0.09) 0%, transparent 55%)"].join(","), backgroundSize: "100% 28px, 100% 100%, 100% 100%, 100% 100%, 100% 100%", backgroundPositionY: "8px, 0, 0, 0, 0" },
 
   cardTopStrip: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20, position: "relative", zIndex: 1 },
-  classifiedBadge: { color: "#dc2626", fontSize: 14, fontWeight: 700, letterSpacing: "0.18em", padding: "4px 10px", border: "3px solid #dc2626", borderRadius: 3, display: "inline-block", opacity: 0.85, animation: "stampIn 0.5s ease-out forwards", transformOrigin: "center" },
+  classifiedBadge: { color: "#dc2626", fontSize: 14, fontWeight: 700, letterSpacing: "0.18em", padding: "4px 10px", border: "3px solid #dc2626", borderRadius: 3, display: "inline-block", opacity: 0.85, animation: "stampIn 0.5s ease-out forwards", transformOrigin: "center", filter: "url(#stampFilter)" },
   topRight: { display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 },
   dateStamp: { fontSize: 9, fontWeight: 700, color: "#78350f", letterSpacing: "0.1em" },
   priorityTag: { fontSize: 9, fontWeight: 700, color: "#dc2626", letterSpacing: "0.1em", border: "1px solid rgba(220,38,38,0.4)", padding: "2px 6px", borderRadius: 2, display: "inline-block", transform: "rotate(1.5deg)", transformOrigin: "center" },
@@ -863,13 +922,13 @@ const styles = {
   input: { flex: 1, padding: "10px 14px", fontSize: 14, fontFamily: "'Courier New', Courier, monospace", border: "1.5px solid #92400e", borderRadius: 4, background: "rgba(255,255,255,0.8)", color: "#1c0a00", outline: "none", letterSpacing: "0.04em" },
   trackBtn: { padding: "10px 20px", background: "#dc2626", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" },
 
-  scanSection: { padding: "16px 0", position: "relative", zIndex: 1 },
+  scanSection: { padding: "14px 16px", margin: "0 0 8px", background: "rgba(0,0,0,0.04)", border: "1px solid rgba(146,64,14,0.15)", borderRadius: 4, position: "relative", zIndex: 1 },
   scanHeader: { display: "flex", alignItems: "center", gap: 10, marginBottom: 10 },
   scanDot: { width: 8, height: 8, borderRadius: "50%", background: "#dc2626", display: "inline-block", boxShadow: "0 0 6px #dc2626", flexShrink: 0 },
   scanTitle: { fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", color: "#991b1b" },
   scanMessage: { fontSize: 13, color: "#78350f", fontFamily: "'Courier New', Courier, monospace", margin: "0 0 6px", letterSpacing: "0.04em", minHeight: 20 },
   progressBar: { height: 8, background: "rgba(0,0,0,0.1)", borderRadius: 2, overflow: "hidden", marginBottom: 6, marginTop: 4 },
-  progressFill: { height: "100%", background: "linear-gradient(90deg,#991b1b,#dc2626)", borderRadius: 2 },
+  progressFill: { height: "100%", borderRadius: 2, backgroundImage: "linear-gradient(90deg,#991b1b,#dc2626), repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)", backgroundBlendMode: "multiply" },
   scanProgress: { fontSize: 11, color: "#991b1b", margin: 0, textAlign: "right", letterSpacing: "0.08em" },
 
   resultSection: { marginBottom: 4, position: "relative", zIndex: 1 },
@@ -915,7 +974,7 @@ const styles = {
     color: "#fff",
     border: "none",
     borderRadius: 4,
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: 700,
     letterSpacing: "0.1em",
     fontFamily: "'Courier New', Courier, monospace",
