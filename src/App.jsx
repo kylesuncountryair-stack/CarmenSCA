@@ -648,7 +648,7 @@ export default function CarmenGame() {
       <div style={{
         position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
         backgroundImage: `url(${bgImage})`,
-        backgroundSize: "cover", backgroundPosition: "center",
+        backgroundSize: "contain", backgroundPosition: "center",
         filter: bgFilter !== "none" ? bgFilter : "sepia(0.05)",
         transition: "filter 0.4s ease",
       }}></div>
