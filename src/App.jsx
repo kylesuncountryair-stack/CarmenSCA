@@ -505,6 +505,8 @@ export default function CarmenGame() {
             </div>
             <div style={styles.folderBody}>
               <div style={styles.paperLines}></div>
+              <div style={styles.paperGrain}></div>
+              <div style={styles.paperYellow}></div>
               <div style={styles.folderColumns}>
 
                 {/* LEFT — case metadata */}
@@ -592,6 +594,8 @@ export default function CarmenGame() {
             </div>
             <div style={styles.folderBody}>
               <div style={styles.paperLines}></div>
+              <div style={styles.paperGrain}></div>
+              <div style={styles.paperYellow}></div>
               <div style={styles.folderColumns}>
 
                 {/* LEFT — status info */}
@@ -778,9 +782,26 @@ export default function CarmenGame() {
                   <span style={{ ...styles.sightingsCell, flex: "0 0 58px", textAlign: "right" }}>STATUS</span>
                 </div>
                 {PRIOR_SIGHTINGS.map((s, i) => (
-                  <div key={i} style={{ ...styles.sightingsRow, borderBottom: i < PRIOR_SIGHTINGS.length - 1 ? "1px solid rgba(146,64,14,0.1)" : "none", opacity: s.status === "ESCAPED" ? 0.7 : 1 }}>
+                  <div key={i} style={{ ...styles.sightingsRow, borderBottom: i < PRIOR_SIGHTINGS.length - 1 ? "1px solid rgba(146,64,14,0.1)" : "none", opacity: s.status === "ESCAPED" ? 0.75 : 1 }}>
                     <div style={{ flex: 1 }}>
-                      <span style={{ ...styles.sightingsValue, display: "block", textDecoration: s.status === "ESCAPED" ? "line-through" : "none", textDecorationColor: "rgba(146,64,14,0.5)" }}>{s.city}</span>
+                      <span style={{ ...styles.sightingsValue, display: "block", position: "relative" }}>
+                        {s.city}
+                        {s.status === "ESCAPED" && (
+                          <span style={{
+                            position: "absolute",
+                            left: "-2px",
+                            right: "-2px",
+                            top: "50%",
+                            transform: "translateY(-52%) rotate(-1.2deg)",
+                            height: "5px",
+                            background: "rgba(185,28,28,0.72)",
+                            borderRadius: "2px",
+                            filter: "blur(0.6px)",
+                            pointerEvents: "none",
+                            display: "block",
+                          }}></span>
+                        )}
+                      </span>
                       <span style={{ ...styles.sightingsDate, display: "block" }}>{s.date}</span>
                     </div>
                     <span style={{ ...styles.sightingsCode, flex: "0 0 38px", textAlign: "center" }}>{s.code}</span>
