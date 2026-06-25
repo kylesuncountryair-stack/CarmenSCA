@@ -103,7 +103,7 @@ function HexTrace() {
 
 // ── Coordinate tracker ────────────────────────────────────────────────────────
 const CITY_COORDS = {
-  correct: { lat: 47.4502, lon: -122.3088, label: "SEA — LOCKED" },
+  correct: { lat: 29.9511, lon: -90.0715, label: "MSY — LOCKED" },
   decoys: [
     { lat: 25.7959, lon: -80.2870, label: "MIA — LOCKED" },
     { lat: 21.3187, lon: -157.9225, label: "HNL — LOCKED" },
@@ -726,12 +726,12 @@ export default function CarmenGame() {
                     <span style={styles.fieldValue}>Forgery · Theft</span>
                   </div>
                   <div style={styles.suspectGridItem}>
-                    <span style={{ ...styles.fieldLabel, color: "#dc2626" }}>ARMED</span>
-                    <span style={{ ...styles.fieldValue, color: "#dc2626" }}>UNKNOWN</span>
+                    <span style={{ ...styles.fieldLabel, color: "#dc2626", fontSize: 11 }}>ARMED</span>
+                    <span style={{ ...styles.fieldValue, color: "#dc2626", fontSize: 15 }}>UNKNOWN</span>
                   </div>
                   <div style={styles.suspectGridItem}>
-                    <span style={{ ...styles.fieldLabel, color: "#dc2626" }}>APPROACH</span>
-                    <span style={{ ...styles.fieldValue, color: "#dc2626" }}>WITH CAUTION</span>
+                    <span style={{ ...styles.fieldLabel, color: "#dc2626", fontSize: 11 }}>APPROACH</span>
+                    <span style={{ ...styles.fieldValue, color: "#dc2626", fontSize: 15 }}>WITH CAUTION</span>
                   </div>
                 </div>
               </div>
@@ -861,7 +861,7 @@ export default function CarmenGame() {
                           text={isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. Better luck next time, Agent."}
                           color={isCorrect ? "#166534" : "#991b1b"}
                         />
-                        {isCorrect && <p style={styles.resultSub}>Suspect located in New orleans, LA (MSY)</p>}
+                        {isCorrect && <p style={styles.resultSub}>Suspect located in New Orleans, LA (MSY)</p>}
                       </motion.div>
                     </div>
                     {!isCorrect && canRetry && (
@@ -1029,8 +1029,8 @@ const styles = {
 
   suspectProfileRow: { display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 12, paddingBottom: 12, borderBottom: "1px solid rgba(146,64,14,0.15)" },
   suspectNameBlock: { flex: 1, minWidth: 0 },
-  suspectName: { fontSize: 18, fontWeight: 700, color: "#1c0a00", margin: "0 0 2px", letterSpacing: "0.01em" },
-  suspectAlias: { fontSize: 10, color: "#78350f", fontStyle: "italic", margin: "0 0 8px", fontFamily: "Georgia, serif", letterSpacing: "0.02em" },
+  suspectName: { fontSize: 22, fontWeight: 700, color: "#1c0a00", margin: "0 0 2px", letterSpacing: "0.01em" },
+  suspectAlias: { fontSize: 12, color: "#78350f", fontStyle: "italic", margin: "0 0 8px", fontFamily: "Georgia, serif", letterSpacing: "0.02em" },
   suspectBadges: { display: "flex", gap: 5, flexWrap: "wrap" },
   suspectBadgeDanger: { fontSize: 8, fontWeight: 700, letterSpacing: "0.12em", color: "#fff", background: "#dc2626", padding: "2px 7px", borderRadius: 2 },
   suspectBadgeWarn: { fontSize: 8, fontWeight: 700, letterSpacing: "0.12em", color: "#78350f", background: "rgba(146,64,14,0.12)", border: "1px solid rgba(146,64,14,0.25)", padding: "2px 7px", borderRadius: 2 },
@@ -1040,19 +1040,19 @@ const styles = {
 
   suspectFieldRow: { display: "flex", flexWrap: "wrap" },
   suspectField: { display: "flex", flexDirection: "column", gap: 3, flex: "1 1 120px", paddingRight: 20 },
-  fieldLabel: { fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", color: "#a16207" },
-  fieldValue: { fontSize: 12, fontWeight: 700, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.03em" },
+  fieldLabel: { fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", color: "#a16207" },
+  fieldValue: { fontSize: 13, fontWeight: 700, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.03em" },
 
   sectionDivider: { display: "flex", alignItems: "center", gap: 10, marginBottom: 14, position: "relative", zIndex: 1 },
 
   sightingsTable: { marginBottom: 0, position: "relative", zIndex: 1, border: "1px solid rgba(146,64,14,0.2)", borderRadius: 4, overflow: "hidden" },
   sightingsHeader: { display: "flex", padding: "5px 10px", background: "rgba(146,64,14,0.08)", borderBottom: "1px solid rgba(146,64,14,0.15)" },
-  sightingsCell: { fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", color: "#78350f", fontFamily: "'Courier New', Courier, monospace" },
+  sightingsCell: { fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#78350f", fontFamily: "'Courier New', Courier, monospace" },
   sightingsRow: { display: "flex", padding: "8px 10px", alignItems: "center" },
-  sightingsDate: { fontSize: 10, color: "#78350f", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.02em", fontWeight: 600 },
-  sightingsValue: { fontSize: 12, fontWeight: 700, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.02em" },
-  sightingsCode: { fontSize: 11, fontWeight: 700, color: "#78350f", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.06em" },
-  sightingsStatus: { fontSize: 9, fontWeight: 700, letterSpacing: "0.1em", fontFamily: "'Courier New', Courier, monospace" },
+  sightingsDate: { fontSize: 11, color: "#78350f", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.02em", fontWeight: 600 },
+  sightingsValue: { fontSize: 13, fontWeight: 700, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.02em" },
+  sightingsCode: { fontSize: 12, fontWeight: 700, color: "#78350f", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.06em" },
+  sightingsStatus: { fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", fontFamily: "'Courier New', Courier, monospace" },
   sectionRule: { flex: 1, height: 1, background: "rgba(146,64,14,0.3)" },
   sectionLabel: { fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", color: "#78350f", whiteSpace: "nowrap" },
 
