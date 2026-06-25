@@ -138,9 +138,9 @@ function CoordTracker({ locked, isCorrect }) {
 
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-      <span style={{ fontSize: 11, color: locked ? (isCorrect ? "#16a34a" : "#dc2626") : "#92400e", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.08em", fontWeight: locked ? 700 : 400 }}>
+      <span style={{ fontSize: 13, color: locked ? (isCorrect ? "#4ade80" : "#86efac") : "#86efac", fontFamily: "'VT323', monospace", letterSpacing: "0.08em", fontWeight: 400 }}>
         LAT: {Math.abs(displayLat).toFixed(4)}°{latDir} · LON: {Math.abs(displayLon).toFixed(4)}°{lonDir}
-        {locked && <span style={{ marginLeft: 10, fontSize: 9, letterSpacing: "0.14em" }}>▸ {final.label}</span>}
+        {locked && <span style={{ marginLeft: 10, fontSize: 12, letterSpacing: "0.14em" }}>▸ {final.label}</span>}
       </span>
     </div>
   );
@@ -1164,16 +1164,16 @@ const styles = {
 
   scanSection: {
     margin: "0 0 8px",
-    border: "1px solid rgba(0,180,60,0.35)",
+    border: "1px solid rgba(0,200,60,0.5)",
     borderRadius: 4,
     position: "relative",
     zIndex: 1,
     overflow: "hidden",
     boxShadow: "0 4px 20px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,0,0,0.4)",
-    background: "#050e05",
+    background: "#071a07",
     backgroundImage: [
-      "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.18) 2px, rgba(0,0,0,0.18) 4px)",
-      "radial-gradient(ellipse at 50% 50%, rgba(0,40,0,0.0) 0%, rgba(0,0,0,0.35) 100%)",
+      "repeating-linear-gradient(0deg, rgba(0,0,0,0.35) 0px, rgba(0,0,0,0.35) 1px, transparent 1px, transparent 4px)",
+      "radial-gradient(ellipse at 50% 50%, rgba(0,60,0,0.4) 0%, rgba(0,0,0,0.5) 100%)",
     ].join(","),
   },
   scanTitleBar: {
