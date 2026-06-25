@@ -646,7 +646,7 @@ export default function CarmenGame() {
       {/* Background image layer with reactive filter */}
       <div style={{
         position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
-        backgroundImage: "url('https://i.wpfc.ml/h7/uxapf2.png')",
+        backgroundImage: "url('/Background.png')",
         backgroundSize: "cover", backgroundPosition: "center",
         filter: bgFilter !== "none" ? bgFilter : "sepia(0.05)",
         transition: "filter 0.4s ease",
