@@ -1058,7 +1058,7 @@ const styles = {
   divider: { color: "rgba(255,255,255,0.35)", fontSize: 10 },
   caseTag: { color: "#fff", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", background: "rgba(0,0,0,0.3)", padding: "3px 10px", borderRadius: 3, border: "1px solid rgba(255,255,255,0.15)" },
 
-  card: { background: "linear-gradient(160deg, #f7e8c8 0%, #f2ddb0 40%, #eedba8 100%)", border: "2px solid #92400e", borderTop: "none", borderRadius: "0 0 12px 12px", padding: "24px 28px 20px", boxShadow: "4px 8px 0 rgba(0,0,0,0.15), 0 24px 60px rgba(0,0,0,0.75), inset 0 0 40px rgba(120,60,0,0.08)", position: "relative", overflow: "hidden" },
+  card: { background: "linear-gradient(160deg, #fdf4e0 0%, #f8ebca 40%, #f4e4b8 100%)", border: "2px solid #92400e", borderTop: "none", borderRadius: "0 0 12px 12px", padding: "24px 28px 20px", boxShadow: "4px 8px 0 rgba(0,0,0,0.15), 0 24px 60px rgba(0,0,0,0.75), inset 0 0 40px rgba(120,60,0,0.08)", position: "relative", overflow: "hidden" },
 
   folderColumns: { display: "flex", gap: 0, alignItems: "flex-start", marginBottom: 0 },
   folderLeft: { flex: "0 0 36%", paddingRight: 20, boxShadow: "4px 0 12px rgba(0,0,0,0.06)" },
@@ -1206,7 +1206,7 @@ const styles = {
   folderTab: { display: "flex", justifyContent: "space-between", alignItems: "center", background: "#b91c1c", borderBottom: "3px solid #7f1d1d", borderRadius: "6px 6px 0 0", padding: "8px 18px", width: "38%" },
   folderTabText: { color: "#fff", fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", fontFamily: "'Courier New', Courier, monospace" },
   folderTabCase: { color: "rgba(255,255,255,0.6)", fontSize: 9, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace" },
-  folderBody: { background: "linear-gradient(160deg, #f7e8c8 0%, #f2ddb0 40%, #eedba8 100%)", border: "2px solid #92400e", borderTop: "2px solid #92400e", borderRadius: "0 8px 8px 8px", padding: "28px 32px 24px", position: "relative", overflow: "visible", boxShadow: "0 24px 60px rgba(0,0,0,0.75), inset 0 0 40px rgba(120,60,0,0.08)" },
+  folderBody: { background: "linear-gradient(160deg, #fdf4e0 0%, #f8ebca 40%, #f4e4b8 100%)", border: "2px solid #92400e", borderTop: "2px solid #92400e", borderRadius: "0 8px 8px 8px", padding: "28px 32px 24px", position: "relative", overflow: "visible", boxShadow: "0 24px 60px rgba(0,0,0,0.75), inset 0 0 40px rgba(120,60,0,0.08)" },
   filedStamp: { position: "absolute", top: 20, right: 20, fontSize: 13, fontWeight: 700, letterSpacing: "0.2em", border: "3px solid", padding: "5px 12px", borderRadius: 3, opacity: 0.88, fontFamily: "'Courier New', Courier, monospace", transformOrigin: "center", zIndex: 2 },
   folderTitle: { fontSize: 22, fontWeight: 700, color: "#1c0a00", margin: "0 0 2px", letterSpacing: "0.02em", position: "relative", zIndex: 1, fontFamily: "'Special Elite', 'Courier New', cursive" },
   folderSuspect: { fontSize: 12, color: "#78350f", margin: "0 0 16px", letterSpacing: "0.04em", fontFamily: "'Lora', Georgia, serif", fontStyle: "italic", position: "relative", zIndex: 1 },
