@@ -65,53 +65,6 @@ function playStamp() {
   } catch (e) {}
 }
 
-function playChime(correct) {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const gain = ctx.createGain();
-    gain.connect(ctx.destination);
-    const freqs = correct ? [523, 659, 784] : [392, 349];
-    freqs.forEach((freq, i) => {
-      const osc = ctx.createOscillator();
-      osc.connect(gain);
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.13);
-      gain.gain.setValueAtTime(0.18, ctx.currentTime + i * 0.13);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + i * 0.13 + 0.35);
-      osc.start(ctx.currentTime + i * 0.13);
-      osc.stop(ctx.currentTime + i * 0.13 + 0.35);
-    });
-  } catch (e) {}
-}
-
-function playBootTick() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.type = "square";
-    osc.frequency.setValueAtTime(680, ctx.currentTime);
-    gain.gain.setValueAtTime(0.025, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.06);
-    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.06);
-  } catch (e) {}
-}
-
-function playTick() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.type = "square";
-    osc.frequency.setValueAtTime(1200, ctx.currentTime);
-    gain.gain.setValueAtTime(0.04, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.045);
-    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.045);
-  } catch (e) {}
-}
-
 // ── Signal bars ───────────────────────────────────────────────────────────────
 function SignalBars() {
   const [heights, setHeights] = useState([0.4, 0.7, 0.5, 0.9]);
@@ -352,11 +305,19 @@ export default function CarmenGame() {
   const [firstAnswer, setFirstAnswer] = useState(null);
   const [canRetry, setCanRetry] = useState(false);
   const scanProgress = useChunkyProgress(scanning);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     const played = localStorage.getItem(LOCKOUT_KEY);
     if (played === getTodayString()) setLockedOut(true);
   }, []);
+
+  // Autofocus input when boot completes
+  useEffect(() => {
+    if (!booting && inputRef.current) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [booting]);
 
   const handleSubmit = () => {
     if (!answer.trim()) return;
@@ -572,7 +533,7 @@ export default function CarmenGame() {
         position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
         backgroundImage: "url('https://i.wpfc.ml/h7/uxapf2.png')",
         backgroundSize: "cover", backgroundPosition: "center",
-        filter: bgFilter,
+        filter: bgFilter !== "none" ? bgFilter : "sepia(0.05)",
         transition: "filter 0.4s ease",
       }}></div>
       <div style={styles.crtOverlay}></div>
@@ -616,7 +577,7 @@ export default function CarmenGame() {
             <div style={styles.suspectFieldRow}>
               <div style={styles.suspectField}>
                 <span style={styles.fieldLabel}>ALIAS</span>
-                <span style={styles.fieldValue}>"The Red Shadow"</span>
+                <span style={{ ...styles.fieldValue, fontStyle: "italic" }}>"The Red Shadow"</span>
               </div>
               <div style={styles.suspectField}>
                 <span style={styles.fieldLabel}>STATUS</span>
@@ -634,8 +595,9 @@ export default function CarmenGame() {
           </div>
 
           <div style={styles.sectionDivider}>
-            <div style={styles.sectionRule}></div>
+            <div style={{ ...styles.sectionRule, flex: "0 0 20px" }}></div>
             <span style={styles.sectionLabel}>LAST KNOWN INTELLIGENCE</span>
+            <span style={{ color: "rgba(146,64,14,0.3)", fontSize: 10, margin: "0 2px" }}>›</span>
             <div style={styles.sectionRule}></div>
           </div>
 
@@ -652,6 +614,7 @@ export default function CarmenGame() {
                 <label style={styles.inputLabel}>Input Suspect's Location</label>
                 <div style={styles.inputRow}>
                   <input
+                    ref={inputRef}
                     value={answer}
                     onChange={(e) => setAnswer(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && answer.trim() && handleSubmit()}
@@ -696,7 +659,8 @@ export default function CarmenGame() {
                   <span style={{ ...styles.scanDot, background: "#f59e0b", boxShadow: "0 0 6px #f59e0b", animation: "pulse 0.5s ease-in-out infinite" }}></span>
                   <span style={{ ...styles.scanTitle, color: "#92400e", animation: "decryptPulse 0.5s ease-in-out infinite" }}>DECRYPTING...</span>
                 </div>
-                <div style={{ ...styles.progressBar, marginTop: 8 }}>
+                <p style={{ ...styles.scanMessage, color: "#92400e", marginBottom: 10 }}>ANALYZING RESULTS...</p>
+                <div style={{ ...styles.progressBar, marginTop: 0 }}>
                   <div style={{ ...styles.progressFill, width: "100%", animation: "barFlash 0.3s steps(2) infinite" }}></div>
                 </div>
               </motion.div>
@@ -746,7 +710,7 @@ export default function CarmenGame() {
                     <input
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && name.trim() && handleFinalSubmit()}
+                      onKeyDown={(e) => e.key === "Enter" && name.trim() && !submitting && handleFinalSubmit()}
                       onFocus={(e) => e.target.style.boxShadow = "0 0 0 3px rgba(146,64,14,0.25)"}
                       onBlur={(e) => e.target.style.boxShadow = "none"}
                       style={styles.input}
@@ -757,7 +721,7 @@ export default function CarmenGame() {
                       disabled={submitting || !name.trim()}
                       style={{ ...styles.submitBtn, opacity: submitting || !name.trim() ? 0.5 : 1, cursor: submitting || !name.trim() ? "not-allowed" : "pointer", animation: name.trim() && !submitting ? "btnPulse 1.8s ease-in-out infinite" : "none" }}
                     >
-                      {submitting ? "Filing..." : "File Report"}
+                      {submitting ? "Filing..." : "File Report →"}
                     </button>
                   </div>
                 </div>
@@ -837,8 +801,11 @@ const styles = {
 
   crtOverlay: {
     position: "fixed", inset: 0, zIndex: 99, pointerEvents: "none",
-    backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px)",
-    backgroundSize: "100% 4px",
+    backgroundImage: [
+      "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px)",
+      "radial-gradient(ellipse at 50% 50%, transparent 60%, rgba(0,0,0,0.35) 100%)",
+    ].join(","),
+    backgroundSize: "100% 4px, 100% 100%",
   },
 
   bootOverlay: { position: "fixed", inset: 0, zIndex: 50, background: "#000", display: "flex", alignItems: "center", justifyContent: "center" },
@@ -863,7 +830,7 @@ const styles = {
   divider: { color: "rgba(255,255,255,0.35)", fontSize: 10 },
   caseTag: { color: "#fff", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", background: "rgba(0,0,0,0.3)", padding: "3px 10px", borderRadius: 3, border: "1px solid rgba(255,255,255,0.15)" },
 
-  card: { background: "#fefce8", border: "2px solid #92400e", borderTop: "none", borderRadius: "0 0 12px 12px", padding: "28px 32px 24px", boxShadow: "0 24px 60px rgba(0,0,0,0.75)", position: "relative", overflow: "hidden" },
+  card: { background: "#fefce8", border: "2px solid #92400e", borderTop: "none", borderRadius: "0 0 12px 12px", padding: "28px 32px 24px", boxShadow: "4px 8px 0 rgba(0,0,0,0.15), 0 24px 60px rgba(0,0,0,0.75)", position: "relative", overflow: "hidden" },
 
   paperLines: { position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0, backgroundImage: ["repeating-linear-gradient(transparent, transparent 27px, rgba(146,64,14,0.07) 27px, rgba(146,64,14,0.07) 28px)", "radial-gradient(ellipse at 0% 0%, rgba(120,53,15,0.09) 0%, transparent 55%)", "radial-gradient(ellipse at 100% 0%, rgba(120,53,15,0.07) 0%, transparent 50%)", "radial-gradient(ellipse at 100% 100%, rgba(120,53,15,0.1) 0%, transparent 55%)", "radial-gradient(ellipse at 0% 100%, rgba(120,53,15,0.09) 0%, transparent 55%)"].join(","), backgroundSize: "100% 28px, 100% 100%, 100% 100%, 100% 100%, 100% 100%", backgroundPositionY: "8px, 0, 0, 0, 0" },
 
@@ -871,26 +838,26 @@ const styles = {
   classifiedBadge: { color: "#dc2626", fontSize: 14, fontWeight: 700, letterSpacing: "0.18em", padding: "4px 10px", border: "3px solid #dc2626", borderRadius: 3, display: "inline-block", opacity: 0.85, animation: "stampIn 0.5s ease-out forwards", transformOrigin: "center" },
   topRight: { display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 },
   dateStamp: { fontSize: 9, fontWeight: 700, color: "#78350f", letterSpacing: "0.1em" },
-  priorityTag: { fontSize: 9, fontWeight: 700, color: "#dc2626", letterSpacing: "0.1em", border: "1px solid rgba(220,38,38,0.4)", padding: "2px 6px", borderRadius: 2 },
+  priorityTag: { fontSize: 9, fontWeight: 700, color: "#dc2626", letterSpacing: "0.1em", border: "1px solid rgba(220,38,38,0.4)", padding: "2px 6px", borderRadius: 2, display: "inline-block", transform: "rotate(1.5deg)", transformOrigin: "center" },
 
-  suspectHeader: { marginBottom: 20, padding: "16px 18px", background: "rgba(0,0,0,0.04)", borderRadius: 6, border: "1px solid rgba(146,64,14,0.2)", position: "relative", zIndex: 1 },
+  suspectHeader: { marginBottom: 20, padding: "16px 18px", background: "rgba(0,0,0,0.04)", borderRadius: 6, border: "1px solid rgba(146,64,14,0.2)", boxShadow: "inset 0 1px 3px rgba(0,0,0,0.06)", position: "relative", zIndex: 1 },
   suspectName: { fontSize: 26, fontWeight: 700, color: "#1c0a00", margin: "0 0 14px", letterSpacing: "0.02em", borderBottom: "1px solid rgba(146,64,14,0.2)", paddingBottom: 12 },
   suspectFieldRow: { display: "flex", flexWrap: "wrap" },
   suspectField: { display: "flex", flexDirection: "column", gap: 3, flex: "1 1 120px", paddingRight: 20 },
-  fieldLabel: { fontSize: 8, fontWeight: 700, letterSpacing: "0.14em", color: "#a16207" },
+  fieldLabel: { fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", color: "#a16207" },
   fieldValue: { fontSize: 12, fontWeight: 700, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.03em" },
 
   sectionDivider: { display: "flex", alignItems: "center", gap: 10, marginBottom: 14, position: "relative", zIndex: 1 },
   sectionRule: { flex: 1, height: 1, background: "rgba(146,64,14,0.3)" },
   sectionLabel: { fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", color: "#78350f", whiteSpace: "nowrap" },
 
-  clueBox: { background: "rgba(255,255,255,0.55)", border: "1px solid rgba(146,64,14,0.3)", borderLeft: "4px solid #dc2626", borderRadius: 0, padding: "14px 16px", marginBottom: 20, position: "relative", zIndex: 1 },
+  clueBox: { background: "rgba(255,255,255,0.55)", border: "1px solid rgba(146,64,14,0.3)", borderLeft: "4px solid #b91c1c", borderRadius: 0, padding: "14px 16px", marginBottom: 20, boxShadow: "inset 0 1px 3px rgba(0,0,0,0.06)", position: "relative", zIndex: 1 },
   clueTitle: { display: "block", fontSize: 8, fontWeight: 700, letterSpacing: "0.16em", color: "#78350f", marginBottom: 8 },
   clueText: { fontSize: 15, lineHeight: 1.7, color: "#1c0a00", margin: "0 0 12px", fontFamily: "Georgia, serif", fontStyle: "italic" },
   directiveLine: { height: 1, background: "rgba(220,38,38,0.25)", marginBottom: 10, borderTop: "1px dashed rgba(220,38,38,0.3)" },
-  clueQuestion: { fontSize: 14, fontWeight: 700, color: "#dc2626", margin: 0, letterSpacing: "0.01em", fontFamily: "'Courier New', Courier, monospace" },
+  clueQuestion: { fontSize: 15, fontWeight: 700, color: "#dc2626", margin: 0, letterSpacing: "0.01em", fontFamily: "'Courier New', Courier, monospace" },
 
-  inputSection: { marginBottom: 8, position: "relative", zIndex: 1 },
+  inputSection: { marginBottom: 8, paddingTop: 14, borderTop: "1px dashed rgba(146,64,14,0.15)", position: "relative", zIndex: 1 },
   inputLabel: { display: "block", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#78350f", marginBottom: 8 },
   inputRow: { display: "flex", gap: 10 },
   input: { flex: 1, padding: "10px 14px", fontSize: 14, fontFamily: "'Courier New', Courier, monospace", border: "1.5px solid #92400e", borderRadius: 4, background: "rgba(255,255,255,0.8)", color: "#1c0a00", outline: "none", letterSpacing: "0.04em" },
@@ -935,7 +902,7 @@ const styles = {
     fontWeight: 700, letterSpacing: "0.1em", fontFamily: "'Courier New', Courier, monospace",
     cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0,
   },
-  submitBtn: { padding: "10px 20px", background: "#7f1d1d", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" },
+  submitBtn: { padding: "10px 28px", background: "#7f1d1d", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" },
 
   cardFooter: { display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 20, paddingTop: 12, borderTop: "1px solid rgba(146,64,14,0.2)", position: "relative", zIndex: 1 },
   footerText: { fontSize: 9, color: "#a16207", letterSpacing: "0.08em" },
@@ -959,17 +926,17 @@ const styles = {
   },
 
   folderWrap: { width: "100%", maxWidth: 520, position: "relative", zIndex: 10 },
-  folderTab: { display: "flex", justifyContent: "space-between", alignItems: "center", background: "#b91c1c", borderBottom: "3px solid #7f1d1d", borderRadius: "6px 6px 0 0", padding: "8px 18px", width: "55%" },
+  folderTab: { display: "flex", justifyContent: "space-between", alignItems: "center", background: "#b91c1c", borderBottom: "3px solid #7f1d1d", borderRadius: "6px 6px 0 0", padding: "8px 18px", width: "38%" },
   folderTabText: { color: "#fff", fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", fontFamily: "'Courier New', Courier, monospace" },
   folderTabCase: { color: "rgba(255,255,255,0.6)", fontSize: 9, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace" },
-  folderBody: { background: "#fefce8", border: "2px solid #92400e", borderTop: "2px solid #92400e", borderRadius: "0 6px 6px 6px", padding: "28px 32px 24px", position: "relative", overflow: "hidden", boxShadow: "0 24px 60px rgba(0,0,0,0.75)" },
-  filedStamp: { position: "absolute", top: 24, right: 24, fontSize: 13, fontWeight: 700, letterSpacing: "0.2em", border: "3px solid", padding: "5px 12px", borderRadius: 3, opacity: 0.88, fontFamily: "'Courier New', Courier, monospace", transformOrigin: "center", zIndex: 2 },
+  folderBody: { background: "#fefce8", border: "2px solid #92400e", borderTop: "2px solid #92400e", borderRadius: "0 8px 8px 8px", padding: "28px 32px 24px", position: "relative", overflow: "visible", boxShadow: "0 24px 60px rgba(0,0,0,0.75)" },
+  filedStamp: { position: "absolute", top: 20, right: 20, fontSize: 13, fontWeight: 700, letterSpacing: "0.2em", border: "3px solid", padding: "5px 12px", borderRadius: 3, opacity: 0.88, fontFamily: "'Courier New', Courier, monospace", transformOrigin: "center", zIndex: 2 },
   folderTitle: { fontSize: 22, fontWeight: 700, color: "#1c0a00", margin: "0 0 2px", letterSpacing: "0.02em", position: "relative", zIndex: 1 },
   folderSuspect: { fontSize: 12, color: "#78350f", margin: "0 0 16px", letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", position: "relative", zIndex: 1 },
   folderDivider: { height: 1, background: "rgba(146,64,14,0.25)", marginBottom: 20, position: "relative", zIndex: 1 },
   folderFields: { display: "flex", flexDirection: "column", gap: 14, position: "relative", zIndex: 1 },
   folderField: { display: "flex", flexDirection: "column", gap: 3, paddingBottom: 14, borderBottom: "1px solid rgba(146,64,14,0.12)" },
-  folderFieldLabel: { fontSize: 8, fontWeight: 700, letterSpacing: "0.16em", color: "#a16207", fontFamily: "'Courier New', Courier, monospace" },
+  folderFieldLabel: { fontSize: 9, fontWeight: 700, letterSpacing: "0.16em", color: "#a16207", fontFamily: "'Courier New', Courier, monospace" },
   folderFieldValue: { fontSize: 14, fontWeight: 700, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.03em" },
   folderFooter: { marginTop: 20, paddingTop: 12, borderTop: "1px solid rgba(146,64,14,0.15)", position: "relative", zIndex: 1 },
   folderFooterText: { fontSize: 9, color: "#a16207", letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace" },
