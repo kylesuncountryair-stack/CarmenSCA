@@ -417,7 +417,7 @@ export default function CarmenGame() {
           setTimeout(() => setFlashGreen(false), 1200);
         } else {
           setFlashRed(true);
-          setTimeout(() => setFlashRed(false), 1000);
+          setTimeout(() => setFlashRed(false), 400);
         }
       }, 1100);
 
@@ -474,7 +474,7 @@ export default function CarmenGame() {
     @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.85)} }
     @keyframes btnPulse { 0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0.5)} 50%{box-shadow:0 0 0 8px rgba(220,38,38,0)} }
     @keyframes greenFlash { 0%{opacity:0} 20%{opacity:0.55} 80%{opacity:0.55} 100%{opacity:0} }
-    @keyframes redFlash { 0%{opacity:0} 15%{opacity:1} 70%{opacity:1} 100%{opacity:0} }
+    @keyframes redFlash { 0%,80%{opacity:1} 100%{opacity:1} }
     @keyframes stampIn { 0%{opacity:0;transform:rotate(-4deg) scale(1.4)} 60%{opacity:1;transform:rotate(-2deg) scale(0.95)} 100%{opacity:1;transform:rotate(-2deg) scale(1)} }
     @keyframes unredact { 0%{width:100%} 100%{width:0%} }
     @keyframes flicker { 0%,100%{opacity:1} 92%{opacity:1} 93%{opacity:0.97} 94%{opacity:1} 97%{opacity:0.98} 98%{opacity:1} }
