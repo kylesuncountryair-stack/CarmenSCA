@@ -15,6 +15,12 @@ const generateCaseNumber = () => {
 
 const correctAnswers = ["sea", "seattle", "seattle, washington", "seattle, was", "seattle wa", "seattle washington", "seatac", "sea - washington"];
 
+// ── Update this list each day ─────────────────────────────────────────────────
+const PRIOR_SIGHTINGS = [
+  { city: "Orlando, FL", code: "MCO", date: "JUN 22, 2026", status: "ESCAPED" },
+  { city: "Las Vegas, NV", code: "LAS", date: "JUN 23, 2026", status: "ESCAPED" },
+];
+
 const scanMessages = [
   "Scanning Sun Country Global Network...",
   "Checking Skyspeed Reservations...",
@@ -623,6 +629,7 @@ export default function CarmenGame() {
         <div style={styles.card}>
           <div style={styles.paperLines}></div>
 
+          {/* Top strip — full width */}
           <div style={styles.cardTopStrip}>
             <div style={styles.classifiedBadge}>CLASSIFIED</div>
             <div style={styles.topRight}>
@@ -631,163 +638,198 @@ export default function CarmenGame() {
             </div>
           </div>
 
-          <div style={styles.suspectHeader}>
-            <p style={styles.suspectName}>Carmen Sandiego</p>
-            <div style={styles.suspectFieldRow}>
-              <div style={styles.suspectField}>
-                <span style={styles.fieldLabel}>ALIAS</span>
-                <span style={{ ...styles.fieldValue, fontStyle: "italic" }}>"The Red Shadow"</span>
+          {/* Open folder — two pages side by side */}
+          <div style={styles.folderColumns}>
+
+            {/* LEFT PAGE — suspect + sightings */}
+            <div style={styles.folderLeft}>
+
+              <div style={styles.suspectHeader}>
+                <p style={styles.suspectName}>Carmen Sandiego</p>
+                <div style={styles.suspectFieldRow}>
+                  <div style={{ ...styles.suspectField, flex: "1 1 50%", paddingRight: 12, marginBottom: 10 }}>
+                    <span style={styles.fieldLabel}>ALIAS</span>
+                    <span style={{ ...styles.fieldValue, fontStyle: "italic" }}>"The Red Shadow"</span>
+                  </div>
+                  <div style={{ ...styles.suspectField, flex: "1 1 50%", paddingRight: 0, marginBottom: 10 }}>
+                    <span style={styles.fieldLabel}>STATUS</span>
+                    <span style={{ ...styles.fieldValue, color: "#dc2626" }}>AT LARGE</span>
+                  </div>
+                  <div style={{ ...styles.suspectField, flex: "1 1 50%", paddingRight: 12 }}>
+                    <span style={styles.fieldLabel}>THREAT</span>
+                    <span style={{ ...styles.fieldValue, color: "#dc2626" }}>HIGH</span>
+                  </div>
+                  <div style={{ ...styles.suspectField, flex: "1 1 50%", paddingRight: 0 }}>
+                    <span style={styles.fieldLabel}>KNOWN FOR</span>
+                    <span style={styles.fieldValue}>Disguise · Misdirection · Theft</span>
+                  </div>
+                </div>
               </div>
-              <div style={styles.suspectField}>
-                <span style={styles.fieldLabel}>STATUS</span>
-                <span style={{ ...styles.fieldValue, color: "#dc2626" }}>AT LARGE</span>
+
+              <div style={styles.sectionDivider}>
+                <div style={{ ...styles.sectionRule, flex: "0 0 12px" }}></div>
+                <span style={styles.sectionLabel}>PRIOR SIGHTINGS</span>
+                <span style={{ color: "rgba(146,64,14,0.3)", fontSize: 10, margin: "0 2px" }}>›</span>
+                <div style={styles.sectionRule}></div>
               </div>
-              <div style={styles.suspectField}>
-                <span style={styles.fieldLabel}>THREAT</span>
-                <span style={{ ...styles.fieldValue, color: "#dc2626" }}>HIGH</span>
-              </div>
-              <div style={styles.suspectField}>
-                <span style={styles.fieldLabel}>KNOWN FOR</span>
-                <span style={styles.fieldValue}>Evasion · Deception · Travel</span>
+
+              <div style={styles.sightingsTable}>
+                <div style={styles.sightingsHeader}>
+                  <span style={{ ...styles.sightingsCell, flex: 1 }}>LOCATION</span>
+                  <span style={{ ...styles.sightingsCell, flex: "0 0 38px", textAlign: "center" }}>CODE</span>
+                  <span style={{ ...styles.sightingsCell, flex: "0 0 58px", textAlign: "right" }}>STATUS</span>
+                </div>
+                {PRIOR_SIGHTINGS.map((s, i) => (
+                  <div key={i} style={{ ...styles.sightingsRow, borderBottom: i < PRIOR_SIGHTINGS.length - 1 ? "1px solid rgba(146,64,14,0.1)" : "none" }}>
+                    <div style={{ flex: 1 }}>
+                      <span style={{ ...styles.sightingsValue, display: "block" }}>{s.city}</span>
+                      <span style={{ ...styles.sightingsDate, display: "block" }}>{s.date}</span>
+                    </div>
+                    <span style={{ ...styles.sightingsCode, flex: "0 0 38px", textAlign: "center" }}>{s.code}</span>
+                    <span style={{
+                      ...styles.sightingsStatus,
+                      flex: "0 0 58px",
+                      textAlign: "right",
+                      color: s.status === "ACTIVE" ? "#dc2626" : "#92400e",
+                    }}>{s.status}</span>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
 
-          <div style={styles.sectionDivider}>
-            <div style={{ ...styles.sectionRule, flex: "0 0 20px" }}></div>
-            <span style={styles.sectionLabel}>LAST KNOWN INTELLIGENCE</span>
-            <span style={{ color: "rgba(146,64,14,0.3)", fontSize: 10, margin: "0 2px" }}>›</span>
-            <div style={styles.sectionRule}></div>
-          </div>
+            {/* Folder spine */}
+            <div style={styles.folderSpine}></div>
 
-          <div style={styles.clueBox}>
-            <span style={styles.clueTitle}>INTEL REPORT</span>
-            <p style={styles.clueText}>{prompt}</p>
-            <div style={styles.directiveLine}></div>
-            <p style={styles.clueQuestion}>Where in the Sun Country world did they go?</p>
-          </div>
+            {/* RIGHT PAGE — intel + input */}
+            <div style={styles.folderRight}>
 
-          <AnimatePresence mode="wait">
-            {!scanning && !decrypting && !showName && (
-              <motion.div key="input" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} style={styles.inputSection}>
-                <label style={styles.inputLabel}>Input Suspect's Location</label>
-                <div style={styles.inputRow}>
-                  <input
-                    ref={inputRef}
-                    value={answer}
-                    onChange={(e) => setAnswer(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && answer.trim() && handleSubmit()}
-                    onFocus={(e) => e.target.style.boxShadow = "0 0 0 3px rgba(146,64,14,0.25)"}
-                    onBlur={(e) => e.target.style.boxShadow = "none"}
-                    style={styles.input}
-                    placeholder="City or airport code"
-                  />
-                  <button
-                    onClick={handleSubmit}
-                    disabled={!answer.trim()}
-                    style={{ ...styles.trackBtn, opacity: answer.trim() ? 1 : 0.45, cursor: answer.trim() ? "pointer" : "not-allowed", animation: answer.trim() ? "btnPulse 1.8s ease-in-out infinite" : "none" }}
-                  >
-                    Track Carmen
-                  </button>
-                </div>
-              </motion.div>
-            )}
+              <div style={styles.sectionDivider}>
+                <div style={{ ...styles.sectionRule, flex: "0 0 12px" }}></div>
+                <span style={styles.sectionLabel}>LAST KNOWN INTELLIGENCE</span>
+                <span style={{ color: "rgba(146,64,14,0.3)", fontSize: 10, margin: "0 2px" }}>›</span>
+                <div style={styles.sectionRule}></div>
+              </div>
 
-            {scanning && (
-              <motion.div key="scanning" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={styles.scanSection}>
-                <div style={styles.scanHeader}>
-                  <span style={{ ...styles.scanDot, animation: "pulse 1.2s ease-in-out infinite" }}></span>
-                  <span style={styles.scanTitle}>SCANNING...</span>
-                  <div style={{ marginLeft: "auto" }}><SignalBars /></div>
-                </div>
+              <div style={styles.clueBox}>
+                <span style={styles.clueTitle}>INTEL REPORT</span>
+                <p style={styles.clueText}>{prompt}</p>
+                <div style={styles.directiveLine}></div>
+                <p style={styles.clueQuestion}>Where in the Sun Country world did they go?</p>
+              </div>
 
-                <ScanMessage text={scanMessages[scanStep]} step={scanStep} />
-
-                <CoordTracker locked={coordLocked} isCorrect={coordCorrect} />
-
-                <div style={styles.progressBar}>
-                  <div style={{ ...styles.progressFill, width: `${scanProgress}%`, transition: "width 0.15s ease-out" }}></div>
-                </div>
-                <p style={styles.scanProgress}>{scanProgress}%</p>
-              </motion.div>
-            )}
-
-            {decrypting && (
-              <motion.div key="decrypting" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={styles.scanSection}>
-                <div style={styles.scanHeader}>
-                  <span style={{ ...styles.scanDot, background: "#f59e0b", boxShadow: "0 0 6px #f59e0b", animation: "pulse 0.5s ease-in-out infinite" }}></span>
-                  <span style={{ ...styles.scanTitle, color: "#92400e", animation: "decryptPulse 0.5s ease-in-out infinite" }}>DECRYPTING...</span>
-                </div>
-                <p style={{ ...styles.scanMessage, color: "#92400e", marginBottom: 10 }}>ANALYZING RESULTS...</p>
-                <div style={{ ...styles.progressBar, marginTop: 0 }}>
-                  <div style={{ ...styles.progressFill, width: "100%", animation: "barFlash 0.3s steps(2) infinite" }}></div>
-                </div>
-              </motion.div>
-            )}
-
-            {showName && (
-              <motion.div key="result" initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} style={styles.resultSection}>
-                <div style={{ ...styles.resultBanner, borderColor: isCorrect ? "#16a34a" : "#dc2626", background: isCorrect ? "rgba(74,222,128,0.08)" : "rgba(248,113,113,0.08)" }}>
-                  <div style={styles.resultTagRow}>
-                    <span style={{ ...styles.resultTag, background: isCorrect ? "#16a34a" : "#dc2626" }}>
-                      {isCorrect ? "TARGET LOCKED" : "SUSPECT EVADED"}
-                    </span>
-                  </div>
-                  <VerdictLine
-                    text={isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. Better luck next time, Agent."}
-                    color={isCorrect ? "#166534" : "#991b1b"}
-                  />
-                  {isCorrect && <p style={styles.resultSub}>Suspect located in Seattle, WA (SEA)</p>}
-                </div>
-
-                {/* Double or nothing */}
-                {!isCorrect && canRetry && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    style={styles.retryBox}
-                  >
-                    <div style={styles.retryLeft}>
-                      <span style={styles.retryLabel}>REASSIGNMENT AVAILABLE</span>
-                      <p style={styles.retryText}>One retry permitted. Your first attempt will remain on record.</p>
+              <AnimatePresence mode="wait">
+                {!scanning && !decrypting && !showName && (
+                  <motion.div key="input" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} style={styles.inputSection}>
+                    <label style={styles.inputLabel}>Input Suspect's Location</label>
+                    <div style={styles.inputRow}>
+                      <input
+                        ref={inputRef}
+                        value={answer}
+                        onChange={(e) => setAnswer(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && answer.trim() && handleSubmit()}
+                        onFocus={(e) => e.target.style.boxShadow = "0 0 0 3px rgba(146,64,14,0.25)"}
+                        onBlur={(e) => e.target.style.boxShadow = "none"}
+                        style={styles.input}
+                        placeholder="City or airport code"
+                      />
+                      <button
+                        onClick={handleSubmit}
+                        disabled={!answer.trim()}
+                        style={{ ...styles.trackBtn, opacity: answer.trim() ? 1 : 0.45, cursor: answer.trim() ? "pointer" : "not-allowed", animation: answer.trim() ? "btnPulse 1.8s ease-in-out infinite" : "none" }}
+                      >
+                        Track Carmen
+                      </button>
                     </div>
-                    <button
-                      onClick={handleRetry}
-                      onMouseEnter={(e) => { e.target.style.background = "rgba(127,29,29,0.1)"; e.target.style.color = "#991b1b"; }}
-                      onMouseLeave={(e) => { e.target.style.background = "transparent"; e.target.style.color = "#7f1d1d"; }}
-                      style={styles.retryBtn}
-                    >
-                      Request Reassignment
-                    </button>
                   </motion.div>
                 )}
 
-                <div style={styles.agentSection}>
-                  <label style={styles.inputLabel}>Agent Full Name</label>
-                  <div style={styles.inputRow}>
-                    <input
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && name.trim() && !submitting && handleFinalSubmit()}
-                      onFocus={(e) => e.target.style.boxShadow = "0 0 0 3px rgba(146,64,14,0.25)"}
-                      onBlur={(e) => e.target.style.boxShadow = "none"}
-                      style={styles.input}
-                      placeholder="Enter your name to file report"
-                    />
-                    <button
-                      onClick={handleFinalSubmit}
-                      disabled={submitting || !name.trim()}
-                      style={{ ...styles.submitBtn, opacity: submitting || !name.trim() ? 0.5 : 1, cursor: submitting || !name.trim() ? "not-allowed" : "pointer", animation: name.trim() && !submitting ? "btnPulse 1.8s ease-in-out infinite" : "none" }}
-                    >
-                      {submitting ? "Filing..." : "File Report →"}
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                {scanning && (
+                  <motion.div key="scanning" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={styles.scanSection}>
+                    <div style={styles.scanHeader}>
+                      <span style={{ ...styles.scanDot, animation: "pulse 1.2s ease-in-out infinite" }}></span>
+                      <span style={styles.scanTitle}>SCANNING...</span>
+                      <div style={{ marginLeft: "auto" }}><SignalBars /></div>
+                    </div>
+                    <ScanMessage text={scanMessages[scanStep]} step={scanStep} />
+                    <CoordTracker locked={coordLocked} isCorrect={coordCorrect} />
+                    <div style={styles.progressBar}>
+                      <div style={{ ...styles.progressFill, width: `${scanProgress}%`, transition: "width 0.15s ease-out" }}></div>
+                    </div>
+                    <p style={styles.scanProgress}>{scanProgress}%</p>
+                  </motion.div>
+                )}
 
+                {decrypting && (
+                  <motion.div key="decrypting" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={styles.scanSection}>
+                    <div style={styles.scanHeader}>
+                      <span style={{ ...styles.scanDot, background: "#f59e0b", boxShadow: "0 0 6px #f59e0b", animation: "pulse 0.5s ease-in-out infinite" }}></span>
+                      <span style={{ ...styles.scanTitle, color: "#92400e", animation: "decryptPulse 0.5s ease-in-out infinite" }}>DECRYPTING...</span>
+                    </div>
+                    <p style={{ ...styles.scanMessage, color: "#92400e", marginBottom: 10 }}>ANALYZING RESULTS...</p>
+                    <div style={{ ...styles.progressBar, marginTop: 0 }}>
+                      <div style={{ ...styles.progressFill, width: "100%", animation: "barFlash 0.3s steps(2) infinite" }}></div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {showName && (
+                  <motion.div key="result" initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} style={styles.resultSection}>
+                    <div style={{ ...styles.resultBanner, borderColor: isCorrect ? "#16a34a" : "#dc2626", background: isCorrect ? "rgba(74,222,128,0.08)" : "rgba(248,113,113,0.08)" }}>
+                      <div style={styles.resultTagRow}>
+                        <span style={{ ...styles.resultTag, background: isCorrect ? "#16a34a" : "#dc2626" }}>
+                          {isCorrect ? "TARGET LOCKED" : "SUSPECT EVADED"}
+                        </span>
+                      </div>
+                      <VerdictLine
+                        text={isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. Better luck next time, Agent."}
+                        color={isCorrect ? "#166534" : "#991b1b"}
+                      />
+                      {isCorrect && <p style={styles.resultSub}>Suspect located in Seattle, WA (SEA)</p>}
+                    </div>
+                    {!isCorrect && canRetry && (
+                      <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} style={styles.retryBox}>
+                        <div style={styles.retryLeft}>
+                          <span style={styles.retryLabel}>REASSIGNMENT AVAILABLE</span>
+                          <p style={styles.retryText}>One retry permitted. First attempt remains on record.</p>
+                        </div>
+                        <button
+                          onClick={handleRetry}
+                          onMouseEnter={(e) => { e.target.style.background = "rgba(127,29,29,0.1)"; e.target.style.color = "#991b1b"; }}
+                          onMouseLeave={(e) => { e.target.style.background = "transparent"; e.target.style.color = "#7f1d1d"; }}
+                          style={styles.retryBtn}
+                        >
+                          Request Reassignment
+                        </button>
+                      </motion.div>
+                    )}
+                    <div style={styles.agentSection}>
+                      <label style={styles.inputLabel}>Agent Full Name</label>
+                      <div style={styles.inputRow}>
+                        <input
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          onKeyDown={(e) => e.key === "Enter" && name.trim() && !submitting && handleFinalSubmit()}
+                          onFocus={(e) => e.target.style.boxShadow = "0 0 0 3px rgba(146,64,14,0.25)"}
+                          onBlur={(e) => e.target.style.boxShadow = "none"}
+                          style={styles.input}
+                          placeholder="Enter your name to file report"
+                        />
+                        <button
+                          onClick={handleFinalSubmit}
+                          disabled={submitting || !name.trim()}
+                          style={{ ...styles.submitBtn, opacity: submitting || !name.trim() ? 0.5 : 1, cursor: submitting || !name.trim() ? "not-allowed" : "pointer", animation: name.trim() && !submitting ? "btnPulse 1.8s ease-in-out infinite" : "none" }}
+                        >
+                          {submitting ? "Filing..." : "File Report →"}
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* Footer — full width */}
           <div style={styles.cardFooter}>
             <span style={styles.footerText}>Sun Country Airlines · Eyes Only · Destroy After Reading</span>
             <span style={{ ...styles.footerText, color: "rgba(161,98,7,0.35)" }}>·</span>
@@ -868,12 +910,12 @@ const styles = {
   },
 
   bootOverlay: { position: "fixed", inset: 0, zIndex: 50, background: "#0a0402", display: "flex", alignItems: "center", justifyContent: "center" },
-  bootBox: { width: "100%", maxWidth: 560, border: "1px solid rgba(185,28,28,0.4)", borderRadius: 3, overflow: "hidden", boxShadow: "0 0 60px rgba(185,28,28,0.08)" },
+  bootBox: { width: "100%", maxWidth: 480, border: "1px solid rgba(185,28,28,0.4)", borderRadius: 3, overflow: "hidden", boxShadow: "0 0 60px rgba(185,28,28,0.08)" },
   bootHeader: { background: "#b91c1c", padding: "9px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" },
   bootHeaderDot: { width: 8, height: 8, borderRadius: "50%", background: "rgba(255,255,255,0.3)", display: "inline-block" },
   bootHeaderTitle: { fontSize: 10, color: "rgba(255,255,255,0.9)", letterSpacing: "0.14em", fontWeight: 700 },
-  bootBody: { background: "#0d0604", padding: "20px 24px", borderTop: "1px solid rgba(185,28,28,0.2)" },
-  bootLine: { fontSize: 12, color: "rgba(255,255,255,0.85)", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.04em", margin: "0 0 7px", lineHeight: 1.45 },
+  bootBody: { background: "#0d0604", padding: "14px 18px", borderTop: "1px solid rgba(185,28,28,0.2)" },
+  bootLine: { fontSize: 11, color: "rgba(255,255,255,0.85)", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.04em", margin: "0 0 5px", lineHeight: 1.4 },
 
   radarContainer: { position: "fixed", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", zIndex: 1 },
   radarSvg: { position: "absolute", width: "min(120vw, 120vh)", height: "min(120vw, 120vh)" },
@@ -881,7 +923,7 @@ const styles = {
   darkOverlay: { position: "absolute", inset: 0, background: "rgba(0,0,0,0.45)" },
 
   centeredFill: { display: "flex", alignItems: "center", justifyContent: "center", width: "100%", position: "relative", zIndex: 10 },
-  outer: { width: "100%", maxWidth: 680, position: "relative", zIndex: 10 },
+  outer: { width: "100%", maxWidth: 960, position: "relative", zIndex: 10 },
 
   headerBar: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 20px", background: "#b91c1c", borderRadius: "6px 6px 0 0", borderBottom: "3px solid #7f1d1d" },
   headerLeft: { display: "flex", alignItems: "center", gap: 10 },
@@ -889,7 +931,12 @@ const styles = {
   divider: { color: "rgba(255,255,255,0.35)", fontSize: 10 },
   caseTag: { color: "#fff", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", background: "rgba(0,0,0,0.3)", padding: "3px 10px", borderRadius: 3, border: "1px solid rgba(255,255,255,0.15)" },
 
-  card: { background: "#fefce8", border: "2px solid #92400e", borderTop: "none", borderRadius: "0 0 12px 12px", padding: "28px 32px 24px", boxShadow: "4px 8px 0 rgba(0,0,0,0.15), 0 24px 60px rgba(0,0,0,0.75)", position: "relative", overflow: "hidden" },
+  card: { background: "#fefce8", border: "2px solid #92400e", borderTop: "none", borderRadius: "0 0 12px 12px", padding: "24px 28px 20px", boxShadow: "4px 8px 0 rgba(0,0,0,0.15), 0 24px 60px rgba(0,0,0,0.75)", position: "relative", overflow: "hidden" },
+
+  folderColumns: { display: "flex", gap: 0, alignItems: "flex-start", marginBottom: 0 },
+  folderLeft: { flex: "0 0 36%", paddingRight: 20 },
+  folderSpine: { flex: "0 0 1px", background: "rgba(146,64,14,0.2)", alignSelf: "stretch", margin: "0 20px 0 0", position: "relative" },
+  folderRight: { flex: 1, minWidth: 0 },
 
   paperLines: { position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0, backgroundImage: ["repeating-linear-gradient(transparent, transparent 27px, rgba(146,64,14,0.07) 27px, rgba(146,64,14,0.07) 28px)", "radial-gradient(ellipse at 0% 0%, rgba(120,53,15,0.09) 0%, transparent 55%)", "radial-gradient(ellipse at 100% 0%, rgba(120,53,15,0.07) 0%, transparent 50%)", "radial-gradient(ellipse at 100% 100%, rgba(120,53,15,0.1) 0%, transparent 55%)", "radial-gradient(ellipse at 0% 100%, rgba(120,53,15,0.09) 0%, transparent 55%)"].join(","), backgroundSize: "100% 28px, 100% 100%, 100% 100%, 100% 100%, 100% 100%", backgroundPositionY: "8px, 0, 0, 0, 0" },
 
@@ -907,10 +954,19 @@ const styles = {
   fieldValue: { fontSize: 12, fontWeight: 700, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.03em" },
 
   sectionDivider: { display: "flex", alignItems: "center", gap: 10, marginBottom: 14, position: "relative", zIndex: 1 },
+
+  sightingsTable: { marginBottom: 0, position: "relative", zIndex: 1, border: "1px solid rgba(146,64,14,0.2)", borderRadius: 4, overflow: "hidden" },
+  sightingsHeader: { display: "flex", padding: "5px 10px", background: "rgba(146,64,14,0.08)", borderBottom: "1px solid rgba(146,64,14,0.15)" },
+  sightingsCell: { fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", color: "#78350f", fontFamily: "'Courier New', Courier, monospace" },
+  sightingsRow: { display: "flex", padding: "8px 10px", alignItems: "center" },
+  sightingsDate: { fontSize: 10, color: "#92400e", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.02em" },
+  sightingsValue: { fontSize: 12, fontWeight: 700, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.02em" },
+  sightingsCode: { fontSize: 11, fontWeight: 700, color: "#78350f", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.06em" },
+  sightingsStatus: { fontSize: 9, fontWeight: 700, letterSpacing: "0.1em", fontFamily: "'Courier New', Courier, monospace" },
   sectionRule: { flex: 1, height: 1, background: "rgba(146,64,14,0.3)" },
   sectionLabel: { fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", color: "#78350f", whiteSpace: "nowrap" },
 
-  clueBox: { background: "rgba(255,255,255,0.55)", border: "1px solid rgba(146,64,14,0.3)", borderLeft: "4px solid #b91c1c", borderRadius: 0, padding: "14px 16px", marginBottom: 20, boxShadow: "inset 0 1px 3px rgba(0,0,0,0.06)", position: "relative", zIndex: 1 },
+  clueBox: { background: "rgba(255,255,255,0.55)", border: "1px solid rgba(146,64,14,0.3)", borderLeft: "4px solid #b91c1c", borderRadius: 0, padding: "14px 16px", marginBottom: 20, boxShadow: "inset 0 1px 3px rgba(0,0,0,0.06)", position: "relative", zIndex: 1, overflow: "hidden" },
   clueTitle: { display: "block", fontSize: 8, fontWeight: 700, letterSpacing: "0.16em", color: "#78350f", marginBottom: 8 },
   clueText: { fontSize: 15, lineHeight: 1.7, color: "#1c0a00", margin: "0 0 12px", fontFamily: "Georgia, serif", fontStyle: "italic" },
   directiveLine: { height: 1, background: "rgba(220,38,38,0.25)", marginBottom: 10, borderTop: "1px dashed rgba(220,38,38,0.3)" },
@@ -918,9 +974,9 @@ const styles = {
 
   inputSection: { marginBottom: 8, paddingTop: 14, borderTop: "1px dashed rgba(146,64,14,0.15)", position: "relative", zIndex: 1 },
   inputLabel: { display: "block", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#78350f", marginBottom: 8 },
-  inputRow: { display: "flex", gap: 10 },
-  input: { flex: 1, padding: "10px 14px", fontSize: 14, fontFamily: "'Courier New', Courier, monospace", border: "1.5px solid #92400e", borderRadius: 4, background: "rgba(255,255,255,0.8)", color: "#1c0a00", outline: "none", letterSpacing: "0.04em" },
-  trackBtn: { padding: "10px 20px", background: "#dc2626", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" },
+  inputRow: { display: "flex", flexDirection: "column", gap: 8 },
+  input: { width: "100%", boxSizing: "border-box", padding: "10px 14px", fontSize: 14, fontFamily: "'Courier New', Courier, monospace", border: "1.5px solid #92400e", borderRadius: 4, background: "rgba(255,255,255,0.8)", color: "#1c0a00", outline: "none", letterSpacing: "0.04em" },
+  trackBtn: { width: "100%", padding: "10px 0", background: "#dc2626", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap", textAlign: "center" },
 
   scanSection: { padding: "14px 16px", margin: "0 0 8px", background: "rgba(0,0,0,0.04)", border: "1px solid rgba(146,64,14,0.15)", borderRadius: 4, position: "relative", zIndex: 1 },
   scanHeader: { display: "flex", alignItems: "center", gap: 10, marginBottom: 10 },
@@ -961,7 +1017,7 @@ const styles = {
     fontWeight: 700, letterSpacing: "0.1em", fontFamily: "'Courier New', Courier, monospace",
     cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0,
   },
-  submitBtn: { padding: "10px 28px", background: "#7f1d1d", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" },
+  submitBtn: { width: "100%", padding: "10px 0", background: "#7f1d1d", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap", textAlign: "center" },
 
   cardFooter: { display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 20, paddingTop: 12, borderTop: "1px solid rgba(146,64,14,0.2)", position: "relative", zIndex: 1 },
   footerText: { fontSize: 9, color: "#a16207", letterSpacing: "0.08em" },
@@ -984,7 +1040,7 @@ const styles = {
     zIndex: 1,
   },
 
-  folderWrap: { width: "100%", maxWidth: 520, position: "relative", zIndex: 10 },
+  folderWrap: { width: "100%", maxWidth: 680, position: "relative", zIndex: 10 },
   folderTab: { display: "flex", justifyContent: "space-between", alignItems: "center", background: "#b91c1c", borderBottom: "3px solid #7f1d1d", borderRadius: "6px 6px 0 0", padding: "8px 18px", width: "38%" },
   folderTabText: { color: "#fff", fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", fontFamily: "'Courier New', Courier, monospace" },
   folderTabCase: { color: "rgba(255,255,255,0.6)", fontSize: 9, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace" },
