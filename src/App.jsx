@@ -861,7 +861,11 @@ export default function CarmenGame() {
                       <button
                         onClick={handleSubmit}
                         disabled={!answer.trim()}
-                        style={{ ...styles.trackBtn, opacity: answer.trim() ? 1 : 0.45, cursor: answer.trim() ? "pointer" : "not-allowed", animation: answer.trim() ? "btnPulse 1.8s ease-in-out infinite" : "none" }}
+                        onMouseEnter={e => { if (answer.trim()) e.target.style.background = "#b91c1c"; }}
+                        onMouseLeave={e => { e.target.style.background = "#dc2626"; }}
+                        onMouseDown={e => { e.target.style.background = "#7f1d1d"; e.target.style.transform = "scale(0.98)"; }}
+                        onMouseUp={e => { e.target.style.background = "#b91c1c"; e.target.style.transform = "scale(1)"; }}
+                        style={{ ...styles.trackBtn, opacity: answer.trim() ? 1 : 0.45, cursor: answer.trim() ? "pointer" : "not-allowed", animation: answer.trim() ? "btnPulse 1.8s ease-in-out infinite" : "none", transition: "background 0.1s, transform 0.08s" }}
                       >
                         Track Carmen
                       </button>
@@ -1164,7 +1168,7 @@ const styles = {
   clueTitle: { display: "inline-block", fontSize: 14, fontWeight: 400, letterSpacing: "0.16em", color: "#fff", background: "#b91c1c", padding: "2px 10px", borderRadius: 2, marginBottom: 8, fontFamily: "'VT323', monospace" },
   clueText: { fontSize: 15, lineHeight: "32px", color: "#1c0a00", margin: "0 0 0px", fontFamily: "'Source Serif 4', Georgia, serif", fontStyle: "normal", fontWeight: 400 },
   directiveLine: { height: 1, background: "rgba(220,38,38,0.3)", margin: "8px 0", borderTop: "1px dashed rgba(220,38,38,0.35)" },
-  clueQuestion: { fontSize: 15, fontWeight: 700, color: "#b91c1c", margin: 0, letterSpacing: "0.02em", fontFamily: "'Source Serif 4', Georgia, serif", lineHeight: "32px" },
+  clueQuestion: { fontSize: 18, fontWeight: 700, color: "#b91c1c", margin: 0, letterSpacing: "0.02em", fontFamily: "'Special Elite', 'Courier New', cursive", lineHeight: "32px" },
 
   inputSection: { marginBottom: 8, paddingTop: 14, borderTop: "1px dashed rgba(146,64,14,0.15)", position: "relative", zIndex: 1 },
   inputLabel: { display: "block", fontSize: 14, fontWeight: 400, letterSpacing: "0.08em", color: "#78350f", marginBottom: 8, fontFamily: "'Special Elite', 'Courier New', cursive" },
