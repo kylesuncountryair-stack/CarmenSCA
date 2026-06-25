@@ -649,15 +649,20 @@ export default function CarmenGame() {
         position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
         filter: bgFilter !== "none" ? bgFilter : "sepia(0.05)",
         transition: "filter 0.4s ease",
+        overflow: "hidden",
       }}>
         <img
           src={bgImage}
           alt=""
           style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            minWidth: "100%",
+            minHeight: "100%",
+            width: "auto",
+            height: "auto",
             display: "block",
           }}
         />
