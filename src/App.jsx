@@ -17,8 +17,8 @@ const correctAnswers = ["sea", "seattle", "seattle, washington", "seattle, was",
 
 // ── Update this list each day ─────────────────────────────────────────────────
 const PRIOR_SIGHTINGS = [
-  { city: "Orlando, FL", code: "MCO", date: "JUN 22, 2026", status: "ESCAPED" },
-  { city: "Las Vegas, NV", code: "LAS", date: "JUN 23, 2026", status: "ESCAPED" },
+  { city: "Orlando, FL", code: "MCO", date: "JUN 10, 2026", status: "ESCAPED" },
+  { city: "Las Vegas, NV", code: "LAS", date: "JUN 17, 2026", status: "ESCAPED" },
 ];
 
 const scanMessages = [
@@ -629,7 +629,7 @@ export default function CarmenGame() {
         <div style={styles.card}>
           <div style={styles.paperLines}></div>
 
-          {/* Top strip — full width */}
+          {/* Top strip */}
           <div style={styles.cardTopStrip}>
             <div style={styles.classifiedBadge}>CLASSIFIED</div>
             <div style={styles.topRight}>
@@ -645,23 +645,43 @@ export default function CarmenGame() {
             <div style={styles.folderLeft}>
 
               <div style={styles.suspectHeader}>
-                <p style={styles.suspectName}>Carmen Sandiego</p>
-                <div style={styles.suspectFieldRow}>
-                  <div style={{ ...styles.suspectField, flex: "1 1 50%", paddingRight: 12, marginBottom: 10 }}>
-                    <span style={styles.fieldLabel}>ALIAS</span>
-                    <span style={{ ...styles.fieldValue, fontStyle: "italic" }}>"The Red Shadow"</span>
+                {/* Profile row — photo box + name/alias */}
+                <div style={styles.suspectProfileRow}>
+                  <div style={styles.suspectNameBlock}>
+                    <p style={styles.suspectName}>Carmen Sandiego</p>
+                    <p style={styles.suspectAlias}>"The Red Shadow"</p>
+                    <div style={styles.suspectBadges}>
+                      <span style={styles.suspectBadgeDanger}>AT LARGE</span>
+                      <span style={styles.suspectBadgeWarn}>THREAT: HIGH</span>
+                    </div>
                   </div>
-                  <div style={{ ...styles.suspectField, flex: "1 1 50%", paddingRight: 0, marginBottom: 10 }}>
-                    <span style={styles.fieldLabel}>STATUS</span>
-                    <span style={{ ...styles.fieldValue, color: "#dc2626" }}>AT LARGE</span>
+                </div>
+
+                {/* Field grid */}
+                <div style={styles.suspectGrid}>
+                  <div style={styles.suspectGridItem}>
+                    <span style={styles.fieldLabel}>NATIONALITY</span>
+                    <span style={styles.fieldValue}>Unknown</span>
                   </div>
-                  <div style={{ ...styles.suspectField, flex: "1 1 50%", paddingRight: 12 }}>
-                    <span style={styles.fieldLabel}>THREAT</span>
-                    <span style={{ ...styles.fieldValue, color: "#dc2626" }}>HIGH</span>
+                  <div style={styles.suspectGridItem}>
+                    <span style={styles.fieldLabel}>HAIR</span>
+                    <span style={styles.fieldValue}>Dark Brown</span>
                   </div>
-                  <div style={{ ...styles.suspectField, flex: "1 1 50%", paddingRight: 0 }}>
+                  <div style={styles.suspectGridItem}>
+                    <span style={styles.fieldLabel}>DISTINGUISHING</span>
+                    <span style={styles.fieldValue}>Red wide-brim hat</span>
+                  </div>
+                  <div style={styles.suspectGridItem}>
                     <span style={styles.fieldLabel}>KNOWN FOR</span>
-                    <span style={styles.fieldValue}>Disguise · Misdirection · Theft</span>
+                    <span style={styles.fieldValue}>Forgery · Theft</span>
+                  </div>
+                  <div style={styles.suspectGridItem}>
+                    <span style={{ ...styles.fieldLabel, color: "#dc2626" }}>ARMED</span>
+                    <span style={{ ...styles.fieldValue, color: "#dc2626" }}>UNKNOWN</span>
+                  </div>
+                  <div style={styles.suspectGridItem}>
+                    <span style={{ ...styles.fieldLabel, color: "#dc2626" }}>APPROACH</span>
+                    <span style={{ ...styles.fieldValue, color: "#dc2626" }}>WITH CAUTION</span>
                   </div>
                 </div>
               </div>
@@ -680,9 +700,9 @@ export default function CarmenGame() {
                   <span style={{ ...styles.sightingsCell, flex: "0 0 58px", textAlign: "right" }}>STATUS</span>
                 </div>
                 {PRIOR_SIGHTINGS.map((s, i) => (
-                  <div key={i} style={{ ...styles.sightingsRow, borderBottom: i < PRIOR_SIGHTINGS.length - 1 ? "1px solid rgba(146,64,14,0.1)" : "none" }}>
+                  <div key={i} style={{ ...styles.sightingsRow, borderBottom: i < PRIOR_SIGHTINGS.length - 1 ? "1px solid rgba(146,64,14,0.1)" : "none", opacity: s.status === "ESCAPED" ? 0.7 : 1 }}>
                     <div style={{ flex: 1 }}>
-                      <span style={{ ...styles.sightingsValue, display: "block" }}>{s.city}</span>
+                      <span style={{ ...styles.sightingsValue, display: "block", textDecoration: s.status === "ESCAPED" ? "line-through" : "none", textDecorationColor: "rgba(146,64,14,0.5)" }}>{s.city}</span>
                       <span style={{ ...styles.sightingsDate, display: "block" }}>{s.date}</span>
                     </div>
                     <span style={{ ...styles.sightingsCode, flex: "0 0 38px", textAlign: "center" }}>{s.code}</span>
@@ -934,11 +954,12 @@ const styles = {
   card: { background: "#fefce8", border: "2px solid #92400e", borderTop: "none", borderRadius: "0 0 12px 12px", padding: "24px 28px 20px", boxShadow: "4px 8px 0 rgba(0,0,0,0.15), 0 24px 60px rgba(0,0,0,0.75)", position: "relative", overflow: "hidden" },
 
   folderColumns: { display: "flex", gap: 0, alignItems: "flex-start", marginBottom: 0 },
-  folderLeft: { flex: "0 0 36%", paddingRight: 20 },
-  folderSpine: { flex: "0 0 1px", background: "rgba(146,64,14,0.2)", alignSelf: "stretch", margin: "0 20px 0 0", position: "relative" },
+  folderLeft: { flex: "0 0 36%", paddingRight: 20, boxShadow: "4px 0 12px rgba(0,0,0,0.06)" },
+  folderSpine: { flex: "0 0 1px", background: "rgba(146,64,14,0.2)", alignSelf: "stretch", margin: "0 20px" },
   folderRight: { flex: 1, minWidth: 0 },
 
-  paperLines: { position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0, backgroundImage: ["repeating-linear-gradient(transparent, transparent 27px, rgba(146,64,14,0.07) 27px, rgba(146,64,14,0.07) 28px)", "radial-gradient(ellipse at 0% 0%, rgba(120,53,15,0.09) 0%, transparent 55%)", "radial-gradient(ellipse at 100% 0%, rgba(120,53,15,0.07) 0%, transparent 50%)", "radial-gradient(ellipse at 100% 100%, rgba(120,53,15,0.1) 0%, transparent 55%)", "radial-gradient(ellipse at 0% 100%, rgba(120,53,15,0.09) 0%, transparent 55%)"].join(","), backgroundSize: "100% 28px, 100% 100%, 100% 100%, 100% 100%, 100% 100%", backgroundPositionY: "8px, 0, 0, 0, 0" },
+  paperLines: { position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0, backgroundImage: ["repeating-linear-gradient(transparent, transparent 27px, rgba(146,64,14,0.04) 27px, rgba(146,64,14,0.04) 28px)", "radial-gradient(ellipse at 0% 0%, rgba(120,53,15,0.07) 0%, transparent 55%)", "radial-gradient(ellipse at 100% 0%, rgba(120,53,15,0.05) 0%, transparent 50%)", "radial-gradient(ellipse at 100% 100%, rgba(120,53,15,0.08) 0%, transparent 55%)", "radial-gradient(ellipse at 0% 100%, rgba(120,53,15,0.07) 0%, transparent 55%)"].join(","), backgroundSize: "100% 28px, 100% 100%, 100% 100%, 100% 100%, 100% 100%", backgroundPositionY: "8px, 0, 0, 0, 0" },
+
 
   cardTopStrip: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20, position: "relative", zIndex: 1 },
   classifiedBadge: { color: "#dc2626", fontSize: 14, fontWeight: 700, letterSpacing: "0.18em", padding: "4px 10px", border: "3px solid #dc2626", borderRadius: 3, display: "inline-block", opacity: 0.85, animation: "stampIn 0.5s ease-out forwards", transformOrigin: "center", filter: "url(#stampFilter)" },
@@ -946,8 +967,19 @@ const styles = {
   dateStamp: { fontSize: 9, fontWeight: 700, color: "#78350f", letterSpacing: "0.1em" },
   priorityTag: { fontSize: 9, fontWeight: 700, color: "#dc2626", letterSpacing: "0.1em", border: "1px solid rgba(220,38,38,0.4)", padding: "2px 6px", borderRadius: 2, display: "inline-block", transform: "rotate(1.5deg)", transformOrigin: "center" },
 
-  suspectHeader: { marginBottom: 20, padding: "16px 18px", background: "rgba(0,0,0,0.04)", borderRadius: 6, border: "1px solid rgba(146,64,14,0.2)", boxShadow: "inset 0 1px 3px rgba(0,0,0,0.06)", position: "relative", zIndex: 1 },
-  suspectName: { fontSize: 26, fontWeight: 700, color: "#1c0a00", margin: "0 0 14px", letterSpacing: "0.02em", borderBottom: "1px solid rgba(146,64,14,0.2)", paddingBottom: 12 },
+  suspectHeader: { marginBottom: 16, padding: "14px", background: "rgba(0,0,0,0.04)", borderRadius: 6, border: "1px solid rgba(146,64,14,0.2)", boxShadow: "inset 0 1px 3px rgba(0,0,0,0.06)", position: "relative", zIndex: 1 },
+
+  suspectProfileRow: { display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 12, paddingBottom: 12, borderBottom: "1px solid rgba(146,64,14,0.15)" },
+  suspectNameBlock: { flex: 1, minWidth: 0 },
+  suspectName: { fontSize: 18, fontWeight: 700, color: "#1c0a00", margin: "0 0 2px", letterSpacing: "0.01em" },
+  suspectAlias: { fontSize: 10, color: "#78350f", fontStyle: "italic", margin: "0 0 8px", fontFamily: "Georgia, serif", letterSpacing: "0.02em" },
+  suspectBadges: { display: "flex", gap: 5, flexWrap: "wrap" },
+  suspectBadgeDanger: { fontSize: 8, fontWeight: 700, letterSpacing: "0.12em", color: "#fff", background: "#dc2626", padding: "2px 7px", borderRadius: 2 },
+  suspectBadgeWarn: { fontSize: 8, fontWeight: 700, letterSpacing: "0.12em", color: "#78350f", background: "rgba(146,64,14,0.12)", border: "1px solid rgba(146,64,14,0.25)", padding: "2px 7px", borderRadius: 2 },
+
+  suspectGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 12px" },
+  suspectGridItem: { display: "flex", flexDirection: "column", gap: 2 },
+
   suspectFieldRow: { display: "flex", flexWrap: "wrap" },
   suspectField: { display: "flex", flexDirection: "column", gap: 3, flex: "1 1 120px", paddingRight: 20 },
   fieldLabel: { fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", color: "#a16207" },
@@ -959,7 +991,7 @@ const styles = {
   sightingsHeader: { display: "flex", padding: "5px 10px", background: "rgba(146,64,14,0.08)", borderBottom: "1px solid rgba(146,64,14,0.15)" },
   sightingsCell: { fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", color: "#78350f", fontFamily: "'Courier New', Courier, monospace" },
   sightingsRow: { display: "flex", padding: "8px 10px", alignItems: "center" },
-  sightingsDate: { fontSize: 10, color: "#92400e", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.02em" },
+  sightingsDate: { fontSize: 10, color: "#78350f", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.02em", fontWeight: 600 },
   sightingsValue: { fontSize: 12, fontWeight: 700, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.02em" },
   sightingsCode: { fontSize: 11, fontWeight: 700, color: "#78350f", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.06em" },
   sightingsStatus: { fontSize: 9, fontWeight: 700, letterSpacing: "0.1em", fontFamily: "'Courier New', Courier, monospace" },
@@ -967,7 +999,7 @@ const styles = {
   sectionLabel: { fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", color: "#78350f", whiteSpace: "nowrap" },
 
   clueBox: { background: "rgba(255,255,255,0.55)", border: "1px solid rgba(146,64,14,0.3)", borderLeft: "4px solid #b91c1c", borderRadius: 0, padding: "14px 16px", marginBottom: 20, boxShadow: "inset 0 1px 3px rgba(0,0,0,0.06)", position: "relative", zIndex: 1, overflow: "hidden" },
-  clueTitle: { display: "block", fontSize: 8, fontWeight: 700, letterSpacing: "0.16em", color: "#78350f", marginBottom: 8 },
+  clueTitle: { display: "inline-block", fontSize: 8, fontWeight: 700, letterSpacing: "0.16em", color: "#fff", background: "#b91c1c", padding: "3px 8px", borderRadius: 2, marginBottom: 10 },
   clueText: { fontSize: 15, lineHeight: 1.7, color: "#1c0a00", margin: "0 0 12px", fontFamily: "Georgia, serif", fontStyle: "italic" },
   directiveLine: { height: 1, background: "rgba(220,38,38,0.25)", marginBottom: 10, borderTop: "1px dashed rgba(220,38,38,0.3)" },
   clueQuestion: { fontSize: 15, fontWeight: 700, color: "#dc2626", margin: 0, letterSpacing: "0.01em", fontFamily: "'Courier New', Courier, monospace" },
