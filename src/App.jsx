@@ -1135,7 +1135,7 @@ const styles = {
     lineHeight: "32px",
   },
   clueTitle: { display: "inline-block", fontSize: 14, fontWeight: 400, letterSpacing: "0.16em", color: "#fff", background: "#b91c1c", padding: "2px 10px", borderRadius: 2, marginBottom: 8, fontFamily: "'VT323', monospace" },
-  clueText: { fontSize: 15, lineHeight: "32px", color: "#0f0500", margin: "0 0 0px", fontFamily: "'Lora', Georgia, serif", fontStyle: "italic", fontWeight: 700 },
+  clueText: { fontSize: 14, lineHeight: "32px", color: "#1c0a00", margin: "0 0 0px", fontFamily: "'Lora', Georgia, serif", fontStyle: "normal", fontWeight: 400 },
   directiveLine: { height: 1, background: "rgba(220,38,38,0.3)", margin: "8px 0", borderTop: "1px dashed rgba(220,38,38,0.35)" },
   clueQuestion: { fontSize: 15, fontWeight: 700, color: "#b91c1c", margin: 0, letterSpacing: "0.02em", fontFamily: "'Special Elite', 'Courier New', cursive", lineHeight: "32px" },
 
