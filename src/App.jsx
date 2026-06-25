@@ -647,11 +647,21 @@ export default function CarmenGame() {
       {/* Background image layer with reactive filter */}
       <div style={{
         position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: "contain", backgroundPosition: "center",
         filter: bgFilter !== "none" ? bgFilter : "sepia(0.05)",
         transition: "filter 0.4s ease",
-      }}></div>
+      }}>
+        <img
+          src={bgImage}
+          alt=""
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "center",
+            display: "block",
+          }}
+        />
+      </div>
       <div style={styles.crtOverlay}></div>
       <RadarBackground fast={radarFast} />
 
