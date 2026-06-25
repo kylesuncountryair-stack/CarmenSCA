@@ -33,13 +33,6 @@ const scanMessages = [
   "Triangulating Last Known Position...",
 ];
 
-const bootLines = [
-  "INITIALIZING SECURE CONNECTION...",
-  "AUTHENTICATING AGENT CREDENTIALS...",
-  "ACCESSING PURSUIT DIVISION DATABASE...",
-  "CONNECTION ESTABLISHED. ACCESS GRANTED.",
-];
-
 const HEX_CHARS = "0123456789ABCDEF";
 const randomHex = (len) => Array.from({ length: len }, () => HEX_CHARS[Math.floor(Math.random() * 16)]).join("");
 
@@ -705,9 +698,9 @@ export default function CarmenGame() {
       >
         <div style={styles.headerBar}>
           <div style={styles.headerLeft}>
-            <span style={styles.orgLabel}>SUN COUNTRY AIRLINES</span>
-            <span style={styles.divider}>|</span>
-            <span style={styles.orgLabel}>PURSUIT DIVISION</span>
+            <span style={{ ...styles.orgLabel, fontFamily: "'Special Elite', cursive", fontSize: 12, letterSpacing: "0.08em" }}>Sun Country Airlines</span>
+            <span style={styles.divider}>·</span>
+            <span style={{ ...styles.orgLabel, fontFamily: "'VT323', monospace", fontSize: 14, letterSpacing: "0.18em" }}>PURSUIT DIVISION</span>
           </div>
           <div style={styles.caseTag}>CASE {caseNumber}</div>
         </div>
@@ -923,20 +916,27 @@ export default function CarmenGame() {
                 )}
 
                 {showName && (
-                  <motion.div key="result" initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} style={styles.resultSection}>
-                    <div style={{ ...styles.resultBanner, borderColor: isCorrect ? "#16a34a" : "#dc2626", background: isCorrect ? "rgba(74,222,128,0.08)" : "rgba(248,113,113,0.08)" }}>
+                  <motion.div key="result" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={styles.resultSection}>
+                    <div style={{ ...styles.resultBanner, borderColor: isCorrect ? "#16a34a" : "#dc2626", background: isCorrect ? "rgba(74,222,128,0.06)" : "rgba(248,113,113,0.06)" }}>
                       <div style={styles.resultTagRow}>
-                        <motion.span
-                          initial={{ scale: 1.8, opacity: 0, rotate: -6 }}
-                          animate={{ scale: 1, opacity: 1, rotate: -1 }}
-                          transition={{ delay: 0.1, type: "spring", stiffness: 280, damping: 16 }}
+                        <motion.div
+                          initial={{ scale: 1.8, opacity: 0, rotate: -8 }}
+                          animate={{ scale: 1, opacity: 0.92, rotate: isCorrect ? -2 : -2 }}
+                          transition={{ delay: 0.1, type: "spring", stiffness: 260, damping: 16 }}
                           onAnimationComplete={() => playStamp()}
-                          style={{ ...styles.resultTag, background: isCorrect ? "#16a34a" : "#dc2626", display: "inline-block", transformOrigin: "left center" }}
+                          style={{
+                            display: "inline-block",
+                            border: `3px solid ${isCorrect ? "#16a34a" : "#dc2626"}`,
+                            padding: "4px 14px",
+                            transformOrigin: "left center",
+                          }}
                         >
-                          {isCorrect ? "TARGET LOCKED" : "SUSPECT EVADED"}
-                        </motion.span>
+                          <span style={{ ...styles.resultTag, background: "none", color: isCorrect ? "#16a34a" : "#dc2626", fontSize: 18, padding: 0, fontFamily: "'VT323', monospace", letterSpacing: "0.18em" }}>
+                            {isCorrect ? "TARGET LOCKED" : "SUSPECT EVADED"}
+                          </span>
+                        </motion.div>
                       </div>
-                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.55 }}>
                         <VerdictLine
                           text={isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. Better luck next time, Agent."}
                           color={isCorrect ? "#166534" : "#991b1b"}
@@ -1135,10 +1135,10 @@ const styles = {
   sightingsHeader: { display: "flex", padding: "5px 10px", background: "rgba(146,64,14,0.08)", borderBottom: "1px solid rgba(146,64,14,0.15)" },
   sightingsCell: { fontSize: 13, fontWeight: 400, letterSpacing: "0.12em", color: "#78350f", fontFamily: "'VT323', 'Courier New', monospace" },
   sightingsRow: { display: "flex", padding: "8px 10px", alignItems: "center" },
-  sightingsDate: { fontSize: 11, color: "#78350f", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.02em", fontWeight: 600 },
-  sightingsValue: { fontSize: 13, fontWeight: 700, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.02em" },
-  sightingsCode: { fontSize: 12, fontWeight: 700, color: "#78350f", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.06em" },
-  sightingsStatus: { fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", fontFamily: "'Courier New', Courier, monospace" },
+  sightingsDate: { fontSize: 13, color: "#78350f", fontFamily: "'VT323', monospace", letterSpacing: "0.04em", fontWeight: 400 },
+  sightingsValue: { fontSize: 15, fontWeight: 400, color: "#1c0a00", fontFamily: "'VT323', monospace", letterSpacing: "0.04em" },
+  sightingsCode: { fontSize: 14, fontWeight: 400, color: "#78350f", fontFamily: "'VT323', monospace", letterSpacing: "0.06em" },
+  sightingsStatus: { fontSize: 13, fontWeight: 400, letterSpacing: "0.1em", fontFamily: "'VT323', monospace" },
   sectionRule: { flex: 1, height: 1, background: "rgba(146,64,14,0.3)" },
   sectionLabel: { fontSize: 13, fontWeight: 400, letterSpacing: "0.14em", color: "#78350f", whiteSpace: "nowrap", fontFamily: "'VT323', 'Courier New', monospace" },
 
@@ -1257,7 +1257,7 @@ const styles = {
   },
 
   folderWrap: { width: "100%", maxWidth: 760, position: "relative", zIndex: 10 },
-  folderTab: { display: "flex", justifyContent: "space-between", alignItems: "center", background: "#b91c1c", borderBottom: "3px solid #7f1d1d", borderRadius: "6px 6px 0 0", padding: "8px 18px", width: "38%" },
+  folderTab: { display: "flex", justifyContent: "space-between", alignItems: "center", background: "#b91c1c", borderBottom: "none", borderRadius: "6px 6px 0 0", padding: "8px 18px", width: "38%", boxShadow: "inset 0 -3px 0 #7f1d1d" },
   folderTabText: { color: "#fff", fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", fontFamily: "'Courier New', Courier, monospace" },
   folderTabCase: { color: "rgba(255,255,255,0.6)", fontSize: 9, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace" },
   folderBody: { background: "linear-gradient(160deg, #fdf4e0 0%, #f8ebca 40%, #f4e4b8 100%)", border: "2px solid #92400e", borderTop: "2px solid #92400e", borderRadius: "0 8px 8px 8px", padding: "28px 32px 24px", position: "relative", overflow: "visible", boxShadow: "0 24px 60px rgba(0,0,0,0.75), inset 0 0 40px rgba(120,60,0,0.08)" },
