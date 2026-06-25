@@ -1065,7 +1065,7 @@ const styles = {
   card: { background: "linear-gradient(160deg, #fdf4e0 0%, #f8ebca 40%, #f4e4b8 100%)", border: "2px solid #92400e", borderTop: "none", borderRadius: "0 0 12px 12px", padding: "24px 28px 20px", boxShadow: "4px 8px 0 rgba(0,0,0,0.15), 0 24px 60px rgba(0,0,0,0.75), inset 0 0 40px rgba(120,60,0,0.08)", position: "relative", overflow: "hidden" },
 
   folderColumns: { display: "flex", gap: 0, alignItems: "flex-start", marginBottom: 0 },
-  folderLeft: { flex: "0 0 42%", paddingRight: 20, boxShadow: "4px 0 12px rgba(0,0,0,0.06)" },
+  folderLeft: { flex: "0 0 38%", paddingRight: 20, boxShadow: "4px 0 12px rgba(0,0,0,0.06)" },
   folderSpine: { flex: "0 0 1px", background: "rgba(146,64,14,0.2)", alignSelf: "stretch", margin: "0 20px" },
   folderRight: { flex: 1, minWidth: 0 },
 
@@ -1075,7 +1075,7 @@ const styles = {
 
   paperYellow: { position: "absolute", left: 0, right: 0, top: 0, height: "45%", pointerEvents: "none", zIndex: 0, background: "linear-gradient(to bottom, rgba(180,120,40,0.07) 0%, transparent 100%)" },
 
-  paperMargin: { position: "absolute", top: 0, bottom: 0, left: "calc(42% + 27px)", width: "1px", background: "rgba(185,28,28,0.2)", pointerEvents: "none", zIndex: 1 },
+  paperMargin: { position: "absolute", top: 0, bottom: 0, left: "calc(38% + 27px)", width: "1px", background: "rgba(185,28,28,0.2)", pointerEvents: "none", zIndex: 1 },
 
 
   cardTopStrip: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20, position: "relative", zIndex: 1 },
@@ -1089,7 +1089,7 @@ const styles = {
   suspectProfileRow: { display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 12, paddingBottom: 12, borderBottom: "1px solid rgba(146,64,14,0.15)" },
   suspectNameBlock: { flex: 1, minWidth: 0 },
   suspectName: { fontSize: 22, fontWeight: 700, color: "#1c0a00", margin: "0 0 2px", letterSpacing: "0.02em", fontFamily: "'Special Elite', 'Courier New', cursive" },
-  suspectAlias: { fontSize: 12, color: "#78350f", fontStyle: "italic", margin: "0 0 8px", fontFamily: "'Lora', Georgia, serif", letterSpacing: "0.02em" },
+  suspectAlias: { fontSize: 12, color: "#78350f", fontStyle: "italic", margin: "0 0 8px", fontFamily: "'Source Serif 4', Georgia, serif", letterSpacing: "0.02em" },
   suspectBadges: { display: "flex", gap: 5, flexWrap: "wrap" },
   suspectBadgeDanger: { fontSize: 8, fontWeight: 700, letterSpacing: "0.12em", color: "#fff", background: "#dc2626", padding: "2px 7px", borderRadius: 2 },
   suspectBadgeWarn: { fontSize: 8, fontWeight: 700, letterSpacing: "0.12em", color: "#78350f", background: "rgba(146,64,14,0.12)", border: "1px solid rgba(146,64,14,0.25)", padding: "2px 7px", borderRadius: 2 },
@@ -1135,9 +1135,9 @@ const styles = {
     lineHeight: "32px",
   },
   clueTitle: { display: "inline-block", fontSize: 14, fontWeight: 400, letterSpacing: "0.16em", color: "#fff", background: "#b91c1c", padding: "2px 10px", borderRadius: 2, marginBottom: 8, fontFamily: "'VT323', monospace" },
-  clueText: { fontSize: 14, lineHeight: "32px", color: "#1c0a00", margin: "0 0 0px", fontFamily: "'Lora', Georgia, serif", fontStyle: "normal", fontWeight: 400 },
+  clueText: { fontSize: 15, lineHeight: "32px", color: "#1c0a00", margin: "0 0 0px", fontFamily: "'Source Serif 4', Georgia, serif", fontStyle: "normal", fontWeight: 400 },
   directiveLine: { height: 1, background: "rgba(220,38,38,0.3)", margin: "8px 0", borderTop: "1px dashed rgba(220,38,38,0.35)" },
-  clueQuestion: { fontSize: 15, fontWeight: 700, color: "#b91c1c", margin: 0, letterSpacing: "0.02em", fontFamily: "'Special Elite', 'Courier New', cursive", lineHeight: "32px" },
+  clueQuestion: { fontSize: 15, fontWeight: 700, color: "#b91c1c", margin: 0, letterSpacing: "0.02em", fontFamily: "'Source Serif 4', Georgia, serif", lineHeight: "32px" },
 
   inputSection: { marginBottom: 8, paddingTop: 14, borderTop: "1px dashed rgba(146,64,14,0.15)", position: "relative", zIndex: 1 },
   inputLabel: { display: "block", fontSize: 14, fontWeight: 400, letterSpacing: "0.08em", color: "#78350f", marginBottom: 8, fontFamily: "'Special Elite', 'Courier New', cursive" },
@@ -1214,7 +1214,7 @@ const styles = {
   folderBody: { background: "linear-gradient(160deg, #fdf4e0 0%, #f8ebca 40%, #f4e4b8 100%)", border: "2px solid #92400e", borderTop: "2px solid #92400e", borderRadius: "0 8px 8px 8px", padding: "28px 32px 24px", position: "relative", overflow: "visible", boxShadow: "0 24px 60px rgba(0,0,0,0.75), inset 0 0 40px rgba(120,60,0,0.08)" },
   filedStamp: { position: "absolute", top: 20, right: 20, fontSize: 13, fontWeight: 700, letterSpacing: "0.2em", border: "3px solid", padding: "5px 12px", borderRadius: 3, opacity: 0.88, fontFamily: "'Courier New', Courier, monospace", transformOrigin: "center", zIndex: 2 },
   folderTitle: { fontSize: 22, fontWeight: 700, color: "#1c0a00", margin: "0 0 2px", letterSpacing: "0.02em", position: "relative", zIndex: 1, fontFamily: "'Special Elite', 'Courier New', cursive" },
-  folderSuspect: { fontSize: 12, color: "#78350f", margin: "0 0 16px", letterSpacing: "0.04em", fontFamily: "'Lora', Georgia, serif", fontStyle: "italic", position: "relative", zIndex: 1 },
+  folderSuspect: { fontSize: 12, color: "#78350f", margin: "0 0 16px", letterSpacing: "0.04em", fontFamily: "'Source Serif 4', Georgia, serif", fontStyle: "italic", position: "relative", zIndex: 1 },
   folderDivider: { height: 1, background: "rgba(146,64,14,0.25)", marginBottom: 20, position: "relative", zIndex: 1 },
   folderFields: { display: "flex", flexDirection: "column", gap: 14, position: "relative", zIndex: 1 },
   folderField: { display: "flex", flexDirection: "column", gap: 3, paddingBottom: 14, borderBottom: "1px solid rgba(146,64,14,0.12)" },
