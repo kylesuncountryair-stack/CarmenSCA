@@ -536,9 +536,19 @@ export default function CarmenGame() {
                     <div style={styles.folderField}>
                       <span style={styles.folderFieldLabel}>OUTCOME</span>
                       {isCorrect ? (
-                        <RedactedReveal text="New Orleans, LA - (MSY) — Target Located" />
+                        <div>
+                          <span style={styles.folderFieldValue}>New Orleans, LA (MSY)</span>
+                          <div style={{ marginTop: 6, display: "inline-block", border: "2px solid #15803d", padding: "2px 8px", transform: "rotate(-2deg)", transformOrigin: "left center" }}>
+                            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", color: "#15803d", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" }}>TARGET LOCKED</span>
+                          </div>
+                        </div>
                       ) : (
-                        <span style={{ ...styles.folderFieldValue, color: "#dc2626" }}>Suspect Evaded — Location Unknown</span>
+                        <div>
+                          <span style={{ ...styles.folderFieldValue, color: "#dc2626" }}>{answer.toUpperCase()}</span>
+                          <div style={{ marginTop: 6, display: "inline-block", border: "2px solid #dc2626", padding: "2px 8px", transform: "rotate(-2deg)", transformOrigin: "left center" }}>
+                            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", color: "#dc2626", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" }}>SUSPECT EVADED</span>
+                          </div>
+                        </div>
                       )}
                     </div>
                   </div>
