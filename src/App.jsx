@@ -360,7 +360,8 @@ export default function CarmenGame() {
   const [booting, setBooting] = useState(true);
   const [bgFilter, setBgFilter] = useState("none");
   const [carmenHijack, setCarmenHijack] = useState(false);
-  const [hijackPhase, setHijackPhase] = useState("off"); // off | typing | holding
+  const [hijackPhase, setHijackPhase] = useState("off");
+  const [glitch, setGlitch] = useState(false);
 
   const [firstAnswer, setFirstAnswer] = useState(null);
   const [canRetry, setCanRetry] = useState(false);
