@@ -194,7 +194,7 @@ function TypewriterLine({ text, speed = 30, onDone }) {
 }
 
 function VerdictLine({ text, color }) {
-  const { displayed } = useTypewriter(text, 28, false);
+  const { displayed } = useTypewriter(text, 28);
   return (
     <p style={{ fontSize: 16, fontWeight: 400, margin: "0 0 4px", letterSpacing: "0.02em", fontFamily: "'Special Elite', cursive", color }}>
       {displayed}<span style={{ opacity: displayed.length < text.length ? 0.5 : 0 }}>▌</span>
@@ -1063,9 +1063,8 @@ const CARMEN_LINES = [
   { text: "— C.S.", pause: 0 },
 ];
 
-function CarmenHijack({ phase, onEnd }) {
+function CarmenHijack({ phase }) {
   const [visibleLines, setVisibleLines] = useState([]);
-  const [currentLine, setCurrentLine] = useState(0);
   const [currentText, setCurrentText] = useState("");
   const [done, setDone] = useState(false);
   const [glitching, setGlitching] = useState(false);
