@@ -544,6 +544,12 @@ export default function CarmenGame() {
                         </div>
                       )}
                     </div>
+                    {!isCorrect && (
+                      <div style={styles.folderField}>
+                        <span style={styles.folderFieldLabel}>ACTUAL LOCATION</span>
+                        <RedactedReveal text="New Orleans, LA (MSY)" />
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -715,13 +721,18 @@ export default function CarmenGame() {
           <div style={styles.paperMargin}></div>
 
           {/* Top strip */}
-          <div style={styles.cardTopStrip}>
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: booting ? 0 : 1, y: booting ? 12 : 0 }}
+            transition={{ delay: 0.05, type: "spring", stiffness: 180, damping: 20 }}
+            style={styles.cardTopStrip}
+          >
             <div style={styles.classifiedBadge}>CLASSIFIED</div>
             <div style={styles.topRight}>
               <span style={styles.dateStamp}>{new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }).toUpperCase()}</span>
               <span style={styles.priorityTag}>PRIORITY: URGENT</span>
             </div>
-          </div>
+          </motion.div>
 
           {/* Open folder — two pages side by side */}
           <div style={styles.folderColumns}>
@@ -729,7 +740,12 @@ export default function CarmenGame() {
             {/* LEFT PAGE — suspect + sightings */}
             <div style={styles.folderLeft}>
 
-              <div style={styles.suspectHeader}>
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: booting ? 0 : 1, y: booting ? 16 : 0 }}
+                transition={{ delay: 0.15, type: "spring", stiffness: 180, damping: 20 }}
+              >
+                <div style={styles.suspectHeader}>
                 {/* Profile row — photo box + name/alias */}
                 <div style={styles.suspectProfileRow}>
                   <div style={styles.suspectNameBlock}>
@@ -774,7 +790,13 @@ export default function CarmenGame() {
                   </div>
                 </div>
               </div>
+              </motion.div>
 
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: booting ? 0 : 1, y: booting ? 16 : 0 }}
+                transition={{ delay: 0.25, type: "spring", stiffness: 180, damping: 20 }}
+              >
               <div style={styles.sectionDivider}>
                 <div style={{ ...styles.sectionRule, flex: "0 0 12px" }}></div>
                 <span style={styles.sectionLabel}>PRIOR SIGHTINGS</span>
@@ -821,13 +843,19 @@ export default function CarmenGame() {
                   </div>
                 ))}
               </div>
+              </motion.div>
             </div>
 
             {/* Folder spine */}
             <div style={styles.folderSpine}></div>
 
             {/* RIGHT PAGE — intel + input */}
-            <div style={styles.folderRight}>
+            <motion.div
+              style={styles.folderRight}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: booting ? 0 : 1, y: booting ? 16 : 0 }}
+              transition={{ delay: 0.35, type: "spring", stiffness: 180, damping: 20 }}
+            >
 
               <div style={styles.sectionDivider}>
                 <div style={{ ...styles.sectionRule, flex: "0 0 12px" }}></div>
@@ -988,7 +1016,7 @@ export default function CarmenGame() {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+            </motion.div>
           </div>
 
           {/* Footer — full width */}
