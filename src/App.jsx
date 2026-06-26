@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import bgImage from "/public/background.png";
+
+const BG_IMAGE = "/background.png";
 
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbwte1jkE2vu7Lg32395bHpnjXYv9uibdodFYAneu0AphFxNCzl-JHX6Q7lv1tIn9Dnz/exec";
@@ -682,7 +683,7 @@ export default function CarmenGame() {
         overflow: "hidden",
       }}>
         <img
-          src={bgImage}
+          src={BG_IMAGE}
           alt=""
           style={{
             position: "absolute",
