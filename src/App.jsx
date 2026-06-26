@@ -39,7 +39,7 @@ const HEX_CHARS = "0123456789ABCDEF";
 const randomHex = (len) => Array.from({ length: len }, () => HEX_CHARS[Math.floor(Math.random() * 16)]).join("");
 
 const prompt =
-  "She's hiding in a city where the fog has its own fan club and the sea lions have filed for squatter's rights on the waterfront. Cable cars have been defying gravity since 1873, a nearby island prison made escaping look impossible and proved it, and she was last seen on a bridge so big and so orange that pilots have been using it as a landmark since 1937 with a bag of chocolate big enough to raise some serious questions. Oh, and the neighborhood she's staying in? Let's just say it would look very familiar to anyone who watched a lot of TGIF in the early 90s.";
+  "Our suspect has disappeared into a city where the fog arrives with better attendance than the tourists, and the waterfront's loudest residents bark instead of talk. She rode transportation that's been climbing impossible hills since 1873, admired an island prison famous for keeping guests longer than they planned, and was seen crossing an enormous orange bridge with enough chocolate to make customs suspicious. Her final stop? A picture-perfect neighborhood that might ring a bell for anyone whose Friday nights in the early '90s were spent with a certain TV family on TGIF.";
 
 const LOCKOUT_KEY = "carmen_played_date";
 
