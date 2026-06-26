@@ -492,6 +492,7 @@ export default function CarmenGame() {
     @keyframes scanlines { 0%{background-position:0 0} 100%{background-position:0 4px} }
     @keyframes glitchShift { 0%{transform:translate(0)} 20%{transform:translate(-3px,1px)} 40%{transform:translate(3px,-1px)} 60%{transform:translate(-2px,0)} 80%{transform:translate(2px,1px)} 100%{transform:translate(0)} }
     @keyframes barFlash { 0%,100%{background:linear-gradient(90deg,#991b1b,#dc2626)} 50%{background:#fff} }
+    @keyframes decryptPulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
     @keyframes bgFilterFade { 0%{opacity:0} 15%{opacity:1} 75%{opacity:1} 100%{opacity:0} }
     @keyframes stampBleed { 0%{filter:url(#stampFilter) opacity(0) blur(1px)} 100%{filter:url(#stampFilter) opacity(0.85) blur(0px)} }
   `;
@@ -1072,7 +1073,7 @@ function CarmenHijack({ phase }) {
 
   useEffect(() => {
     if (phase === "off") {
-      setVisibleLines([]); setCurrentLine(0); setCurrentText("");
+      setVisibleLines([]); setCurrentText("");
       setDone(false); setGlitching(false); setEnded(false);
       return;
     }
