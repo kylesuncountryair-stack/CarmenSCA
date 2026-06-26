@@ -545,7 +545,7 @@ export default function CarmenGame() {
                       <span style={styles.folderFieldLabel}>OUTCOME</span>
                       {isCorrect ? (
                         <div>
-                          <span style={styles.folderFieldValue}>San Francisco, CA (SFO)</span>
+                          <span style={styles.folderFieldValue}>San Francisco, CA</span>
                           <div style={{ marginTop: 6, display: "inline-block", border: "2px solid #15803d", padding: "2px 8px", transform: "rotate(-2deg)", transformOrigin: "left center" }}>
                             <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", color: "#15803d", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" }}>TARGET LOCKED</span>
                           </div>
