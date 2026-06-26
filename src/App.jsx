@@ -547,14 +547,14 @@ export default function CarmenGame() {
                         <div>
                           <span style={styles.folderFieldValue}>San Francisco, CA</span>
                           <div style={{ marginTop: 6, display: "inline-block", border: "2px solid #15803d", padding: "2px 8px", transform: "rotate(-2deg)", transformOrigin: "left center" }}>
-                            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: "#15803d", fontFamily: "'Special Elite', cursive", whiteSpace: "nowrap" }}>TARGET LOCKED</span>
+                            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", color: "#15803d", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" }}>TARGET LOCKED</span>
                           </div>
                         </div>
                       ) : (
                         <div>
                           <span style={{ ...styles.folderFieldValue, color: "#dc2626" }}>{answer.toUpperCase()}</span>
                           <div style={{ marginTop: 6, display: "inline-block", border: "2px solid #dc2626", padding: "2px 8px", transform: "rotate(-2deg)", transformOrigin: "left center" }}>
-                            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: "#dc2626", fontFamily: "'Special Elite', cursive", whiteSpace: "nowrap" }}>SUSPECT EVADED</span>
+                            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", color: "#dc2626", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" }}>SUSPECT EVADED</span>
                           </div>
                         </div>
                       )}
@@ -580,14 +580,14 @@ export default function CarmenGame() {
                     onAnimationComplete={() => playStamp()}
                     style={{ border: `4px solid ${isCorrect ? "#15803d" : "#dc2626"}`, padding: "10px 20px", opacity: 0.88 }}
                   >
-                    <span style={{ fontSize: 20, fontWeight: 700, letterSpacing: "0.12em", color: isCorrect ? "#15803d" : "#dc2626", fontFamily: "'Special Elite', cursive", whiteSpace: "nowrap" }}>
+                    <span style={{ fontSize: 20, fontWeight: 700, letterSpacing: "0.2em", color: isCorrect ? "#15803d" : "#dc2626", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" }}>
                       {isCorrect ? "CASE CLOSED" : "CASE OPEN"}
                     </span>
                   </motion.div>
                   <div style={{ height: 1, width: "80%", background: "rgba(146,64,14,0.15)" }}></div>
                   <div style={{ textAlign: "center" }}>
                     <span style={{ display: "block", fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", color: "#a16207", marginBottom: 4 }}>CASE REFERENCE</span>
-                    <span style={{ fontSize: 11, color: "#1c0a00", fontFamily: "'Source Serif 4', Georgia, serif" }}>{caseNumber}</span>
+                    <span style={{ fontSize: 11, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace" }}>{caseNumber}</span>
                   </div>
                 </div>
 
@@ -651,7 +651,7 @@ export default function CarmenGame() {
                     onAnimationComplete={() => playStamp()}
                     style={{ border: "4px solid #dc2626", padding: "10px 20px", opacity: 0.88 }}
                   >
-                    <span style={{ fontSize: 20, fontWeight: 700, letterSpacing: "0.12em", color: "#dc2626", fontFamily: "'Special Elite', cursive", whiteSpace: "nowrap" }}>
+                    <span style={{ fontSize: 20, fontWeight: 700, letterSpacing: "0.2em", color: "#dc2626", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" }}>
                       CASE CLOSED
                     </span>
                   </motion.div>
@@ -799,11 +799,11 @@ export default function CarmenGame() {
                     <div style={{ display: "flex", gap: 20 }}>
                       <div>
                         <span style={{ ...styles.fieldLabel, color: "#dc2626", fontSize: 13 }}>ARMED</span>
-                        <span style={{ display: "block", color: "#b91c1c", fontSize: 16, fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, letterSpacing: "0.03em", lineHeight: 1.4 }}>UNKNOWN</span>
+                        <span style={{ display: "block", color: "#b91c1c", fontSize: 18, fontFamily: "'Crimson Pro', Georgia, serif", fontWeight: 700, letterSpacing: "0.01em", lineHeight: 1.3 }}>Unknown</span>
                       </div>
                       <div>
                         <span style={{ ...styles.fieldLabel, color: "#dc2626", fontSize: 13 }}>APPROACH</span>
-                        <span style={{ display: "block", color: "#b91c1c", fontSize: 16, fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, letterSpacing: "0.03em", lineHeight: 1.4 }}>WITH CAUTION</span>
+                        <span style={{ display: "block", color: "#b91c1c", fontSize: 18, fontFamily: "'Crimson Pro', Georgia, serif", fontWeight: 700, letterSpacing: "0.01em", lineHeight: 1.3 }}>With Caution</span>
                       </div>
                     </div>
                   </div>
@@ -1299,8 +1299,8 @@ const styles = {
 
   suspectProfileRow: { display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 12, paddingBottom: 12, borderBottom: "1px solid rgba(146,64,14,0.15)" },
   suspectNameBlock: { flex: 1, minWidth: 0 },
-  suspectName: { fontSize: 22, fontWeight: 700, color: "#1c0a00", margin: "0 0 2px", letterSpacing: "0.02em", fontFamily: "'Special Elite', cursive" },
-  suspectAlias: { fontSize: 12, color: "#78350f", fontStyle: "italic", margin: "0 0 8px", fontFamily: "'Source Serif 4', Georgia, serif", letterSpacing: "0.02em" },
+  suspectName: { fontSize: 22, fontWeight: 700, color: "#1c0a00", margin: "0 0 2px", letterSpacing: "0.02em", fontFamily: "'Special Elite', 'Courier New', cursive" },
+  suspectAlias: { fontSize: 12, color: "#78350f", fontStyle: "italic", margin: "0 0 8px", fontFamily: "'Crimson Pro', Georgia, serif", letterSpacing: "0.02em" },
   suspectBadges: { display: "flex", gap: 5, flexWrap: "wrap" },
   suspectBadgeDanger: { fontSize: 8, fontWeight: 700, letterSpacing: "0.12em", color: "#fff", background: "#dc2626", padding: "2px 7px", borderRadius: 2 },
   suspectBadgeWarn: { fontSize: 8, fontWeight: 700, letterSpacing: "0.12em", color: "#78350f", background: "rgba(146,64,14,0.12)", border: "1px solid rgba(146,64,14,0.25)", padding: "2px 7px", borderRadius: 2 },
@@ -1311,7 +1311,7 @@ const styles = {
   suspectFieldRow: { display: "flex", flexWrap: "wrap" },
   suspectField: { display: "flex", flexDirection: "column", gap: 3, flex: "1 1 120px", paddingRight: 20 },
   fieldLabel: { fontSize: 13, fontWeight: 400, letterSpacing: "0.14em", color: "#a16207", fontFamily: "'VT323', 'Courier New', monospace" },
-  fieldValue: { fontSize: 13, fontWeight: 600, color: "#1c0a00", fontFamily: "'Source Serif 4', Georgia, serif", letterSpacing: "0.01em" },
+  fieldValue: { fontSize: 15, fontWeight: 600, color: "#1c0a00", fontFamily: "'Crimson Pro', Georgia, serif", letterSpacing: "0.01em" },
 
   sectionDivider: { display: "flex", alignItems: "center", gap: 10, marginBottom: 14, position: "relative", zIndex: 1 },
 
@@ -1346,12 +1346,12 @@ const styles = {
     lineHeight: "32px",
   },
   clueTitle: { display: "inline-block", fontSize: 14, fontWeight: 400, letterSpacing: "0.16em", color: "#fff", background: "#b91c1c", padding: "2px 10px", borderRadius: 2, marginBottom: 8, fontFamily: "'VT323', monospace" },
-  clueText: { fontSize: 15, lineHeight: "32px", color: "#1c0a00", margin: "0 0 0px", fontFamily: "'Source Serif 4', Georgia, serif", fontStyle: "normal", fontWeight: 400 },
+  clueText: { fontSize: 15, lineHeight: "32px", color: "#1c0a00", margin: "0 0 0px", fontFamily: "'Crimson Pro', Georgia, serif", fontStyle: "normal", fontWeight: 400 },
   directiveLine: { height: 1, background: "rgba(220,38,38,0.3)", margin: "8px 0", borderTop: "1px dashed rgba(220,38,38,0.35)" },
-  clueQuestion: { fontSize: 18, fontWeight: 700, color: "#b91c1c", margin: 0, letterSpacing: "0.02em", fontFamily: "'Special Elite', cursive", lineHeight: "32px" },
+  clueQuestion: { fontSize: 18, fontWeight: 700, color: "#b91c1c", margin: 0, letterSpacing: "0.02em", fontFamily: "'Special Elite', 'Courier New', cursive", lineHeight: "32px" },
 
   inputSection: { marginBottom: 8, paddingTop: 14, borderTop: "1px dashed rgba(146,64,14,0.15)", position: "relative", zIndex: 1 },
-  inputLabel: { display: "block", fontSize: 14, fontWeight: 400, letterSpacing: "0.08em", color: "#78350f", marginBottom: 8, fontFamily: "'Special Elite', cursive" },
+  inputLabel: { display: "block", fontSize: 14, fontWeight: 400, letterSpacing: "0.08em", color: "#78350f", marginBottom: 8, fontFamily: "'Special Elite', 'Courier New', cursive" },
   inputRow: { display: "flex", flexDirection: "column", gap: 8 },
   input: { width: "100%", boxSizing: "border-box", padding: "10px 14px", fontSize: 14, fontFamily: "'Courier New', Courier, monospace", border: "1.5px solid #92400e", borderRadius: 4, background: "rgba(255,255,255,0.8)", color: "#1c0a00", outline: "none", letterSpacing: "0.04em" },
   trackBtn: { width: "100%", padding: "10px 0", background: "#dc2626", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap", textAlign: "center" },
@@ -1446,13 +1446,13 @@ const styles = {
   folderTabCase: { color: "rgba(255,255,255,0.6)", fontSize: 9, letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace" },
   folderBody: { background: "linear-gradient(160deg, #fdf4e0 0%, #f8ebca 40%, #f4e4b8 100%)", border: "2px solid #92400e", borderTop: "2px solid #92400e", borderRadius: "0 8px 8px 8px", padding: "28px 32px 24px", position: "relative", overflow: "visible", boxShadow: "0 24px 60px rgba(0,0,0,0.75), inset 0 0 40px rgba(120,60,0,0.08)" },
   filedStamp: { position: "absolute", top: 20, right: 20, fontSize: 13, fontWeight: 700, letterSpacing: "0.2em", border: "3px solid", padding: "5px 12px", borderRadius: 3, opacity: 0.88, fontFamily: "'Courier New', Courier, monospace", transformOrigin: "center", zIndex: 2 },
-  folderTitle: { fontSize: 22, fontWeight: 700, color: "#1c0a00", margin: "0 0 2px", letterSpacing: "0.02em", position: "relative", zIndex: 1, fontFamily: "'Special Elite', cursive" },
-  folderSuspect: { fontSize: 12, color: "#78350f", margin: "0 0 16px", letterSpacing: "0.04em", fontFamily: "'Source Serif 4', Georgia, serif", fontStyle: "italic", position: "relative", zIndex: 1 },
+  folderTitle: { fontSize: 22, fontWeight: 700, color: "#1c0a00", margin: "0 0 2px", letterSpacing: "0.02em", position: "relative", zIndex: 1, fontFamily: "'Special Elite', 'Courier New', cursive" },
+  folderSuspect: { fontSize: 12, color: "#78350f", margin: "0 0 16px", letterSpacing: "0.04em", fontFamily: "'Crimson Pro', Georgia, serif", fontStyle: "italic", position: "relative", zIndex: 1 },
   folderDivider: { height: 1, background: "rgba(146,64,14,0.25)", marginBottom: 20, position: "relative", zIndex: 1 },
   folderFields: { display: "flex", flexDirection: "column", gap: 14, position: "relative", zIndex: 1 },
   folderField: { display: "flex", flexDirection: "column", gap: 3, paddingBottom: 14, borderBottom: "1px solid rgba(146,64,14,0.12)" },
   folderFieldLabel: { fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", color: "#a16207", fontFamily: "'VT323', 'Courier New', monospace" },
-  folderFieldValue: { fontSize: 15, fontWeight: 600, color: "#1c0a00", fontFamily: "'Source Serif 4', Georgia, serif", letterSpacing: "0.01em" },
+  folderFieldValue: { fontSize: 16, fontWeight: 600, color: "#1c0a00", fontFamily: "'Crimson Pro', Georgia, serif", letterSpacing: "0.01em" },
   folderFooter: { marginTop: 20, paddingTop: 12, borderTop: "1px solid rgba(146,64,14,0.15)", position: "relative", zIndex: 1 },
   folderFooterText: { fontSize: 9, color: "#a16207", letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace" },
 };
