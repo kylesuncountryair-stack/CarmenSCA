@@ -15,13 +15,14 @@ const generateCaseNumber = () => {
   return `SC-${y}-${m}${day}-${rand}`;
 };
 
-const correctAnswers = ["msy", "orleans", "new orleans, louisiana", "new orleans, la", "new orleans la", "new orleans louisiana", "neworleans", "msy - new orleans", "nawlins", "new orleans"];
+const correctAnswers = ["sfo", "san fran", "san francisco", "san francisco, ca", "san francisco ca", "san francisco california", "sanfrancisco", "sfo - san francisco", "san francisco, california"];
 
 // ── Update this list each day ─────────────────────────────────────────────────
 const PRIOR_SIGHTINGS = [
-  { city: "Orlando, FL", code: "MCO", date: "JUN 22, 2026", status: "ESCAPED" },
+    { city: "Orlando, FL", code: "MCO", date: "JUN 22, 2026", status: "ESCAPED" },
   { city: "Las Vegas, NV", code: "LAS", date: "JUN 23, 2026", status: "ESCAPED" },
    { city: "Seattle, WA", code: "SEA", date: "JUN 24, 2026", status: "ESCAPED" },
+  { city: "New Orleans, LA", code: "MSY", date: "JUN 25, 2026", status: "ESCAPED" },
 ];
 
 const scanMessages = [
@@ -38,7 +39,7 @@ const HEX_CHARS = "0123456789ABCDEF";
 const randomHex = (len) => Array.from({ length: len }, () => HEX_CHARS[Math.floor(Math.random() * 16)]).join("");
 
 const prompt =
-  "Our latest lead came with a soundtrack. Carmen surfaced in a city where every few blocks seem to have their own band, balconies are dressed in intricate ironwork, and the air somehow smells like both chicory and spicy cooking. Witnesses watched her duck into a hidden courtyard, admire a grand cathedral overlooking a lively square, and strike up a conversation with a captain preparing a paddlewheel riverboat for departure. When our agents finally caught up, the music had changed, the crowd had shifted and Carmen had vanished without a trace except for a trail of powdered sugar leading nowhere.";
+  "She's hiding in a city where the fog has its own fan club and the sea lions have filed for squatter's rights on the waterfront. Cable cars have been defying gravity since 1873, a nearby island prison made escaping look impossible and proved it, and she was last seen on a bridge so big and so orange that pilots have been using it as a landmark since 1937 with a bag of chocolate big enough to raise some serious questions. Oh, and the neighborhood she's staying in? Let's just say it would look very familiar to anyone who watched a lot of TGIF in the early 90s.";
 
 const LOCKOUT_KEY = "carmen_played_date";
 
@@ -459,7 +460,7 @@ export default function CarmenGame() {
         setCarmenHijack(true);
         setHijackPhase("typing");
         setTimeout(() => setHijackPhase("holding"), 9000);
-        setTimeout(() => { setCarmenHijack(false); setHijackPhase("off"); setSubmitted(true); }, 12000);
+        setTimeout(() => { setCarmenHijack(false); setHijackPhase("off"); setSubmitted(true); }, 14000);
       }, 400);
     } else {
       setTimeout(() => setSubmitted(true), 800);
@@ -544,7 +545,7 @@ export default function CarmenGame() {
                       <span style={styles.folderFieldLabel}>OUTCOME</span>
                       {isCorrect ? (
                         <div>
-                          <span style={styles.folderFieldValue}>New Orleans, LA (MSY)</span>
+                          <span style={styles.folderFieldValue}>San Francisco, CA (SFO)</span>
                           <div style={{ marginTop: 6, display: "inline-block", border: "2px solid #15803d", padding: "2px 8px", transform: "rotate(-2deg)", transformOrigin: "left center" }}>
                             <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", color: "#15803d", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" }}>TARGET LOCKED</span>
                           </div>
@@ -561,7 +562,7 @@ export default function CarmenGame() {
                     {!isCorrect && (
                       <div style={styles.folderField}>
                         <span style={styles.folderFieldLabel}>ACTUAL LOCATION</span>
-                        <RedactedReveal text="New Orleans, LA (MSY)" />
+                        <RedactedReveal text="San Francisco, CA (SFO)" />
                       </div>
                     )}
                   </div>
@@ -991,7 +992,7 @@ export default function CarmenGame() {
                           text={isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. Better luck next time, Agent."}
                           color={isCorrect ? "#166534" : "#991b1b"}
                         />
-                        {isCorrect && <p style={styles.resultSub}>Suspect located in New Orleans, LA (MSY)</p>}
+                        {isCorrect && <p style={styles.resultSub}>Suspect located in San Francisco, CA (SFO)</p>}
                       </motion.div>
                     </div>
                     {!isCorrect && canRetry && (
@@ -1073,6 +1074,7 @@ function CarmenHijack({ phase }) {
   const [ended, setEnded] = useState(false);
   const timers = useRef([]);
   const mounted = useRef(true);
+  const started = useRef(false);
 
   function addTimer(fn, ms) {
     const t = setTimeout(() => { if (mounted.current) fn(); }, ms);
@@ -1091,13 +1093,9 @@ function CarmenHijack({ phase }) {
   }, []);
 
   useEffect(() => {
-    clearAll();
-    if (phase === "off") {
-      setVisibleLines([]); setCurrentText("");
-      setDone(false); setGlitching(false); setEnded(false);
-      return;
-    }
-    if (phase !== "typing") return;
+    // Only start once — never interrupt mid-message
+    if (phase !== "typing" || started.current) return;
+    started.current = true;
 
     let lineIdx = 0;
     let charIdx = 0;
