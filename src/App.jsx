@@ -1074,16 +1074,16 @@ function CarmenHijack({ phase }) {
   const timers = useRef([]);
   const mounted = useRef(true);
 
-  const addTimer = (fn, ms) => {
+  function addTimer(fn, ms) {
     const t = setTimeout(() => { if (mounted.current) fn(); }, ms);
     timers.current.push(t);
     return t;
-  };
+  }
 
-  const clearAll = () => {
-    timers.current.forEach(clearTimeout);
+  function clearAll() {
+    timers.current.forEach(t => clearTimeout(t));
     timers.current = [];
-  };
+  }
 
   useEffect(() => {
     mounted.current = true;
