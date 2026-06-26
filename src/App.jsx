@@ -307,7 +307,7 @@ function BootSequence({ onComplete }) {
               transition={{ duration: 0.3 }}
               style={{ ...styles.bootBody, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 10 }}
             >
-              <p style={{ ...styles.bootLine, color: "#fff", fontSize: 22, fontFamily: "'VT323', monospace", letterSpacing: "0.22em", margin: 0, textAlign: "center" }}>
+              <p style={{ ...styles.bootLine, color: "#fff", fontSize: 28, fontFamily: "'VT323', monospace", letterSpacing: "0.22em", margin: 0, textAlign: "center" }}>
                 ACCESS GRANTED
               </p>
               <p style={{ ...styles.bootLine, color: "rgba(255,255,255,0.35)", fontSize: 13, fontFamily: "'VT323', monospace", margin: 0, letterSpacing: "0.18em", textAlign: "center" }}>
@@ -799,11 +799,11 @@ export default function CarmenGame() {
                     <div style={{ display: "flex", gap: 20 }}>
                       <div>
                         <span style={{ ...styles.fieldLabel, color: "#dc2626", fontSize: 13 }}>ARMED</span>
-                        <span style={{ display: "block", color: "#b91c1c", fontSize: 18, fontFamily: "'Special Elite', cursive", lineHeight: 1.2 }}>UNKNOWN</span>
+                        <span style={{ display: "block", color: "#b91c1c", fontSize: 16, fontFamily: "'Courier New', Courier, monospace", fontWeight: 700, letterSpacing: "0.08em", lineHeight: 1.4 }}>UNKNOWN</span>
                       </div>
                       <div>
                         <span style={{ ...styles.fieldLabel, color: "#dc2626", fontSize: 13 }}>APPROACH</span>
-                        <span style={{ display: "block", color: "#b91c1c", fontSize: 18, fontFamily: "'Special Elite', cursive", lineHeight: 1.2 }}>WITH CAUTION</span>
+                        <span style={{ display: "block", color: "#b91c1c", fontSize: 16, fontFamily: "'Courier New', Courier, monospace", fontWeight: 700, letterSpacing: "0.08em", lineHeight: 1.4 }}>WITH CAUTION</span>
                       </div>
                     </div>
                   </div>
@@ -1452,7 +1452,7 @@ const styles = {
   folderFields: { display: "flex", flexDirection: "column", gap: 14, position: "relative", zIndex: 1 },
   folderField: { display: "flex", flexDirection: "column", gap: 3, paddingBottom: 14, borderBottom: "1px solid rgba(146,64,14,0.12)" },
   folderFieldLabel: { fontSize: 13, fontWeight: 400, letterSpacing: "0.16em", color: "#a16207", fontFamily: "'VT323', 'Courier New', monospace" },
-  folderFieldValue: { fontSize: 15, fontWeight: 400, color: "#1c0a00", fontFamily: "'Special Elite', cursive", letterSpacing: "0.02em" },
+  folderFieldValue: { fontSize: 15, fontWeight: 700, color: "#1c0a00", fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.03em" },
   folderFooter: { marginTop: 20, paddingTop: 12, borderTop: "1px solid rgba(146,64,14,0.15)", position: "relative", zIndex: 1 },
   folderFooterText: { fontSize: 9, color: "#a16207", letterSpacing: "0.08em", fontFamily: "'Courier New', Courier, monospace" },
 };
