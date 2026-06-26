@@ -358,7 +358,8 @@ export default function CarmenGame() {
   const [radarFast, setRadarFast] = useState(false);
   const [booting, setBooting] = useState(true);
   const [bgFilter, setBgFilter] = useState("none");
-  const [glitch, setGlitch] = useState(false);
+  const [carmenHijack, setCarmenHijack] = useState(false);
+  const [hijackPhase, setHijackPhase] = useState("off"); // off | typing | holding
 
   const [firstAnswer, setFirstAnswer] = useState(null);
   const [canRetry, setCanRetry] = useState(false);
@@ -450,7 +451,17 @@ export default function CarmenGame() {
         body: JSON.stringify({ name, answer, result: isCorrect ? "Correct" : "Incorrect", caseNumber }),
       });
     } catch (err) {}
-    setTimeout(() => setSubmitted(true), 800);
+    if (isCorrect) {
+      // Carmen hijack before folder
+      setTimeout(() => {
+        setCarmenHijack(true);
+        setHijackPhase("typing");
+        setTimeout(() => setHijackPhase("holding"), 5500);
+        setTimeout(() => { setCarmenHijack(false); setHijackPhase("off"); setSubmitted(true); }, 8000);
+      }, 400);
+    } else {
+      setTimeout(() => setSubmitted(true), 800);
+    }
   };
 
   const handleRetry = () => {
@@ -691,6 +702,10 @@ export default function CarmenGame() {
 
       <AnimatePresence>
         {booting && <BootSequence onComplete={() => setBooting(false)} />}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {carmenHijack && <CarmenHijack phase={hijackPhase} />}
       </AnimatePresence>
 
       {flashGreen && <div style={{ position: "fixed", inset: 0, zIndex: 3, pointerEvents: "none", background: "rgba(34,197,94,0.35)", animation: "greenFlash 1.2s ease-in-out forwards" }}></div>}
@@ -1031,7 +1046,128 @@ export default function CarmenGame() {
   );
 }
 
-// ── Radar with phosphor trail ─────────────────────────────────────────────────
+// ── Carmen Hijack overlay ─────────────────────────────────────────────────────
+const CARMEN_LINES = [
+  { text: "SIGNAL INTERCEPTED — SYSTEM BREACHED", header: true, pause: 350 },
+  { text: "", pause: 80 },
+  { text: "You've been on my trail all week, Gumshoe.", pause: 60 },
+  { text: "I'll give you that.", pause: 180 },
+  { text: "", pause: 80 },
+  { text: "But don't get comfortable — finding me once", pause: 40 },
+  { text: "doesn't mean you'll find me again.", pause: 40 },
+  { text: "I'll be long gone before your next briefing.", pause: 180 },
+  { text: "", pause: 80 },
+  { text: "Until then...", pause: 300 },
+  { text: "", pause: 80 },
+  { text: "— C.S.", pause: 0 },
+];
+
+function CarmenHijack({ phase, onEnd }) {
+  const [visibleLines, setVisibleLines] = useState([]);
+  const [currentLine, setCurrentLine] = useState(0);
+  const [currentText, setCurrentText] = useState("");
+  const [done, setDone] = useState(false);
+  const [glitching, setGlitching] = useState(false);
+  const [ended, setEnded] = useState(false);
+
+  useEffect(() => {
+    if (phase === "off") {
+      setVisibleLines([]); setCurrentLine(0); setCurrentText("");
+      setDone(false); setGlitching(false); setEnded(false);
+      return;
+    }
+    if (phase !== "typing") return;
+
+    let lineIdx = 0;
+    let charIdx = 0;
+    let timer;
+
+    function typeLine() {
+      if (lineIdx >= CARMEN_LINES.length) {
+        setDone(true);
+        // glitch then end
+        setTimeout(() => setGlitching(true), 800);
+        setTimeout(() => { setGlitching(false); setEnded(true); }, 1400);
+        return;
+      }
+      const line = CARMEN_LINES[lineIdx];
+      if (line.text === "") {
+        setVisibleLines(prev => [...prev, { text: "", header: false }]);
+        lineIdx++;
+        charIdx = 0;
+        setCurrentText("");
+        timer = setTimeout(typeLine, line.pause);
+        return;
+      }
+      charIdx++;
+      const slice = line.text.slice(0, charIdx);
+      setCurrentText(slice);
+      if (charIdx >= line.text.length) {
+        setVisibleLines(prev => [...prev, { text: line.text, header: line.header }]);
+        setCurrentText("");
+        lineIdx++;
+        charIdx = 0;
+        timer = setTimeout(typeLine, line.pause);
+      } else {
+        const speed = line.header ? 38 : 28 + Math.random() * 16;
+        timer = setTimeout(typeLine, speed);
+      }
+    }
+
+    timer = setTimeout(typeLine, 200);
+    return () => clearTimeout(timer);
+  }, [phase]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      style={{
+        position: "fixed", inset: 0, zIndex: 60,
+        background: "#0d0000",
+        backgroundImage: "repeating-linear-gradient(0deg, rgba(0,0,0,0.35) 0px, rgba(0,0,0,0.35) 1px, transparent 1px, transparent 4px)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        animation: glitching ? "glitchShift 0.12s steps(4) infinite" : "none",
+      }}
+    >
+      <div style={{ width: "100%", maxWidth: 620, border: "1px solid rgba(220,38,38,0.5)", borderRadius: 4, overflow: "hidden", boxShadow: "0 0 60px rgba(220,38,38,0.15)" }}>
+        <div style={{ background: "rgba(220,38,38,0.15)", borderBottom: "1px solid rgba(220,38,38,0.3)", padding: "6px 14px", display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#dc2626", display: "inline-block", boxShadow: "0 0 4px #dc2626" }}></span>
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#7f1d1d", display: "inline-block" }}></span>
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#7f1d1d", display: "inline-block" }}></span>
+          <span style={{ fontSize: 13, color: "rgba(220,38,38,0.7)", letterSpacing: "0.12em", marginLeft: 6, fontFamily: "'VT323', monospace" }}>SC-PURSUIT-TERMINAL — SIGNAL INTERCEPTED</span>
+        </div>
+        <div style={{ background: "#0d0000", padding: "28px 32px", minHeight: 220 }}>
+          {visibleLines.map((l, i) => (
+            <p key={i} style={{
+              margin: l.text === "" ? "0 0 8px" : "0 0 2px",
+              fontFamily: "'VT323', monospace",
+              fontSize: l.header ? 18 : 15,
+              letterSpacing: "0.06em",
+              lineHeight: 1.65,
+              color: l.header ? "#fca5a5" : "rgba(252,165,165,0.75)",
+              fontWeight: l.header ? 700 : 400,
+            }}>
+              {l.text || "\u00A0"}
+            </p>
+          ))}
+          {currentText && !done && (
+            <p style={{ margin: "0 0 2px", fontFamily: "'VT323', monospace", fontSize: 15, letterSpacing: "0.06em", lineHeight: 1.65, color: "rgba(252,165,165,0.75)" }}>
+              {currentText}<span style={{ animation: "pulse 0.8s ease-in-out infinite" }}>▌</span>
+            </p>
+          )}
+          {ended && (
+            <p style={{ margin: "16px 0 0", fontFamily: "'VT323', monospace", fontSize: 13, color: "rgba(252,165,165,0.3)", letterSpacing: "0.1em" }}>
+              TRANSMISSION ENDED
+            </p>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 function RadarBackground({ fast }) {
   const dur = fast ? 4 : 9;
   return (
