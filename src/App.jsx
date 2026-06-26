@@ -458,8 +458,8 @@ export default function CarmenGame() {
       setTimeout(() => {
         setCarmenHijack(true);
         setHijackPhase("typing");
-        setTimeout(() => setHijackPhase("holding"), 5500);
-        setTimeout(() => { setCarmenHijack(false); setHijackPhase("off"); setSubmitted(true); }, 8000);
+        setTimeout(() => setHijackPhase("holding"), 9000);
+        setTimeout(() => { setCarmenHijack(false); setHijackPhase("off"); setSubmitted(true); }, 12000);
       }, 400);
     } else {
       setTimeout(() => setSubmitted(true), 800);
@@ -1071,8 +1071,27 @@ function CarmenHijack({ phase }) {
   const [done, setDone] = useState(false);
   const [glitching, setGlitching] = useState(false);
   const [ended, setEnded] = useState(false);
+  const timers = useRef([]);
+  const mounted = useRef(true);
+
+  const addTimer = (fn, ms) => {
+    const t = setTimeout(() => { if (mounted.current) fn(); }, ms);
+    timers.current.push(t);
+    return t;
+  };
+
+  const clearAll = () => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  };
 
   useEffect(() => {
+    mounted.current = true;
+    return () => { mounted.current = false; clearAll(); };
+  }, []);
+
+  useEffect(() => {
+    clearAll();
     if (phase === "off") {
       setVisibleLines([]); setCurrentText("");
       setDone(false); setGlitching(false); setEnded(false);
@@ -1082,14 +1101,13 @@ function CarmenHijack({ phase }) {
 
     let lineIdx = 0;
     let charIdx = 0;
-    let timer;
 
     function typeLine() {
+      if (!mounted.current) return;
       if (lineIdx >= CARMEN_LINES.length) {
         setDone(true);
-        // glitch then end
-        setTimeout(() => setGlitching(true), 800);
-        setTimeout(() => { setGlitching(false); setEnded(true); }, 1400);
+        addTimer(() => setGlitching(true), 800);
+        addTimer(() => { setGlitching(false); setEnded(true); }, 1600);
         return;
       }
       const line = CARMEN_LINES[lineIdx];
@@ -1098,27 +1116,75 @@ function CarmenHijack({ phase }) {
         lineIdx++;
         charIdx = 0;
         setCurrentText("");
-        timer = setTimeout(typeLine, line.pause);
+        addTimer(typeLine, line.pause);
         return;
       }
       charIdx++;
-      const slice = line.text.slice(0, charIdx);
-      setCurrentText(slice);
+      setCurrentText(line.text.slice(0, charIdx));
       if (charIdx >= line.text.length) {
         setVisibleLines(prev => [...prev, { text: line.text, header: line.header }]);
         setCurrentText("");
         lineIdx++;
         charIdx = 0;
-        timer = setTimeout(typeLine, line.pause);
+        addTimer(typeLine, line.pause);
       } else {
-        const speed = line.header ? 38 : 28 + Math.random() * 16;
-        timer = setTimeout(typeLine, speed);
+        addTimer(typeLine, line.header ? 38 : 28 + Math.random() * 16);
       }
     }
 
-    timer = setTimeout(typeLine, 200);
-    return () => clearTimeout(timer);
+    addTimer(typeLine, 200);
   }, [phase]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      style={{
+        position: "fixed", inset: 0, zIndex: 60,
+        background: "#0d0000",
+        backgroundImage: "repeating-linear-gradient(0deg, rgba(0,0,0,0.35) 0px, rgba(0,0,0,0.35) 1px, transparent 1px, transparent 4px)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        animation: glitching ? "glitchShift 0.12s steps(4) infinite" : "none",
+      }}
+    >
+      <div style={{ width: "100%", maxWidth: 620, border: "1px solid rgba(220,38,38,0.5)", borderRadius: 4, overflow: "hidden", boxShadow: "0 0 60px rgba(220,38,38,0.15)" }}>
+        <div style={{ background: "rgba(220,38,38,0.15)", borderBottom: "1px solid rgba(220,38,38,0.3)", padding: "6px 14px", display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#dc2626", display: "inline-block", boxShadow: "0 0 4px #dc2626" }}></span>
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#7f1d1d", display: "inline-block" }}></span>
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#7f1d1d", display: "inline-block" }}></span>
+          <span style={{ fontSize: 13, color: "rgba(220,38,38,0.7)", letterSpacing: "0.12em", marginLeft: 6, fontFamily: "'VT323', monospace" }}>SC-PURSUIT-TERMINAL — SIGNAL INTERCEPTED</span>
+        </div>
+        <div style={{ background: "#0d0000", padding: "28px 32px", minHeight: 220 }}>
+          {visibleLines.map((l, i) => (
+            <p key={i} style={{
+              margin: l.text === "" ? "0 0 8px" : "0 0 2px",
+              fontFamily: "'VT323', monospace",
+              fontSize: l.header ? 18 : 15,
+              letterSpacing: "0.06em",
+              lineHeight: 1.65,
+              color: l.header ? "#fca5a5" : "rgba(252,165,165,0.75)",
+              fontWeight: l.header ? 700 : 400,
+            }}>
+              {l.text || "\u00A0"}
+            </p>
+          ))}
+          {currentText && !done && (
+            <p style={{ margin: "0 0 2px", fontFamily: "'VT323', monospace", fontSize: 15, letterSpacing: "0.06em", lineHeight: 1.65, color: "rgba(252,165,165,0.75)" }}>
+              {currentText}<span style={{ animation: "pulse 0.8s ease-in-out infinite" }}>▌</span>
+            </p>
+          )}
+          {ended && (
+            <p style={{ margin: "16px 0 0", fontFamily: "'VT323', monospace", fontSize: 13, color: "rgba(252,165,165,0.3)", letterSpacing: "0.1em" }}>
+              TRANSMISSION ENDED
+            </p>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
   return (
     <motion.div
