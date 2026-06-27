@@ -3,6 +3,17 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const BG_IMAGE = "/background.png";
 
+// ── FINALE — flip to true on Monday to show the closing screen ───────────────
+const FINALE_MODE = false;
+const FINALE_WINNERS = [
+  { name: "Agent Name Here", dept: "Department" },
+  { name: "Agent Name Here", dept: "Department" },
+  { name: "Agent Name Here", dept: "Department" },
+  { name: "Agent Name Here", dept: "Department" },
+  { name: "Agent Name Here", dept: "Department" },
+  { name: "Agent Name Here", dept: "Department" },
+];
+
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbwte1jkE2vu7Lg32395bHpnjXYv9uibdodFYAneu0AphFxNCzl-JHX6Q7lv1tIn9Dnz/exec";
 
@@ -499,6 +510,8 @@ export default function CarmenGame() {
     @keyframes bgFilterFade { 0%{opacity:0} 15%{opacity:1} 75%{opacity:1} 100%{opacity:0} }
     @keyframes stampBleed { 0%{filter:url(#stampFilter) opacity(0) blur(1px)} 100%{filter:url(#stampFilter) opacity(0.85) blur(0px)} }
   `;
+
+  if (FINALE_MODE) return <FinaleScreen />;
 
   if (submitted) {
     return (
@@ -1053,16 +1066,17 @@ export default function CarmenGame() {
 
 // ── Carmen Hijack overlay ─────────────────────────────────────────────────────
 const CARMEN_LINES = [
-  { text: "SIGNAL INTERCEPTED — SYSTEM BREACHED", header: true, pause: 350 },
+  { text: "SIGNAL INTERCEPTED — TRANSMISSION HIJACKED", header: true, pause: 350 },
   { text: "", pause: 80 },
-  { text: "You've been on my trail all week, Gumshoe.", pause: 60 },
-  { text: "I'll give you that.", pause: 180 },
+  { text: "You found me. I'm impressed, Gumshoe.", pause: 60 },
+  { text: "Most agents give up after day three.", pause: 180 },
   { text: "", pause: 80 },
-  { text: "But don't get comfortable — finding me once", pause: 40 },
-  { text: "doesn't mean you'll find me again.", pause: 40 },
-  { text: "I'll be long gone before your next briefing.", pause: 180 },
+  { text: "But don't book a victory lap just yet —", pause: 40 },
+  { text: "I've already checked out of Nashville.", pause: 40 },
+  { text: "Next time you won't even know which", pause: 40 },
+  { text: "airline I'm on.", pause: 180 },
   { text: "", pause: 80 },
-  { text: "Until then...", pause: 300 },
+  { text: "Until we meet again...", pause: 300 },
   { text: "", pause: 80 },
   { text: "— C.S.", pause: 0 },
 ];
@@ -1153,7 +1167,7 @@ function CarmenHijack({ phase }) {
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#dc2626", display: "inline-block", boxShadow: "0 0 4px #dc2626" }}></span>
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#7f1d1d", display: "inline-block" }}></span>
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#7f1d1d", display: "inline-block" }}></span>
-          <span style={{ fontSize: 13, color: "rgba(220,38,38,0.7)", letterSpacing: "0.12em", marginLeft: 6, fontFamily: "'VT323', monospace" }}>SC-PURSUIT-TERMINAL — SIGNAL INTERCEPTED</span>
+          <span style={{ fontSize: 13, color: "rgba(220,38,38,0.7)", letterSpacing: "0.12em", marginLeft: 6, fontFamily: "'VT323', monospace" }}>SC-PURSUIT-TERMINAL — TRANSMISSION HIJACKED</span>
         </div>
         <div style={{ background: "#0d0000", padding: "28px 32px", minHeight: 220 }}>
           {visibleLines.map((l, i) => (
@@ -1182,6 +1196,194 @@ function CarmenHijack({ phase }) {
         </div>
       </div>
     </motion.div>
+  );
+}
+
+// ── Finale screen ─────────────────────────────────────────────────────────────
+function FinaleScreen() {
+  const agentIds = useRef(FINALE_WINNERS.map(() => `AG-${randomHex(4)}`));
+  const stampRotations = [-2, -3, -1.5, -2.5, -1, -3.5];
+
+  const WEEK_SIGHTINGS = [
+    { city: "Orlando, FL",       code: "MCO", date: "JUN 22", escaped: true },
+    { city: "Las Vegas, NV",     code: "LAS", date: "JUN 23", escaped: true },
+    { city: "Seattle, WA",       code: "SEA", date: "JUN 24", escaped: true },
+    { city: "New Orleans, LA",   code: "MSY", date: "JUN 25", escaped: true },
+    { city: "San Francisco, CA", code: "SFO", date: "JUN 26", escaped: true },
+    { city: "Nashville, TN",     code: "BNA", date: "JUN 27", escaped: true },
+    { city: "Minneapolis, MN",   code: "MSP", date: "JUN 28", escaped: false },
+  ];
+
+  return (
+    <div style={{ minHeight: "100vh", background: "#050505", display: "flex", alignItems: "flex-start", justifyContent: "center", padding: "16px", position: "relative", overflow: "hidden" }}>
+      <div style={styles.crtOverlay}></div>
+      <RadarBackground fast={false} />
+      <div style={{ width: "100%", maxWidth: 1100, position: "relative", zIndex: 10 }}>
+
+        <div style={styles.headerBar}>
+          <div style={styles.headerLeft}>
+            <span style={{ ...styles.orgLabel, fontFamily: "'Special Elite', cursive", fontSize: 12, letterSpacing: "0.08em" }}>Sun Country Airlines</span>
+            <span style={styles.divider}>·</span>
+            <span style={{ ...styles.orgLabel, fontFamily: "'VT323', monospace", fontSize: 14, letterSpacing: "0.18em" }}>PURSUIT DIVISION</span>
+          </div>
+          <div style={styles.caseTag}>CASE SC-2026 · FINAL BRIEFING</div>
+        </div>
+
+        <div style={styles.card}>
+          <div style={styles.paperLines}></div>
+          <div style={styles.paperGrain}></div>
+          <div style={styles.paperYellow}></div>
+
+          {/* Top strip */}
+          <div style={styles.cardTopStrip}>
+            <motion.div
+              initial={{ scale: 1.5, opacity: 0, rotate: -4 }}
+              animate={{ scale: 1, opacity: 0.88, rotate: -2 }}
+              transition={{ delay: 0.3, type: "spring", stiffness: 220, damping: 14 }}
+              onAnimationComplete={() => playStamp()}
+              style={{ border: "3px solid #15803d", padding: "4px 10px", display: "inline-block", filter: "url(#stampFilter)" }}
+            >
+              <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.18em", color: "#15803d", fontFamily: "'Courier New', Courier, monospace" }}>MISSION COMPLETE</span>
+            </motion.div>
+            <div style={styles.topRight}>
+              <span style={styles.dateStamp}>WEEK OF JUN 22 – JUN 28, 2026</span>
+              <span style={{ ...styles.priorityTag, color: "#15803d", borderColor: "rgba(21,128,61,0.4)" }}>CASE: CLOSED</span>
+            </div>
+          </div>
+
+          {/* Two columns */}
+          <div style={styles.folderColumns}>
+
+            {/* LEFT — suspect + week in review */}
+            <motion.div
+              style={styles.folderLeft}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 180, damping: 20 }}
+            >
+              <div style={styles.suspectHeader}>
+                <div style={styles.suspectProfileRow}>
+                  <div style={styles.suspectNameBlock}>
+                    <p style={styles.suspectName}>Carmen Sandiego</p>
+                    <p style={styles.suspectAlias}>"The Red Shadow"</p>
+                    <div style={styles.suspectBadges}>
+                      <span style={{ ...styles.suspectBadgeDanger, background: "#15803d" }}>IN CUSTODY</span>
+                      <span style={styles.suspectBadgeWarn}>THREAT: NEUTRALIZED</span>
+                    </div>
+                  </div>
+                </div>
+                <div style={styles.suspectGrid}>
+                  <div style={styles.suspectGridItem}>
+                    <span style={styles.fieldLabel}>FINAL LOCATION</span>
+                    <span style={styles.fieldValue}>Minneapolis, MN</span>
+                  </div>
+                  <div style={styles.suspectGridItem}>
+                    <span style={styles.fieldLabel}>APPREHENDED</span>
+                    <span style={styles.fieldValue}>JUN 28, 2026</span>
+                  </div>
+                  <div style={styles.suspectGridItem}>
+                    <span style={styles.fieldLabel}>CASES RUN</span>
+                    <span style={styles.fieldValue}>7</span>
+                  </div>
+                  <div style={styles.suspectGridItem}>
+                    <span style={styles.fieldLabel}>REPORTS FILED</span>
+                    <span style={styles.fieldValue}>200</span>
+                  </div>
+                  <div style={{ ...styles.suspectGridItem, gridColumn: "1 / -1" }}>
+                    <span style={styles.fieldLabel}>REWARD TOTAL</span>
+                    <span style={{ ...styles.fieldValue, color: "#15803d", fontSize: 16 }}>$600</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style={styles.sectionDivider}>
+                <div style={{ ...styles.sectionRule, flex: "0 0 12px" }}></div>
+                <span style={styles.sectionLabel}>WEEK IN REVIEW</span>
+                <span style={{ color: "rgba(146,64,14,0.3)", fontSize: 10, margin: "0 2px" }}>›</span>
+                <div style={styles.sectionRule}></div>
+              </div>
+
+              <div style={styles.sightingsTable}>
+                <div style={styles.sightingsHeader}>
+                  <span style={{ ...styles.sightingsCell, flex: 1 }}>LOCATION</span>
+                  <span style={{ ...styles.sightingsCell, flex: "0 0 38px", textAlign: "center" }}>CODE</span>
+                  <span style={{ ...styles.sightingsCell, flex: "0 0 50px", textAlign: "right" }}>DATE</span>
+                </div>
+                {WEEK_SIGHTINGS.map((s, i) => (
+                  <div key={i} style={{ ...styles.sightingsRow, borderBottom: i < WEEK_SIGHTINGS.length - 1 ? "1px solid rgba(146,64,14,0.1)" : "none" }}>
+                    <div style={{ flex: 1, position: "relative" }}>
+                      <span style={{ ...styles.sightingsValue, display: "block", position: "relative" }}>
+                        {s.city}
+                        {s.escaped && (
+                          <span style={{ position: "absolute", left: "-2px", right: "-2px", top: "50%", transform: "translateY(-52%) rotate(-1.2deg)", height: "5px", background: "rgba(185,28,28,0.72)", borderRadius: "2px", filter: "blur(0.6px)", pointerEvents: "none", display: "block" }}></span>
+                        )}
+                      </span>
+                    </div>
+                    <span style={{ ...styles.sightingsCode, flex: "0 0 38px", textAlign: "center" }}>{s.code}</span>
+                    <span style={{ ...styles.sightingsDate, flex: "0 0 50px", textAlign: "right" }}>{s.date}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Spine */}
+            <div style={styles.folderSpine}></div>
+
+            {/* RIGHT — transmission then agents */}
+            <motion.div
+              style={{ ...styles.folderRight, display: "flex", flexDirection: "column" }}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35, type: "spring", stiffness: 180, damping: 20 }}
+            >
+              <div style={{ ...styles.clueBox, marginBottom: 18 }}>
+                <span style={{ ...styles.clueTitle, background: "#15803d" }}>FINAL TRANSMISSION</span>
+                <p style={styles.clueText}>Carmen Sandiego has been apprehended after a week-long pursuit across the Sun Country network. Six agents cracked the case and have each earned the reward. The Pursuit Division thanks all agents for their service this week.</p>
+                <p style={{ fontFamily: "'Crimson Pro', Georgia, serif", fontSize: 13, fontStyle: "italic", color: "#78350f", margin: "6px 0 0", lineHeight: 1.5 }}>— Pursuit Division, Sun Country Airlines</p>
+              </div>
+
+              <div style={styles.sectionDivider}>
+                <div style={{ ...styles.sectionRule, flex: "0 0 12px" }}></div>
+                <span style={styles.sectionLabel}>REWARD RECIPIENTS</span>
+                <span style={{ color: "rgba(146,64,14,0.3)", fontSize: 10, margin: "0 2px" }}>›</span>
+                <div style={styles.sectionRule}></div>
+              </div>
+
+              <p style={{ fontFamily: "'VT323', monospace", fontSize: 12, color: "#a16207", letterSpacing: "0.1em", marginBottom: 10, position: "relative", zIndex: 1 }}>
+                THE FOLLOWING AGENTS ARE EACH AWARDED $100
+              </p>
+
+              {FINALE_WINNERS.map((w, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: 12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5 + i * 0.08, type: "spring", stiffness: 200, damping: 20 }}
+                  style={{ display: "flex", alignItems: "center", gap: 12, padding: "9px 14px", background: "rgba(21,128,61,0.05)", border: "1px solid rgba(21,128,61,0.2)", borderRadius: 4, marginBottom: 7, position: "relative", zIndex: 1 }}
+                >
+                  <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#15803d", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <span style={{ fontFamily: "'Special Elite', cursive", fontSize: 15, color: "#fff", fontWeight: 700 }}>{w.name.charAt(0)}</span>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontFamily: "'Special Elite', cursive", fontSize: 14, color: "#1c0a00", fontWeight: 700 }}>{w.name}</div>
+                    <div style={{ fontFamily: "'VT323', monospace", fontSize: 12, color: "#a16207", letterSpacing: "0.08em" }}>{w.dept} · {agentIds.current[i]}</div>
+                  </div>
+                  <div style={{ border: "2px solid #15803d", padding: "3px 10px", transform: `rotate(${stampRotations[i]}deg)`, flexShrink: 0 }}>
+                    <span style={{ fontFamily: "'Courier New', Courier, monospace", fontSize: 12, fontWeight: 700, color: "#15803d" }}>$100</span>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+
+          <div style={styles.cardFooter}>
+            <span style={styles.footerText}>Sun Country Airlines · Eyes Only · Destroy After Reading</span>
+            <span style={{ ...styles.footerText, color: "rgba(161,98,7,0.35)" }}>·</span>
+            <span style={{ ...styles.footerText, color: "#15803d", letterSpacing: "0.14em" }}>✓ MISSION COMPLETE</span>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
