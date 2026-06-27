@@ -26,7 +26,7 @@ const generateCaseNumber = () => {
   return `SC-${y}-${m}${day}-${rand}`;
 };
 
-const correctAnswers = ["bna", "nashville", "nashville, tn", "nashville tn", "nashville tennessee", "sanfrancisco", "bna - nashville", "nashville, tennessee"];
+const correctAnswers = ["bna", "nashville", "nashville, tn", "nashville tn", "nashville tennessee", "bna - nashville", "nashville, tennessee"];
 
 // ── Update this list each day ─────────────────────────────────────────────────
 const PRIOR_SIGHTINGS = [
@@ -51,7 +51,7 @@ const HEX_CHARS = "0123456789ABCDEF";
 const randomHex = (len) => Array.from({ length: len }, () => HEX_CHARS[Math.floor(Math.random() * 16)]).join("");
 
 const prompt =
-  "Our suspect fled to a city where a full-scale Greek temple stands just minutes from stages that have launched countless music careers. Witnesses say she spent the afternoon listening to songwriters, the evening eating chicken so spicy it should require a permit, and the night disappearing into a sea of neon lights, cowboy boots, and guitar cases. If everyone you question claims they're 'working on an album,' you've found the right city.";
+  "our suspect fled to a city where a full-scale Greek temple stands just minutes from stages that have launched countless music careers. Witnesses say she spent the afternoon listening to songwriters, the evening eating chicken so spicy it should require a permit, and the night disappearing into a sea of neon lights, cowboy boots, and guitar cases. If everyone you question claims they're 'working on an album,' you've found the right city.";
 
 const LOCKOUT_KEY = "carmen_played_date";
 
@@ -1519,11 +1519,11 @@ const styles = {
   sectionDivider: { display: "flex", alignItems: "center", gap: 10, marginBottom: 14, position: "relative", zIndex: 1 },
 
   sightingsTable: { marginBottom: 0, position: "relative", zIndex: 1, border: "1px solid rgba(146,64,14,0.2)", borderRadius: 4, overflow: "hidden" },
-  sightingsHeader: { display: "flex", padding: "5px 10px", background: "rgba(146,64,14,0.08)", borderBottom: "1px solid rgba(146,64,14,0.15)" },
+  sightingsHeader: { display: "flex", padding: "4px 10px", background: "rgba(146,64,14,0.08)", borderBottom: "1px solid rgba(146,64,14,0.15)" },
   sightingsCell: { fontSize: 13, fontWeight: 400, letterSpacing: "0.12em", color: "#78350f", fontFamily: "'VT323', 'Courier New', monospace" },
-  sightingsRow: { display: "flex", padding: "8px 10px", alignItems: "center" },
-  sightingsDate: { fontSize: 13, color: "#78350f", fontFamily: "'VT323', monospace", letterSpacing: "0.04em", fontWeight: 400 },
-  sightingsValue: { fontSize: 15, fontWeight: 400, color: "#1c0a00", fontFamily: "'VT323', monospace", letterSpacing: "0.04em" },
+  sightingsRow: { display: "flex", padding: "5px 10px", alignItems: "center" },
+  sightingsDate: { fontSize: 11, color: "#78350f", fontFamily: "'VT323', monospace", letterSpacing: "0.04em", fontWeight: 400 },
+  sightingsValue: { fontSize: 13, fontWeight: 400, color: "#1c0a00", fontFamily: "'VT323', monospace", letterSpacing: "0.04em" },
   sightingsCode: { fontSize: 14, fontWeight: 400, color: "#78350f", fontFamily: "'VT323', monospace", letterSpacing: "0.06em" },
   sightingsStatus: { fontSize: 13, fontWeight: 400, letterSpacing: "0.1em", fontFamily: "'VT323', monospace" },
   sectionRule: { flex: 1, height: 1, background: "rgba(146,64,14,0.3)" },
