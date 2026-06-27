@@ -15,7 +15,7 @@ const generateCaseNumber = () => {
   return `SC-${y}-${m}${day}-${rand}`;
 };
 
-const correctAnswers = ["sfo", "san fran", "san francisco", "san francisco, ca", "san francisco ca", "san francisco california", "sanfrancisco", "sfo - san francisco", "san francisco, california"];
+const correctAnswers = ["BNA", "nashville", "nashville, tn", "nashville tn", "nashville tennessee", "sanfrancisco", "bna - nashville", "nashville, tennessee"];
 
 // ── Update this list each day ─────────────────────────────────────────────────
 const PRIOR_SIGHTINGS = [
@@ -23,6 +23,7 @@ const PRIOR_SIGHTINGS = [
   { city: "Las Vegas, NV", code: "LAS", date: "JUN 23, 2026", status: "ESCAPED" },
    { city: "Seattle, WA", code: "SEA", date: "JUN 24, 2026", status: "ESCAPED" },
   { city: "New Orleans, LA", code: "MSY", date: "JUN 25, 2026", status: "ESCAPED" },
+    { city: "San Francisco, CA", code: "SFO", date: "JUN 26, 2026", status: "ESCAPED" },
 ];
 
 const scanMessages = [
@@ -39,7 +40,7 @@ const HEX_CHARS = "0123456789ABCDEF";
 const randomHex = (len) => Array.from({ length: len }, () => HEX_CHARS[Math.floor(Math.random() * 16)]).join("");
 
 const prompt =
-  "Our suspect has disappeared into a city where the fog arrives with better attendance than the tourists, and the waterfront's loudest residents bark instead of talk. She rode transportation that's been climbing impossible hills since 1873, admired an island prison famous for keeping guests longer than they planned, and was seen crossing an enormous orange bridge with enough chocolate to make customs suspicious. Her final stop? A picture-perfect neighborhood that might ring a bell for anyone whose Friday nights in the early '90s were spent with a certain TV family on TGIF.";
+  "our suspect fled to a city where a full-scale Greek temple stands just minutes from stages that have launched countless music careers. Witnesses say she spent the afternoon listening to songwriters, the evening eating chicken so spicy it should require a permit, and the night disappearing into a sea of neon lights, cowboy boots, and guitar cases. If everyone you question claims they're 'working on an album,' you've found the right city.";
 
 const LOCKOUT_KEY = "carmen_played_date";
 
@@ -545,7 +546,7 @@ export default function CarmenGame() {
                       <span style={styles.folderFieldLabel}>OUTCOME</span>
                       {isCorrect ? (
                         <div>
-                          <span style={styles.folderFieldValue}>San Francisco, CA</span>
+                          <span style={styles.folderFieldValue}>Nashville, TN</span>
                           <div style={{ marginTop: 6, display: "inline-block", border: "2px solid #15803d", padding: "2px 8px", transform: "rotate(-2deg)", transformOrigin: "left center" }}>
                             <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.16em", color: "#15803d", fontFamily: "'Courier New', Courier, monospace", whiteSpace: "nowrap" }}>TARGET LOCKED</span>
                           </div>
@@ -562,7 +563,7 @@ export default function CarmenGame() {
                     {!isCorrect && (
                       <div style={styles.folderField}>
                         <span style={styles.folderFieldLabel}>ACTUAL LOCATION</span>
-                        <RedactedReveal text="San Francisco, CA (SFO)" />
+                        <RedactedReveal text="Nashville, TN (BNA)" />
                       </div>
                     )}
                   </div>
@@ -992,7 +993,7 @@ export default function CarmenGame() {
                           text={isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. Better luck next time, Agent."}
                           color={isCorrect ? "#166534" : "#991b1b"}
                         />
-                        {isCorrect && <p style={styles.resultSub}>Suspect located in San Francisco, CA (SFO)</p>}
+                        {isCorrect && <p style={styles.resultSub}>Suspect located in Nashville, TN (BNA)</p>}
                       </motion.div>
                     </div>
                     {!isCorrect && canRetry && (
