@@ -51,7 +51,7 @@ const HEX_CHARS = "0123456789ABCDEF";
 const randomHex = (len) => Array.from({ length: len }, () => HEX_CHARS[Math.floor(Math.random() * 16)]).join("");
 
 const prompt =
-  "our suspect fled to a city where a full-scale Greek temple stands just minutes from stages that have launched countless music careers. Witnesses say she spent the afternoon listening to songwriters, the evening eating chicken so spicy it should require a permit, and the night disappearing into a sea of neon lights, cowboy boots, and guitar cases. If everyone you question claims they're 'working on an album,' you've found the right city.";
+  "Our suspect fled to a city where a full-scale Greek temple stands just minutes from stages that have launched countless music careers. Witnesses say she spent the afternoon listening to songwriters, the evening eating chicken so spicy it should require a permit, and the night disappearing into a sea of neon lights, cowboy boots, and guitar cases. If everyone you question claims they're 'working on an album,' you've found the right city.";
 
 const LOCKOUT_KEY = "carmen_played_date";
 
