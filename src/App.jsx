@@ -26,7 +26,7 @@ const generateCaseNumber = () => {
   return `SC-${y}-${m}${day}-${rand}`;
 };
 
-const correctAnswers = ["bna", "nashville", "nashville, tn", "nashville tn", "nashville tennessee", "bna - nashville", "nashville, tennessee"];
+const correctAnswers = ["msp", "minneapolis", "minneapolis, mn", "minneapolis mn", "minneapolis minnesota", "msp - minneapolis", "minneapolis, minnesota"];
 
 // ── Update this list each day ─────────────────────────────────────────────────
 const PRIOR_SIGHTINGS = [
@@ -35,6 +35,7 @@ const PRIOR_SIGHTINGS = [
    { city: "Seattle, WA", code: "SEA", date: "JUN 24, 2026", status: "ESCAPED" },
   { city: "New Orleans, LA", code: "MSY", date: "JUN 25, 2026", status: "ESCAPED" },
     { city: "San Francisco, CA", code: "SFO", date: "JUN 26, 2026", status: "ESCAPED" },
+    { city: "Nashville, TN", code: "BNA", date: "JUN 27, 2026", status: "ESCAPED" },
 ];
 
 const scanMessages = [
@@ -51,7 +52,7 @@ const HEX_CHARS = "0123456789ABCDEF";
 const randomHex = (len) => Array.from({ length: len }, () => HEX_CHARS[Math.floor(Math.random() * 16)]).join("");
 
 const prompt =
-  "Our suspect fled to a city where a full-scale Greek temple stands just minutes from stages that have launched countless music careers. Witnesses say she spent the afternoon listening to songwriters, the evening eating chicken so spicy it should require a permit, and the night disappearing into a sea of neon lights, cowboy boots, and guitar cases. If everyone you question claims they're 'working on an album,' you've found the right city.";
+  "Our suspect has gone north! She was last seen in a place where people willingly walk onto frozen lakes, where a giant shopping mall can leave visitors lost for days, and where residents are so nice they might help her escape just to avoid being rude. Witnesses say she purchased earmuffs, hummed a song by a famous purple superstar, and vanished into the cold. Better hurry, Gumshoes—the trail is getting colder by the minute!";
 
 const LOCKOUT_KEY = "carmen_played_date";
 
@@ -576,7 +577,7 @@ export default function CarmenGame() {
                     {!isCorrect && (
                       <div style={styles.folderField}>
                         <span style={styles.folderFieldLabel}>ACTUAL LOCATION</span>
-                        <RedactedReveal text="Nashville, TN (BNA)" />
+                        <RedactedReveal text="Minneapolis, MN (MSP)" />
                       </div>
                     )}
                   </div>
@@ -1006,7 +1007,7 @@ export default function CarmenGame() {
                           text={isCorrect ? "Excellent work, Gumshoe. Case closed." : "Carmen slipped away. Better luck next time, Agent."}
                           color={isCorrect ? "#166534" : "#991b1b"}
                         />
-                        {isCorrect && <p style={styles.resultSub}>Suspect located in Nashville, TN (BNA)</p>}
+                        {isCorrect && <p style={styles.resultSub}>Suspect located in Minneapolis, MN (MSP)</p>}
                       </motion.div>
                     </div>
                     {!isCorrect && canRetry && (
