@@ -6,12 +6,13 @@ const BG_IMAGE = "/background.png";
 // ── FINALE — flip to true on Monday to show the closing screen ───────────────
 const FINALE_MODE = true;
 const FINALE_WINNERS = [
-  { name: "Sheryl Harrigin", dept: "Customer Care" },
+{ name: "Sheryl Harrigin", dept: "Customer Care" },
   { name: "Natalia Phaneuf", dept: "Training" },
   { name: "Carly Ogdahl", dept: "Customer Care" },
   { name: "Ashley Blix", dept: "Reservations" },
   { name: "Amy Connor", dept: "Customer Care" },
   { name: "Gloria Satt", dept: "Reservations" },
+
 ];
 
 const GOOGLE_SCRIPT_URL =
@@ -1054,7 +1055,6 @@ export default function CarmenGame() {
 
 // ── Finale screen ─────────────────────────────────────────────────────────────
 function FinaleScreen() {
-  const agentIds = useRef(FINALE_WINNERS.map(() => `AG-${randomHex(4)}`));
   const stampRotations = [-2, -3, -1.5, -2.5, -1, -3.5];
 
   const WEEK_SIGHTINGS = [
@@ -1069,6 +1069,13 @@ function FinaleScreen() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#050505", display: "flex", alignItems: "flex-start", justifyContent: "center", padding: "16px", position: "relative", overflow: "hidden" }}>
+      <StampFilter />
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
+        filter: "sepia(0.05)", overflow: "hidden",
+      }}>
+        <img src={BG_IMAGE} alt="" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", minWidth: "100%", minHeight: "100%", width: "auto", height: "auto", display: "block" }} />
+      </div>
       <div style={styles.crtOverlay}></div>
       <RadarBackground fast={false} />
       <div style={{ width: "100%", maxWidth: 1100, position: "relative", zIndex: 10 }}>
@@ -1222,7 +1229,7 @@ function FinaleScreen() {
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontFamily: "'Special Elite', cursive", fontSize: 14, color: "#1c0a00", fontWeight: 700 }}>{w.name}</div>
-                    <div style={{ fontFamily: "'VT323', monospace", fontSize: 12, color: "#a16207", letterSpacing: "0.08em" }}>{w.dept} · {agentIds.current[i]}</div>
+                    <div style={{ fontFamily: "'VT323', monospace", fontSize: 12, color: "#a16207", letterSpacing: "0.08em" }}>{w.dept}</div>
                   </div>
                   <div style={{ border: "2px solid #15803d", padding: "3px 10px", transform: `rotate(${stampRotations[i]}deg)`, flexShrink: 0 }}>
                     <span style={{ fontFamily: "'Courier New', Courier, monospace", fontSize: 12, fontWeight: 700, color: "#15803d" }}>$100</span>
