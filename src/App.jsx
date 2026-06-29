@@ -1193,7 +1193,7 @@ function FinaleScreen() {
               {/* Final Transmission */}
               <div style={{ ...styles.clueBox, marginBottom: 18 }}>
                 <span style={{ ...styles.clueTitle, background: "#15803d" }}>FINAL TRANSMISSION</span>
-                <p style={styles.clueText}>After a week-long pursuit across the Sun Country network, Carmen Sandiego has finally been caught! Thousands of miles were traveled, hundreds of leads were chased, and at least a few detective notebooks were completely filled in the process. Six agents successfully cracked the case and have earned the reward. The Pursuit Division thanks all agents for their outstanding work and dedication throughout the investigation. Now enjoy your victory—but keep your detective badge handy.</p>
+                <p style={styles.clueText}>After a week-long pursuit across the Sun Country network, Carmen Sandiego has finally been caught! Thousands of miles were traveled, hundreds of leads were chased, and at least a few detective notebooks were completely filled in the process. Six agents successfully cracked the case and have earned the reward. The Pursuit Division thanks all agents for their outstanding work and dedication throughout the investigation. Now enjoy your victory but keep your detective badge handy.</p>
                 <p style={{ fontFamily: "'Crimson Pro', Georgia, serif", fontSize: 13, fontStyle: "italic", color: "#78350f", margin: "6px 0 0", lineHeight: 1.5 }}>— Pursuit Division, Sun Country Airlines</p>
               </div>
 
