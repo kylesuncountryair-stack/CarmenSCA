@@ -348,7 +348,6 @@ function ChiefEmail({ agentName, agentEmail, onDismiss }) {
             >
               Open Briefing
             </button>
-            </button>
           </div>
         </div>
       </motion.div>
