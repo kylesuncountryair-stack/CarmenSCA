@@ -225,7 +225,7 @@ function LoginScreen({ onLogin }) {
                   Welcome, {agentName}
                 </div>
                 <div style={{fontFamily:"'VT323',monospace",fontSize:13,color:"#8a9ac8",letterSpacing:"0.08em"}}>
-                  Loading your briefing...
+                  Loading your desktop...
                 </div>
               </motion.div>
             )}
