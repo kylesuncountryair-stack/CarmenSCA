@@ -44,6 +44,10 @@ function parseName(email) {
   return local;
 }
 
+function firstName(fullName) {
+  return fullName.split(" ")[0];
+}
+
 function playStamp() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -254,21 +258,24 @@ function ChiefEmail({ agentName, agentEmail, onDismiss }) {
       <AnimatePresence>
         {visible && (
           <motion.div
-            initial={{x:320,opacity:0}}
+            initial={{x:380,opacity:0}}
             animate={{x:0,opacity:1}}
-            exit={{x:320,opacity:0}}
+            exit={{x:380,opacity:0}}
             transition={{type:"spring",stiffness:280,damping:24}}
             style={s.emailToast}
             onClick={handleOpen}
           >
-            <div style={s.emailToastIcon}>
-              <span style={{fontFamily:"'Special Elite',cursive",fontSize:13,color:"#fff",fontWeight:700}}>C</span>
+            <div style={{position:"relative",flexShrink:0}}>
+              <div style={s.emailToastIcon}>
+                <span style={{fontFamily:"'Special Elite',cursive",fontSize:16,color:"#fff",fontWeight:700}}>C</span>
+              </div>
+              <span style={{position:"absolute",top:-3,right:-3,width:12,height:12,borderRadius:"50%",background:"#dc2626",display:"block",boxShadow:"0 0 0 0 rgba(220,38,38,0.4)",animation:"redDot 1.2s ease-in-out infinite"}}></span>
             </div>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontFamily:"'Special Elite',cursive",fontSize:15,color:"#1e3a7a",fontWeight:700,marginBottom:2}}>The Chief</div>
-              <div style={{fontFamily:"'VT323',monospace",fontSize:14,color:"#3a4a8a",letterSpacing:"0.04em",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>Urgent: Internal Investigation — Action Required</div>
+              <div style={{fontFamily:"'Special Elite',cursive",fontSize:16,color:"#1e3a7a",fontWeight:700,marginBottom:2}}>The Chief</div>
+              <div style={{fontFamily:"'VT323',monospace",fontSize:14,color:"#3a4a8a",letterSpacing:"0.04em",marginBottom:4}}>Urgent: Internal Investigation — Action Required</div>
+              <div style={{fontFamily:"'VT323',monospace",fontSize:12,color:"#dc2626",letterSpacing:"0.1em",animation:"pulse 1s ease-in-out infinite"}}>▶ CLICK TO OPEN</div>
             </div>
-            <div style={{fontFamily:"'VT323',monospace",fontSize:11,color:"#8a9ac8",flexShrink:0}}>{timeStr}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -506,6 +513,7 @@ export default function CarmenV2() {
   };
 
   const keyframes = `
+    @keyframes redDot{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0.6)}70%{box-shadow:0 0 0 8px rgba(220,38,38,0)}}
     @keyframes emailPulse{0%,100%{box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 0 0 rgba(30,58,122,0.4)}50%{box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 0 8px rgba(30,58,122,0)}}
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.85)}}
     @keyframes btnPulse{0%,100%{box-shadow:0 0 0 0 rgba(30,58,122,0.4)}50%{box-shadow:0 0 0 8px rgba(30,58,122,0)}}
@@ -684,7 +692,7 @@ export default function CarmenV2() {
           </div>
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontFamily:"'Special Elite',cursive",fontSize:13,color:"#15803d",fontWeight:700}}>The Chief</div>
-            <div style={{fontFamily:"'VT323',monospace",fontSize:12,color:"#5a6a9a",letterSpacing:"0.04em"}}>Outstanding work, {agentName}. Department confirmed.</div>
+            <div style={{fontFamily:"'VT323',monospace",fontSize:12,color:"#5a6a9a",letterSpacing:"0.04em"}}>Outstanding work, {firstName(agentName)}. Department confirmed.</div>
           </div>
         </motion.div>
       )}
@@ -896,7 +904,7 @@ export default function CarmenV2() {
                       </div>
                       <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.55}}>
                         <VerdictLine
-                          text={isCorrect ? `Outstanding work, ${agentName}. She's been tracked to ${CURRENT_DAY.label}.` : transferMsg}
+                          text={isCorrect ? `Outstanding work, ${firstName(agentName)}. She's been tracked to ${CURRENT_DAY.label}.` : transferMsg}
                           color={isCorrect?"#166534":"#991b1b"}
                         />
                         {isCorrect && <p style={{fontFamily:"'VT323',monospace",fontSize:14,color:"#166534",margin:"4px 0 0",letterSpacing:"0.06em"}}>Carmen has been located in the {CURRENT_DAY.dept}.</p>}
@@ -1078,7 +1086,7 @@ function FinaleScreen() {
 // ── STYLES ────────────────────────────────────────────────────────────────────
 const s = {
   // Root & layout
-  root: {minHeight:"100vh",background:"#050a14",display:"flex",alignItems:"flex-start",justifyContent:"center",fontFamily:"'Courier New',Courier,monospace",padding:"16px",position:"relative",overflow:"hidden"},
+  root: {minHeight:"100vh",background:"#050a14",display:"flex",alignItems:"flex-start",justifyContent:"center",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",padding:"16px",position:"relative",overflow:"hidden"},
   bgLayer: {position:"fixed",inset:0,zIndex:0,pointerEvents:"none",filter:"sepia(0.05)",overflow:"hidden"},
   bgImg: {position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",minWidth:"100%",minHeight:"100%",width:"auto",height:"auto",display:"block"},
   crtOverlay: {position:"fixed",inset:0,zIndex:99,pointerEvents:"none",backgroundImage:["repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px)","radial-gradient(ellipse at 50% 50%,transparent 60%,rgba(0,0,0,0.35) 100%)"].join(","),backgroundSize:"100% 4px,100% 100%"},
@@ -1086,7 +1094,7 @@ const s = {
   outer: {width:"100%",maxWidth:1100,position:"relative",zIndex:10},
 
   // Login
-  loginRoot: {minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",padding:"24px",position:"relative",background:"#050a14"},
+  loginRoot: {minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",padding:"24px",position:"relative",background:"#050a14",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
   loginBg: {position:"fixed",inset:0,overflow:"hidden",zIndex:0},
   loginBgImg: {position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",minWidth:"100%",minHeight:"100%",width:"auto",height:"auto",filter:"sepia(0.05)"},
   loginOverlay: {position:"fixed",inset:0,background:"rgba(0,5,20,0.65)",zIndex:1},
@@ -1105,8 +1113,8 @@ const s = {
   loginProgressFill: {height:"100%",background:"linear-gradient(90deg,#1e3a7a,#4a7adc)",borderRadius:4,transition:"width 0.1s"},
 
   // Email toast & modal
-  emailToast: {position:"fixed",top:24,right:24,zIndex:200,background:"#f0f2f8",border:"2px solid #1e3a7a",borderRadius:8,padding:"16px 18px",display:"flex",alignItems:"center",gap:12,cursor:"pointer",width:340,boxShadow:"0 8px 32px rgba(0,0,0,0.5)",animation:"emailPulse 1.8s ease-in-out infinite"},
-  emailToastIcon: {width:42,height:42,borderRadius:"50%",background:"#1e3a7a",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0},
+  emailToast: {position:"fixed",top:24,right:24,zIndex:200,background:"#f0f2f8",border:"2px solid #1e3a7a",borderRadius:10,padding:"18px 20px",display:"flex",alignItems:"center",gap:14,cursor:"pointer",width:380,boxShadow:"0 12px 40px rgba(0,0,0,0.6)",animation:"emailPulse 1.8s ease-in-out infinite"},
+  emailToastIcon: {width:48,height:48,borderRadius:"50%",background:"#1e3a7a",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0},
   emailModalBackdrop: {position:"fixed",inset:0,zIndex:150,background:"rgba(0,5,20,0.7)",display:"flex",alignItems:"center",justifyContent:"center",padding:24},
   emailModal: {width:"100%",maxWidth:560,borderRadius:8,overflow:"hidden",boxShadow:"0 32px 80px rgba(0,0,0,0.8)"},
   emailTitleBar: {background:"#d0d4dc",padding:"9px 14px",display:"flex",alignItems:"center",justifyContent:"space-between"},
