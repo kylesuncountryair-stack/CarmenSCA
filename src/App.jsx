@@ -907,7 +907,7 @@ export default function CarmenV2() {
                           text={isCorrect ? `Outstanding work, ${firstName(agentName)}. She's been tracked to ${CURRENT_DAY.label}.` : transferMsg}
                           color={isCorrect?"#166534":"#991b1b"}
                         />
-                        {isCorrect && <p style={{fontFamily:"'VT323',monospace",fontSize:14,color:"#166534",margin:"4px 0 0",letterSpacing:"0.06em"}}>Carmen has been located in the {CURRENT_DAY.dept}.</p>}
+                        {isCorrect && <p style={{fontFamily:"'VT323',monospace",fontSize:14,color:"#166534",margin:"4px 0 0",letterSpacing:"0.06em"}}>Carmen has been located and was posing as an agent in {CURRENT_DAY.dept}.</p>}
                       </motion.div>
                     </div>
 
