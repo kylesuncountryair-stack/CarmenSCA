@@ -856,7 +856,7 @@ export default function CarmenV2() {
                         <span style={s.scanTitle}>SEARCHING INTERNAL DIRECTORIES...</span>
                       </div>
                       <p style={s.scanMessage}>Cross-referencing employee database...</p>
-                      <p style={{fontFamily:"'VT323',monospace",fontSize:13,color:"#86efac",letterSpacing:"0.06em",margin:"0 0 10px"}}>Scanning department manifests...</p>
+                      <p style={{fontFamily:"'VT323',monospace",fontSize:13,color:"#86efac",letterSpacing:"0.06em",margin:"0 0 10px"}}>Scanning department records...</p>
                       <div style={s.progressBar}>
                         <div style={{...s.progressFill,width:`${scanProgress}%`,transition:"width 0.15s ease-out"}}></div>
                       </div>
