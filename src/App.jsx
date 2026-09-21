@@ -14,8 +14,8 @@ const FINALE_WINNERS = [
 
 const CURRENT_DAY = {
   dept: "CRC",
-  label: "Call & Resolution Center",
-  correctAnswers: ["crc", "call and resolution center", "call & resolution center", "call resolution center"],
+  label: "Central Reservations Control",
+  correctAnswers: ["crc", "central reservations control", "central reservation control", "reservations control"],
   clue: `Our crafty friend has worked themselves into the perfect hiding spot, balancing inbound calls, outbound calls, emails, and SMS messages all at once. They seem to enjoy this department because it gives them a front row seat to every bit of chaos the moment it unfolds. Catching them is extremely difficult since they can be found here 24/7, giving them plenty of opportunities for mischief and countless shifts to disappear into when suspicion arises. We thought we finally had them cornered after they got a little too generous and handed out free hotel rooms during a weather delay — but somehow they slipped through our fingers just in time and vanished back into the queue.`,
   previousDepts: [],
 };
@@ -108,7 +108,7 @@ function LoginScreen({ onLogin }) {
     if (phase !== "connecting") return;
     let p = 0;
     const id = setInterval(() => {
-      p += Math.random() * 8 + 2;
+      p += Math.random() * 3 + 0.8;
       if (p >= 100) { p = 100; clearInterval(id); setPhase("confirmed"); }
       setProgress(Math.min(100, p));
     }, 80);
@@ -159,9 +159,7 @@ function LoginScreen({ onLogin }) {
         <div style={s.winBody}>
           {/* Sun Country logo area */}
           <div style={s.loginLogoArea}>
-            <div style={s.loginLogoCircle}>
-              <span style={{fontFamily:"'Special Elite',cursive",fontSize:22,color:"#1e3a7a",fontWeight:700}}>SC</span>
-            </div>
+            <img src="/logo.png" alt="Sun Country Airlines" style={{height:40,width:"auto",objectFit:"contain"}} />
             <div>
               <div style={{fontFamily:"'Special Elite',cursive",fontSize:16,color:"#1e3a7a",fontWeight:700}}>Sun Country Airlines</div>
               <div style={{fontFamily:"'VT323',monospace",fontSize:13,color:"#5a6a9a",letterSpacing:"0.1em"}}>INTERNAL INVESTIGATION PORTAL</div>
@@ -183,8 +181,15 @@ function LoginScreen({ onLogin }) {
                   style={{...s.loginInput, borderColor: error ? "#dc2626" : "#c5cce8"}}
                 />
                 {error && <div style={s.loginError}>{error}</div>}
-                <button onClick={handleSubmit} style={s.loginBtn}>
-                  Sign In →
+                <button
+                  onClick={handleSubmit}
+                  onMouseEnter={e=>e.target.style.background="#1e3a7a"}
+                  onMouseLeave={e=>e.target.style.background="#2d4eb0"}
+                  onMouseDown={e=>{e.target.style.background="#152b7a";e.target.style.transform="scale(0.98)";}}
+                  onMouseUp={e=>{e.target.style.background="#1e3a7a";e.target.style.transform="scale(1)";}}
+                  style={{...s.loginBtn,transition:"background 0.1s,transform 0.08s"}}
+                >
+                  Sign In
                 </button>
                 <div style={s.loginHint}>Access restricted to Sun Country employees</div>
               </motion.div>
@@ -260,8 +265,8 @@ function ChiefEmail({ agentName, agentEmail, onDismiss }) {
               <span style={{fontFamily:"'Special Elite',cursive",fontSize:13,color:"#fff",fontWeight:700}}>C</span>
             </div>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontFamily:"'Special Elite',cursive",fontSize:13,color:"#1e3a7a",fontWeight:700}}>The Chief</div>
-              <div style={{fontFamily:"'VT323',monospace",fontSize:12,color:"#5a6a9a",letterSpacing:"0.04em",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>Urgent: Internal Investigation — Action Required</div>
+              <div style={{fontFamily:"'Special Elite',cursive",fontSize:15,color:"#1e3a7a",fontWeight:700,marginBottom:2}}>The Chief</div>
+              <div style={{fontFamily:"'VT323',monospace",fontSize:14,color:"#3a4a8a",letterSpacing:"0.04em",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>Urgent: Internal Investigation — Action Required</div>
             </div>
             <div style={{fontFamily:"'VT323',monospace",fontSize:11,color:"#8a9ac8",flexShrink:0}}>{timeStr}</div>
           </motion.div>
@@ -333,8 +338,16 @@ function ChiefEmail({ agentName, agentEmail, onDismiss }) {
           </div>
 
           <div style={{padding:"0 20px 16px",display:"flex",gap:10}}>
-            <button onClick={handleClose} style={s.emailBtn}>
-              Open Briefing →
+            <button
+              onClick={handleClose}
+              onMouseEnter={e=>e.target.style.background="#152b7a"}
+              onMouseLeave={e=>e.target.style.background="#1e3a7a"}
+              onMouseDown={e=>{e.target.style.background="#0f1f5a";e.target.style.transform="scale(0.98)";}}
+              onMouseUp={e=>{e.target.style.background="#152b7a";e.target.style.transform="scale(1)";}}
+              style={{...s.emailBtn,transition:"background 0.1s,transform 0.08s"}}
+            >
+              Open Briefing
+            </button>
             </button>
           </div>
         </div>
@@ -364,53 +377,6 @@ function StampFilter() {
   );
 }
 
-// ── RADAR ─────────────────────────────────────────────────────────────────────
-function RadarBackground({ fast }) {
-  const dur = fast ? 4 : 9;
-  return (
-    <div style={s.radarContainer}>
-      <svg style={s.radarSvg} viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="400" cy="400" r="380" fill="none" stroke="rgba(30,58,122,0.3)" strokeWidth="1"/>
-        <circle cx="400" cy="400" r="280" fill="none" stroke="rgba(30,58,122,0.25)" strokeWidth="1"/>
-        <circle cx="400" cy="400" r="180" fill="none" stroke="rgba(30,58,122,0.2)" strokeWidth="1"/>
-        <circle cx="400" cy="400" r="90" fill="none" stroke="rgba(30,58,122,0.15)" strokeWidth="1"/>
-        <line x1="400" y1="20" x2="400" y2="780" stroke="rgba(30,58,122,0.1)" strokeWidth="0.5"/>
-        <line x1="20" y1="400" x2="780" y2="400" stroke="rgba(30,58,122,0.1)" strokeWidth="0.5"/>
-      </svg>
-      <motion.div
-        animate={{rotate:360}}
-        transition={{repeat:Infinity,duration:dur,ease:"linear"}}
-        style={{
-          position:"absolute",
-          width:"min(120vw,120vh)",height:"min(120vw,120vh)",
-          borderRadius:"50%",
-          background:[
-            "conic-gradient(",
-            "  from 0deg,",
-            "  transparent 0deg,",
-            "  rgba(30,58,180,0.00) 326deg,",
-            "  rgba(30,58,180,0.03) 336deg,",
-            "  rgba(30,58,180,0.08) 344deg,",
-            "  rgba(30,58,180,0.18) 351deg,",
-            "  rgba(30,58,180,0.30) 356deg,",
-            "  rgba(30,58,180,0.44) 360deg",
-            ")",
-          ].join(""),
-        }}
-      ></motion.div>
-      <motion.div
-        style={{position:"absolute",width:"min(120vw,120vh)",height:"min(120vw,120vh)",display:"flex",alignItems:"center",justifyContent:"center"}}
-        animate={{rotate:360}}
-        transition={{repeat:Infinity,duration:dur,ease:"linear"}}
-      >
-        <svg style={s.radarSvg} viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-          <line x1="400" y1="400" x2="400" y2="20" stroke="rgba(59,130,246,0.75)" strokeWidth="1.5"/>
-        </svg>
-      </motion.div>
-      <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.5)"}}></div>
-    </div>
-  );
-}
 
 // ── SCAN PROGRESS ─────────────────────────────────────────────────────────────
 function useChunkyProgress(active) {
@@ -470,7 +436,6 @@ export default function CarmenV2() {
   const [canRetry, setCanRetry] = useState(false);
   const [flashGreen, setFlashGreen] = useState(false);
   const [flashRed, setFlashRed] = useState(false);
-  const [radarFast, setRadarFast] = useState(false);
   const [glitch, setGlitch] = useState(false);
   const [transferMsg] = useState(() => TRANSFER_MESSAGES[Math.floor(Math.random()*TRANSFER_MESSAGES.length)]);
   const [chiefReply, setChiefReply] = useState(false);
@@ -497,12 +462,11 @@ export default function CarmenV2() {
 
   const handleSubmit = () => {
     if (!answer.trim()) return;
-    setScanning(true); setRadarFast(true);
+    setScanning(true);
     setTimeout(() => {
       const normalized = answer.trim().toLowerCase();
       const match = CURRENT_DAY.correctAnswers.includes(normalized);
       localStorage.setItem(LOCKOUT_KEY, getTodayString());
-      setRadarFast(false);
       setScanning(false); setDecrypting(true);
       setTimeout(() => { setGlitch(true); setTimeout(() => setGlitch(false), 120); }, 300);
       setTimeout(() => {
@@ -543,6 +507,7 @@ export default function CarmenV2() {
   };
 
   const keyframes = `
+    @keyframes emailPulse{0%,100%{box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 0 0 rgba(30,58,122,0.4)}50%{box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 0 8px rgba(30,58,122,0)}}
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.85)}}
     @keyframes btnPulse{0%,100%{box-shadow:0 0 0 0 rgba(30,58,122,0.4)}50%{box-shadow:0 0 0 8px rgba(30,58,122,0)}}
     @keyframes greenFlash{0%{opacity:0}20%{opacity:0.5}80%{opacity:0.5}100%{opacity:0}}
@@ -562,7 +527,6 @@ export default function CarmenV2() {
       <StampFilter />
       <div style={s.bgLayer}><img src={BG_IMAGE} alt="" style={s.bgImg}/></div>
       <div style={s.crtOverlay}></div>
-      <RadarBackground fast={false}/>
       <div style={s.centeredFill}>
         <motion.div initial={{y:40,opacity:0}} animate={{y:0,opacity:1}} transition={{type:"spring",stiffness:160,damping:18}} style={s.folderWrap}>
           <div style={s.folderTab}>
@@ -667,7 +631,6 @@ export default function CarmenV2() {
       <StampFilter />
       <div style={s.bgLayer}><img src={BG_IMAGE} alt="" style={s.bgImg}/></div>
       <div style={s.crtOverlay}></div>
-      <RadarBackground fast={false}/>
       <div style={s.centeredFill}>
         <motion.div initial={{y:40,opacity:0}} animate={{y:0,opacity:1}} transition={{type:"spring",stiffness:160,damping:18}} style={s.folderWrap}>
           <div style={s.folderTab}>
@@ -710,7 +673,6 @@ export default function CarmenV2() {
       <StampFilter />
       <div style={s.bgLayer}><img src={BG_IMAGE} alt="" style={s.bgImg}/></div>
       <div style={s.crtOverlay}></div>
-      <RadarBackground fast={radarFast}/>
 
       {/* Email notification */}
       {phase === "email" && <ChiefEmail agentName={agentName} agentEmail={agentEmail} onDismiss={handleEmailDismiss} />}
@@ -867,7 +829,7 @@ export default function CarmenV2() {
                         onMouseUp={e=>{e.target.style.background="#1e3a7a";e.target.style.transform="scale(1)";}}
                         style={{...s.trackBtn,opacity:answer.trim()?1:0.45,cursor:answer.trim()?"pointer":"not-allowed",animation:answer.trim()?"btnPulse 1.8s ease-in-out infinite":"none",transition:"background 0.1s,transform 0.08s"}}
                       >
-                        File Intelligence →
+                        File Intelligence
                       </button>
                     </div>
                   </motion.div>
@@ -962,7 +924,7 @@ export default function CarmenV2() {
                         disabled={submitting}
                         style={{...s.submitBtn,opacity:submitting?0.5:1,cursor:submitting?"not-allowed":"pointer",animation:!submitting?"btnPulse 1.8s ease-in-out infinite":"none"}}
                       >
-                        {submitting ? "Filing Report..." : "File Report →"}
+                        {submitting ? "Filing Report..." : "File Report"}
                       </button>
                     </div>
                   </motion.div>
@@ -986,7 +948,7 @@ export default function CarmenV2() {
 function FinaleScreen() {
   const stampRotations = [-2,-3,-1.5,-2.5,-1,-3.5];
   const WEEK_DEPTS = [
-    {name:"Call & Resolution Center",code:"CRC",date:"MON",fired:true},
+    {name:"Central Reservations Control",code:"CRC",date:"MON",fired:true},
     {name:"Social Media",code:"SOCIAL",date:"WED",fired:true},
     {name:"Training",code:"TRN",date:"FRI",fired:true},
     {name:"Call Center Operations",code:"CCO",date:"SAT",fired:false},
@@ -1002,7 +964,6 @@ function FinaleScreen() {
       <StampFilter />
       <div style={s.bgLayer}><img src="/background.png" alt="" style={s.bgImg}/></div>
       <div style={s.crtOverlay}></div>
-      <RadarBackground fast={false}/>
       <div style={s.centeredFill}>
         <div style={{width:"100%",maxWidth:1100,position:"relative",zIndex:10}}>
           <div style={s.headerBar}>
@@ -1124,8 +1085,6 @@ const s = {
   crtOverlay: {position:"fixed",inset:0,zIndex:99,pointerEvents:"none",backgroundImage:["repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px)","radial-gradient(ellipse at 50% 50%,transparent 60%,rgba(0,0,0,0.35) 100%)"].join(","),backgroundSize:"100% 4px,100% 100%"},
   centeredFill: {display:"flex",alignItems:"center",justifyContent:"center",width:"100%",position:"relative",zIndex:10},
   outer: {width:"100%",maxWidth:1100,position:"relative",zIndex:10},
-  radarContainer: {position:"fixed",inset:0,display:"flex",alignItems:"center",justifyContent:"center",pointerEvents:"none",zIndex:1},
-  radarSvg: {position:"absolute",width:"min(120vw,120vh)",height:"min(120vw,120vh)"},
 
   // Login
   loginRoot: {minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",padding:"24px",position:"relative",background:"#050a14"},
@@ -1137,7 +1096,6 @@ const s = {
   winTitle: {fontFamily:"'VT323',monospace",fontSize:12,color:"#4a5060",letterSpacing:"0.06em"},
   winBody: {background:"#f0f2f8",padding:"28px 28px 24px"},
   loginLogoArea: {display:"flex",alignItems:"center",gap:12,marginBottom:20},
-  loginLogoCircle: {width:46,height:46,borderRadius:"50%",background:"#e8ecf8",border:"2px solid #c5cce8",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0},
   loginDivider: {height:1,background:"#c5cce8",marginBottom:20},
   loginFieldLabel: {fontSize:12,color:"#5a6a9a",fontFamily:"'VT323',monospace",letterSpacing:"0.1em",marginBottom:6,display:"block"},
   loginInput: {width:"100%",boxSizing:"border-box",padding:"10px 12px",fontSize:13,fontFamily:"'Courier New',Courier,monospace",border:"1.5px solid #c5cce8",borderRadius:4,background:"#fff",color:"#1e3a7a",outline:"none",letterSpacing:"0.04em",marginBottom:8},
@@ -1148,8 +1106,8 @@ const s = {
   loginProgressFill: {height:"100%",background:"linear-gradient(90deg,#1e3a7a,#4a7adc)",borderRadius:4,transition:"width 0.1s"},
 
   // Email toast & modal
-  emailToast: {position:"fixed",top:24,right:24,zIndex:200,background:"#f0f2f8",border:"1px solid #c5cce8",borderRadius:8,padding:"12px 14px",display:"flex",alignItems:"center",gap:10,cursor:"pointer",width:300,boxShadow:"0 8px 32px rgba(0,0,0,0.4)"},
-  emailToastIcon: {width:34,height:34,borderRadius:"50%",background:"#1e3a7a",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0},
+  emailToast: {position:"fixed",top:24,right:24,zIndex:200,background:"#f0f2f8",border:"2px solid #1e3a7a",borderRadius:8,padding:"16px 18px",display:"flex",alignItems:"center",gap:12,cursor:"pointer",width:340,boxShadow:"0 8px 32px rgba(0,0,0,0.5)",animation:"emailPulse 1.8s ease-in-out infinite"},
+  emailToastIcon: {width:42,height:42,borderRadius:"50%",background:"#1e3a7a",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0},
   emailModalBackdrop: {position:"fixed",inset:0,zIndex:150,background:"rgba(0,5,20,0.7)",display:"flex",alignItems:"center",justifyContent:"center",padding:24},
   emailModal: {width:"100%",maxWidth:560,borderRadius:8,overflow:"hidden",boxShadow:"0 32px 80px rgba(0,0,0,0.8)"},
   emailTitleBar: {background:"#d0d4dc",padding:"9px 14px",display:"flex",alignItems:"center",justifyContent:"space-between"},
