@@ -166,7 +166,7 @@ function LoginScreen({ onLogin }) {
             <img src="/logo.png" alt="Sun Country Airlines" style={{height:40,width:"auto",objectFit:"contain"}} />
             <div>
               <div style={{fontFamily:"'Special Elite',cursive",fontSize:16,color:"#1e3a7a",fontWeight:700}}>Sun Country Airlines</div>
-              <div style={{fontFamily:"'VT323',monospace",fontSize:13,color:"#5a6a9a",letterSpacing:"0.1em"}}>INTERNAL INVESTIGATION PORTAL</div>
+              <div style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:13,color:"#5a6a9a",letterSpacing:"0.02em"}}>INTERNAL INVESTIGATION PORTAL</div>
             </div>
           </div>
 
@@ -201,7 +201,7 @@ function LoginScreen({ onLogin }) {
 
             {phase === "connecting" && (
               <motion.div key="connecting" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
-                <div style={{fontFamily:"'VT323',monospace",fontSize:15,color:"#3a4a8a",letterSpacing:"0.08em",marginBottom:16,minHeight:22}}>
+                <div style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:15,color:"#3a4a8a",letterSpacing:"0.02em",marginBottom:16,minHeight:22}}>
                   {CONNECT_MESSAGES[msgIdx]}
                 </div>
                 <div style={s.loginProgressTrack}>
@@ -210,7 +210,7 @@ function LoginScreen({ onLogin }) {
                     transition={{ease:"easeOut"}}
                   ></motion.div>
                 </div>
-                <div style={{fontFamily:"'VT323',monospace",fontSize:13,color:"#8a9ac8",textAlign:"right",marginTop:4,letterSpacing:"0.06em"}}>
+                <div style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:13,color:"#8a9ac8",textAlign:"right",marginTop:4,letterSpacing:"0.01em"}}>
                   {Math.floor(progress)}%
                 </div>
               </motion.div>
@@ -218,13 +218,13 @@ function LoginScreen({ onLogin }) {
 
             {phase === "confirmed" && (
               <motion.div key="confirmed" initial={{opacity:0,scale:0.97}} animate={{opacity:1,scale:1}} style={{textAlign:"center",padding:"12px 0"}}>
-                <div style={{fontFamily:"'VT323',monospace",fontSize:18,color:"#15803d",letterSpacing:"0.14em",marginBottom:8}}>
+                <div style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:18,color:"#15803d",letterSpacing:"0.04em",marginBottom:8}}>
                   ✓ IDENTITY CONFIRMED
                 </div>
                 <div style={{fontFamily:"'Special Elite',cursive",fontSize:22,color:"#1e3a7a",fontWeight:700,marginBottom:4}}>
                   Welcome, {agentName}
                 </div>
-                <div style={{fontFamily:"'VT323',monospace",fontSize:13,color:"#8a9ac8",letterSpacing:"0.08em"}}>
+                <div style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:13,color:"#8a9ac8",letterSpacing:"0.02em"}}>
                   Loading your briefing...
                 </div>
               </motion.div>
@@ -273,8 +273,8 @@ function ChiefEmail({ agentName, agentEmail, onDismiss }) {
             </div>
             <div style={{flex:1,minWidth:0}}>
               <div style={{fontFamily:"'Special Elite',cursive",fontSize:16,color:"#1e3a7a",fontWeight:700,marginBottom:2}}>The Chief</div>
-              <div style={{fontFamily:"'VT323',monospace",fontSize:14,color:"#3a4a8a",letterSpacing:"0.04em",marginBottom:4}}>Urgent: Internal Investigation — Action Required</div>
-              <div style={{fontFamily:"'VT323',monospace",fontSize:12,color:"#dc2626",letterSpacing:"0.1em",animation:"pulse 1s ease-in-out infinite"}}>▶ CLICK TO OPEN</div>
+              <div style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:14,color:"#3a4a8a",letterSpacing:"0.04em",marginBottom:4}}>Urgent: Internal Investigation — Action Required</div>
+              <div style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,color:"#dc2626",letterSpacing:"0.02em",animation:"pulse 1s ease-in-out infinite"}}>▶ CLICK TO OPEN</div>
             </div>
           </motion.div>
         )}
@@ -303,7 +303,7 @@ function ChiefEmail({ agentName, agentEmail, onDismiss }) {
             <div style={{width:11,height:11,borderRadius:"50%",background:"#febc2e"}}></div>
             <div style={{width:11,height:11,borderRadius:"50%",background:"#28c840"}}></div>
           </div>
-          <span style={{fontFamily:"'VT323',monospace",fontSize:12,color:"#8a9ac8",letterSpacing:"0.08em"}}>Mail — Sun Country Internal</span>
+          <span style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,color:"#8a9ac8",letterSpacing:"0.02em"}}>Mail — Sun Country Internal</span>
           <div style={{width:40}}></div>
         </div>
 
@@ -316,9 +316,9 @@ function ChiefEmail({ agentName, agentEmail, onDismiss }) {
               </div>
               <div style={{flex:1}}>
                 <div style={{fontFamily:"'Special Elite',cursive",fontSize:15,color:"#1e3a7a",fontWeight:700,marginBottom:2}}>The Chief</div>
-                <div style={{fontFamily:"'VT323',monospace",fontSize:12,color:"#8a9ac8",letterSpacing:"0.04em"}}>From: chief@suncountry.com</div>
-                <div style={{fontFamily:"'VT323',monospace",fontSize:12,color:"#8a9ac8",letterSpacing:"0.04em"}}>To: {agentEmail}</div>
-                <div style={{fontFamily:"'VT323',monospace",fontSize:11,color:"#a0aac8",letterSpacing:"0.04em",marginTop:2}}>{dateStr} at {timeStr}</div>
+                <div style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,color:"#8a9ac8",letterSpacing:"0.04em"}}>From: chief@suncountry.com</div>
+                <div style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,color:"#8a9ac8",letterSpacing:"0.04em"}}>To: {agentEmail}</div>
+                <div style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:11,color:"#a0aac8",letterSpacing:"0.04em",marginTop:2}}>{dateStr} at {timeStr}</div>
               </div>
             </div>
             <div style={s.emailSubject}>
@@ -340,7 +340,7 @@ function ChiefEmail({ agentName, agentEmail, onDismiss }) {
             </p>
             <p style={{...s.emailP,fontStyle:"italic",color:"#5a6a9a",marginTop:20}}>
               — The Chief<br/>
-              <span style={{fontFamily:"'VT323',monospace",fontSize:12,letterSpacing:"0.06em"}}>Chief of Internal Investigations · Sun Country Airlines</span>
+              <span style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,letterSpacing:"0.01em"}}>Chief of Internal Investigations · Sun Country Airlines</span>
             </p>
           </div>
 
@@ -579,14 +579,14 @@ export default function CarmenV2() {
                       <div>
                         <span style={s.folderFieldValue}>{CURRENT_DAY.label}</span>
                         <div style={{marginTop:6,display:"inline-block",border:"2px solid #15803d",padding:"2px 8px",transform:"rotate(-2deg)",transformOrigin:"left center"}}>
-                          <span style={{fontSize:11,fontWeight:700,letterSpacing:"0.16em",color:"#15803d",fontFamily:"'Courier New',Courier,monospace",whiteSpace:"nowrap"}}>DEPARTMENT CONFIRMED</span>
+                          <span style={{fontSize:11,fontWeight:700,letterSpacing:"0.05em",color:"#15803d",fontFamily:"'Courier New',Courier,monospace",whiteSpace:"nowrap"}}>DEPARTMENT CONFIRMED</span>
                         </div>
                       </div>
                     ) : (
                       <div>
                         <span style={{...s.folderFieldValue,color:"#dc2626"}}>{answer.toUpperCase()}</span>
                         <div style={{marginTop:6,display:"inline-block",border:"2px solid #dc2626",padding:"2px 8px",transform:"rotate(-2deg)",transformOrigin:"left center"}}>
-                          <span style={{fontSize:11,fontWeight:700,letterSpacing:"0.16em",color:"#dc2626",fontFamily:"'Courier New',Courier,monospace",whiteSpace:"nowrap"}}>TRANSFERRED</span>
+                          <span style={{fontSize:11,fontWeight:700,letterSpacing:"0.05em",color:"#dc2626",fontFamily:"'Courier New',Courier,monospace",whiteSpace:"nowrap"}}>TRANSFERRED</span>
                         </div>
                       </div>
                     )}
@@ -609,13 +609,13 @@ export default function CarmenV2() {
                   onAnimationComplete={()=>playStamp()}
                   style={{border:`4px solid ${isCorrect?"#15803d":"#dc2626"}`,padding:"10px 20px",opacity:0.88}}
                 >
-                  <span style={{fontSize:20,fontWeight:700,letterSpacing:"0.12em",color:isCorrect?"#15803d":"#dc2626",fontFamily:"'Special Elite',cursive",whiteSpace:"nowrap"}}>
+                  <span style={{fontSize:20,fontWeight:700,letterSpacing:"0.03em",color:isCorrect?"#15803d":"#dc2626",fontFamily:"'Special Elite',cursive",whiteSpace:"nowrap"}}>
                     {isCorrect ? "CASE CLOSED" : "CASE OPEN"}
                   </span>
                 </motion.div>
                 <div style={{height:1,width:"80%",background:"rgba(58,74,138,0.15)"}}></div>
                 <div style={{textAlign:"center"}}>
-                  <span style={{display:"block",fontFamily:"'VT323',monospace",fontSize:12,letterSpacing:"0.14em",color:"#8a9ac8",marginBottom:4}}>INVESTIGATION REFERENCE</span>
+                  <span style={{display:"block",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,letterSpacing:"0.04em",color:"#8a9ac8",marginBottom:4}}>INVESTIGATION REFERENCE</span>
                   <span style={{fontSize:11,color:"#1e3a7a",fontFamily:"'Courier New',Courier,monospace"}}>SC-INV-{getTodayString()}</span>
                 </div>
               </div>
@@ -661,7 +661,7 @@ export default function CarmenV2() {
               <div style={s.folderSpine}></div>
               <div style={{...s.folderRight,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:20}}>
                 <motion.div initial={{scale:1.8,opacity:0,rotate:-8}} animate={{scale:1,opacity:0.88,rotate:-4}} transition={{delay:0.3,type:"spring",stiffness:220,damping:14}} onAnimationComplete={()=>playStamp()} style={{border:"4px solid #dc2626",padding:"10px 20px"}}>
-                  <span style={{fontSize:20,fontWeight:700,letterSpacing:"0.12em",color:"#dc2626",fontFamily:"'Special Elite',cursive",whiteSpace:"nowrap"}}>CASE CLOSED</span>
+                  <span style={{fontSize:20,fontWeight:700,letterSpacing:"0.03em",color:"#dc2626",fontFamily:"'Special Elite',cursive",whiteSpace:"nowrap"}}>CASE CLOSED</span>
                 </motion.div>
                 <button onClick={()=>{localStorage.removeItem(LOCKOUT_KEY);window.location.reload();}} style={s.newMissionBtn}>Assign Me A New Mission</button>
               </div>
@@ -692,7 +692,7 @@ export default function CarmenV2() {
           </div>
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontFamily:"'Special Elite',cursive",fontSize:13,color:"#15803d",fontWeight:700}}>The Chief</div>
-            <div style={{fontFamily:"'VT323',monospace",fontSize:12,color:"#5a6a9a",letterSpacing:"0.04em"}}>Outstanding work, {firstName(agentName)}. Department confirmed.</div>
+            <div style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,color:"#5a6a9a",letterSpacing:"0.04em"}}>Outstanding work, {firstName(agentName)}. Department confirmed.</div>
           </div>
         </motion.div>
       )}
@@ -709,9 +709,9 @@ export default function CarmenV2() {
         {/* Header */}
         <div style={s.headerBar}>
           <div style={s.headerLeft}>
-            <span style={{...s.orgLabel,fontFamily:"'Special Elite',cursive",fontSize:12,letterSpacing:"0.08em"}}>Sun Country Airlines</span>
+            <span style={{...s.orgLabel,fontFamily:"'Special Elite',cursive",fontSize:12,letterSpacing:"0.02em"}}>Sun Country Airlines</span>
             <span style={s.divider}>·</span>
-            <span style={{...s.orgLabel,fontFamily:"'VT323',monospace",fontSize:14,letterSpacing:"0.18em"}}>INTERNAL INVESTIGATIONS</span>
+            <span style={{...s.orgLabel,fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:14,letterSpacing:"0.01em"}}>INTERNAL INVESTIGATIONS</span>
           </div>
           <div style={s.caseTag}>CASE SC-INV-{getTodayString()}</div>
         </div>
@@ -774,7 +774,7 @@ export default function CarmenV2() {
                     <span style={{...s.sightingsCell,flex:"0 0 70px",textAlign:"right"}}>STATUS</span>
                   </div>
                   {CURRENT_DAY.previousDepts.length === 0 ? (
-                    <div style={{padding:"10px",fontFamily:"'VT323',monospace",fontSize:13,color:"#8a9ac8",letterSpacing:"0.06em"}}>No prior sightings this week.</div>
+                    <div style={{padding:"10px",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:13,color:"#8a9ac8",letterSpacing:"0.01em"}}>No prior sightings this week.</div>
                   ) : CURRENT_DAY.previousDepts.map((d,i) => (
                     <div key={i} style={{...s.sightingsRow,borderBottom:i<CURRENT_DAY.previousDepts.length-1?"1px solid rgba(58,74,138,0.1)":"none",opacity:0.75}}>
                       <div style={{flex:1,position:"relative"}}>
@@ -848,7 +848,7 @@ export default function CarmenV2() {
                       <span style={{width:10,height:10,borderRadius:"50%",background:"#ff5f57",display:"inline-block"}}></span>
                       <span style={{width:10,height:10,borderRadius:"50%",background:"#febc2e",display:"inline-block"}}></span>
                       <span style={{width:10,height:10,borderRadius:"50%",background:"#28c840",display:"inline-block"}}></span>
-                      <span style={{fontSize:11,color:"#5a6a9a",letterSpacing:"0.06em",marginLeft:6,fontFamily:"'Inter',sans-serif",fontWeight:500}}>Sun Country Internal Network — Searching</span>
+                      <span style={{fontSize:11,color:"#5a6a9a",letterSpacing:"0.01em",marginLeft:6,fontFamily:"'Inter',sans-serif",fontWeight:500}}>Sun Country Internal Network — Searching</span>
                     </div>
                     <div style={s.scanBody}>
                       <div style={s.scanHeader}>
@@ -871,7 +871,7 @@ export default function CarmenV2() {
                       <span style={{width:10,height:10,borderRadius:"50%",background:"#ff5f57",display:"inline-block"}}></span>
                       <span style={{width:10,height:10,borderRadius:"50%",background:"#febc2e",display:"inline-block"}}></span>
                       <span style={{width:10,height:10,borderRadius:"50%",background:"#28c840",display:"inline-block"}}></span>
-                      <span style={{fontSize:11,color:"#5a6a9a",letterSpacing:"0.06em",marginLeft:6,fontFamily:"'Inter',sans-serif",fontWeight:500}}>Sun Country Internal Network — Analyzing Results</span>
+                      <span style={{fontSize:11,color:"#5a6a9a",letterSpacing:"0.01em",marginLeft:6,fontFamily:"'Inter',sans-serif",fontWeight:500}}>Sun Country Internal Network — Analyzing Results</span>
                     </div>
                     <div style={s.scanBody}>
                       <div style={s.scanHeader}>
@@ -897,7 +897,7 @@ export default function CarmenV2() {
                           onAnimationComplete={()=>playStamp()}
                           style={{display:"inline-block",border:`3px solid ${isCorrect?"#16a34a":"#dc2626"}`,padding:"4px 14px",transformOrigin:"left center"}}
                         >
-                          <span style={{color:isCorrect?"#16a34a":"#dc2626",fontSize:18,fontFamily:"'VT323',monospace",letterSpacing:"0.18em"}}>
+                          <span style={{color:isCorrect?"#16a34a":"#dc2626",fontSize:13,fontWeight:700,fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",letterSpacing:"0.01em"}}>
                             {isCorrect ? "DEPARTMENT CONFIRMED" : "DEPARTMENT UNKNOWN"}
                           </span>
                         </motion.div>
@@ -907,14 +907,14 @@ export default function CarmenV2() {
                           text={isCorrect ? `Outstanding work, ${firstName(agentName)}. She's been tracked to ${CURRENT_DAY.label}.` : transferMsg}
                           color={isCorrect?"#166534":"#991b1b"}
                         />
-                        {isCorrect && <p style={{fontFamily:"'VT323',monospace",fontSize:14,color:"#166534",margin:"4px 0 0",letterSpacing:"0.06em"}}>Carmen has been located in the {CURRENT_DAY.dept}.</p>}
+                        {isCorrect && <p style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:14,color:"#166534",margin:"4px 0 0",letterSpacing:"0.01em"}}>Carmen has been located in the {CURRENT_DAY.dept}.</p>}
                       </motion.div>
                     </div>
 
                     {!isCorrect && canRetry && (
                       <motion.div initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} transition={{delay:0.4}} style={s.retryBox}>
                         <div style={{flex:1}}>
-                          <span style={{display:"block",fontFamily:"'VT323',monospace",fontSize:14,letterSpacing:"0.14em",color:"#7f1d1d",marginBottom:4}}>REASSIGNMENT AVAILABLE</span>
+                          <span style={{display:"block",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:14,letterSpacing:"0.04em",color:"#7f1d1d",marginBottom:4}}>REASSIGNMENT AVAILABLE</span>
                           <p style={{fontSize:11,color:"#78350f",margin:0,fontFamily:"'Courier New',Courier,monospace",letterSpacing:"0.02em",lineHeight:1.4}}>One retry permitted. First attempt remains on record.</p>
                         </div>
                         <button onClick={handleRetry} style={s.retryBtn}>Request Reassignment</button>
@@ -975,9 +975,9 @@ function FinaleScreen() {
         <div style={{width:"100%",maxWidth:1100,position:"relative",zIndex:10}}>
           <div style={s.headerBar}>
             <div style={s.headerLeft}>
-              <span style={{...s.orgLabel,fontFamily:"'Special Elite',cursive",fontSize:12,letterSpacing:"0.08em"}}>Sun Country Airlines</span>
+              <span style={{...s.orgLabel,fontFamily:"'Special Elite',cursive",fontSize:12,letterSpacing:"0.02em"}}>Sun Country Airlines</span>
               <span style={s.divider}>·</span>
-              <span style={{...s.orgLabel,fontFamily:"'VT323',monospace",fontSize:14,letterSpacing:"0.18em"}}>INTERNAL INVESTIGATIONS</span>
+              <span style={{...s.orgLabel,fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:14,letterSpacing:"0.01em"}}>INTERNAL INVESTIGATIONS</span>
             </div>
             <div style={s.caseTag}>FINAL BRIEFING</div>
           </div>
@@ -987,7 +987,7 @@ function FinaleScreen() {
             <div style={s.paperYellow}></div>
             <div style={s.cardTopStrip}>
               <motion.div initial={{scale:1.5,opacity:0,rotate:-4}} animate={{scale:1,opacity:0.88,rotate:-2}} transition={{delay:0.3,type:"spring",stiffness:220,damping:14}} onAnimationComplete={()=>playStamp()} style={{border:"3px solid #15803d",padding:"4px 10px",display:"inline-block",filter:"url(#stampFilter)"}}>
-                <span style={{fontSize:14,fontWeight:700,letterSpacing:"0.18em",color:"#15803d",fontFamily:"'Courier New',Courier,monospace"}}>CASE CLOSED</span>
+                <span style={{fontSize:14,fontWeight:700,letterSpacing:"0.01em",color:"#15803d",fontFamily:"'Courier New',Courier,monospace"}}>CASE CLOSED</span>
               </motion.div>
               <div style={s.topRight}>
                 <span style={s.dateStamp}>FINAL WEEK RECAP</span>
@@ -1054,7 +1054,7 @@ function FinaleScreen() {
                   <span style={{color:"rgba(58,74,138,0.3)",fontSize:10,margin:"0 2px"}}>›</span>
                   <div style={s.sectionRule}></div>
                 </div>
-                <p style={{fontFamily:"'VT323',monospace",fontSize:12,color:"#8a9ac8",letterSpacing:"0.1em",marginBottom:10,position:"relative",zIndex:1}}>THE FOLLOWING AGENTS ARE EACH AWARDED $100</p>
+                <p style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,color:"#8a9ac8",letterSpacing:"0.02em",marginBottom:10,position:"relative",zIndex:1}}>THE FOLLOWING AGENTS ARE EACH AWARDED $100</p>
                 {FINALE_WINNERS.map((w,i)=>(
                   <motion.div key={i} initial={{opacity:0,x:12}} animate={{opacity:1,x:0}} transition={{delay:0.5+i*0.08,type:"spring",stiffness:200,damping:20}} style={{display:"flex",alignItems:"center",gap:12,padding:"9px 14px",background:"rgba(21,128,61,0.05)",border:"1px solid rgba(21,128,61,0.2)",borderRadius:4,marginBottom:7,position:"relative",zIndex:1}}>
                     <div style={{width:36,height:36,borderRadius:"50%",background:"#15803d",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
@@ -1062,7 +1062,7 @@ function FinaleScreen() {
                     </div>
                     <div style={{flex:1}}>
                       <div style={{fontFamily:"'Special Elite',cursive",fontSize:14,color:"#1e3a7a",fontWeight:700}}>{w.name}</div>
-                      <div style={{fontFamily:"'VT323',monospace",fontSize:12,color:"#8a9ac8",letterSpacing:"0.08em"}}>{w.dept}</div>
+                      <div style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,color:"#8a9ac8",letterSpacing:"0.02em"}}>{w.dept}</div>
                     </div>
                     <div style={{border:"2px solid #15803d",padding:"3px 10px",transform:`rotate(${stampRotations[i]}deg)`,flexShrink:0}}>
                       <span style={{fontFamily:"'Courier New',Courier,monospace",fontSize:12,fontWeight:700,color:"#15803d"}}>$100</span>
@@ -1074,7 +1074,7 @@ function FinaleScreen() {
             <div style={s.cardFooter}>
               <span style={s.footerText}>Sun Country Airlines · Internal Investigations · Eyes Only</span>
               <span style={{...s.footerText,color:"rgba(90,106,154,0.35)"}}>·</span>
-              <span style={{...s.footerText,color:"#15803d",letterSpacing:"0.14em"}}>✓ CASE CLOSED</span>
+              <span style={{...s.footerText,color:"#15803d",letterSpacing:"0.04em"}}>✓ CASE CLOSED</span>
             </div>
           </div>
         </div>
@@ -1100,15 +1100,15 @@ const s = {
   loginOverlay: {position:"fixed",inset:0,background:"rgba(0,5,20,0.65)",zIndex:1},
   loginWindow: {width:"100%",maxWidth:420,position:"relative",zIndex:10,borderRadius:8,overflow:"hidden",boxShadow:"0 32px 80px rgba(0,0,0,0.8)"},
   winTitleBar: {background:"#d0d4dc",padding:"10px 14px",display:"flex",alignItems:"center",justifyContent:"space-between"},
-  winTitle: {fontFamily:"'VT323',monospace",fontSize:12,color:"#4a5060",letterSpacing:"0.06em"},
+  winTitle: {fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,color:"#4a5060",letterSpacing:"0.01em"},
   winBody: {background:"#f0f2f8",padding:"28px 28px 24px"},
   loginLogoArea: {display:"flex",alignItems:"center",gap:12,marginBottom:20},
   loginDivider: {height:1,background:"#c5cce8",marginBottom:20},
-  loginFieldLabel: {fontSize:12,color:"#5a6a9a",fontFamily:"'VT323',monospace",letterSpacing:"0.1em",marginBottom:6,display:"block"},
+  loginFieldLabel: {fontSize:11,color:"#5a6a9a",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",letterSpacing:"0.02em",marginBottom:6,display:"block"},
   loginInput: {width:"100%",boxSizing:"border-box",padding:"10px 12px",fontSize:13,fontFamily:"'Courier New',Courier,monospace",border:"1.5px solid #c5cce8",borderRadius:4,background:"#fff",color:"#1e3a7a",outline:"none",letterSpacing:"0.04em",marginBottom:8},
   loginError: {fontSize:11,color:"#dc2626",fontFamily:"'Courier New',Courier,monospace",marginBottom:8,letterSpacing:"0.02em"},
-  loginBtn: {width:"100%",padding:"11px 0",background:"#2d4eb0",color:"#fff",border:"none",borderRadius:4,fontSize:12,fontWeight:700,letterSpacing:"0.1em",fontFamily:"'Courier New',Courier,monospace",cursor:"pointer"},
-  loginHint: {textAlign:"center",fontSize:10,color:"#8a9ac8",marginTop:10,fontFamily:"'VT323',monospace",letterSpacing:"0.08em"},
+  loginBtn: {width:"100%",padding:"11px 0",background:"#2d4eb0",color:"#fff",border:"none",borderRadius:4,fontSize:12,fontWeight:700,letterSpacing:"0.02em",fontFamily:"'Courier New',Courier,monospace",cursor:"pointer"},
+  loginHint: {textAlign:"center",fontSize:10,color:"#8a9ac8",marginTop:10,fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",letterSpacing:"0.02em"},
   loginProgressTrack: {height:8,background:"#d0d4dc",borderRadius:4,overflow:"hidden"},
   loginProgressFill: {height:"100%",background:"linear-gradient(90deg,#1e3a7a,#4a7adc)",borderRadius:4,transition:"width 0.1s"},
 
@@ -1124,14 +1124,14 @@ const s = {
   emailSubject: {fontFamily:"'Special Elite',cursive",fontSize:14,color:"#1e3a7a",fontWeight:700,padding:"12px 0",borderBottom:"1px solid #e0e4f0"},
   emailContent: {padding:"16px 20px"},
   emailP: {fontFamily:"'Crimson Pro',Georgia,serif",fontSize:15,color:"#1e3a7a",lineHeight:1.7,margin:"0 0 12px"},
-  emailBtn: {background:"#1e3a7a",color:"#fff",border:"none",borderRadius:4,padding:"10px 20px",fontFamily:"'Courier New',Courier,monospace",fontSize:12,fontWeight:700,letterSpacing:"0.08em",cursor:"pointer"},
+  emailBtn: {background:"#1e3a7a",color:"#fff",border:"none",borderRadius:4,padding:"10px 20px",fontFamily:"'Courier New',Courier,monospace",fontSize:12,fontWeight:700,letterSpacing:"0.02em",cursor:"pointer"},
 
   // Header
   headerBar: {display:"flex",justifyContent:"space-between",alignItems:"center",padding:"9px 20px",background:"#1e3a7a",borderRadius:"6px 6px 0 0",borderBottom:"3px solid #152b7a"},
   headerLeft: {display:"flex",alignItems:"center",gap:10},
-  orgLabel: {color:"#fff",fontSize:10,fontWeight:700,letterSpacing:"0.14em"},
+  orgLabel: {color:"#fff",fontSize:10,fontWeight:700,letterSpacing:"0.04em"},
   divider: {color:"rgba(255,255,255,0.35)",fontSize:10},
-  caseTag: {color:"#fff",fontSize:10,fontWeight:700,letterSpacing:"0.1em",background:"rgba(0,0,0,0.3)",padding:"3px 10px",borderRadius:3,border:"1px solid rgba(255,255,255,0.15)"},
+  caseTag: {color:"#fff",fontSize:10,fontWeight:700,letterSpacing:"0.02em",background:"rgba(0,0,0,0.3)",padding:"3px 10px",borderRadius:3,border:"1px solid rgba(255,255,255,0.15)"},
 
   // Card / paper
   card: {background:"linear-gradient(160deg,#f0f4ff 0%,#e8eeff 40%,#dde4ff 100%)",border:"2px solid #3a4a8a",borderTop:"none",borderRadius:"0 0 12px 12px",padding:"24px 28px 20px",boxShadow:"4px 8px 0 rgba(0,0,0,0.15),0 24px 60px rgba(0,0,0,0.75),inset 0 0 40px rgba(30,58,122,0.06)",position:"relative",overflow:"hidden"},
@@ -1142,10 +1142,10 @@ const s = {
 
   // Card top strip
   cardTopStrip: {display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20,position:"relative",zIndex:1},
-  classifiedBadge: {color:"#1e3a7a",fontSize:14,fontWeight:700,letterSpacing:"0.18em",padding:"4px 10px",border:"3px solid #1e3a7a",borderRadius:3,display:"inline-block",opacity:0.85,animation:"stampIn 0.5s ease-out forwards",transformOrigin:"center",filter:"url(#stampFilter)"},
+  classifiedBadge: {color:"#1e3a7a",fontSize:14,fontWeight:700,letterSpacing:"0.01em",padding:"4px 10px",border:"3px solid #1e3a7a",borderRadius:3,display:"inline-block",opacity:0.85,animation:"stampIn 0.5s ease-out forwards",transformOrigin:"center",filter:"url(#stampFilter)"},
   topRight: {display:"flex",flexDirection:"column",alignItems:"flex-end",gap:4},
-  dateStamp: {fontSize:9,fontWeight:700,color:"#3a4a8a",letterSpacing:"0.1em"},
-  priorityTag: {fontSize:9,fontWeight:700,color:"#dc2626",letterSpacing:"0.1em",border:"1px solid rgba(220,38,38,0.4)",padding:"2px 6px",borderRadius:2,display:"inline-block",transform:"rotate(1.5deg)"},
+  dateStamp: {fontSize:9,fontWeight:700,color:"#3a4a8a",letterSpacing:"0.02em"},
+  priorityTag: {fontSize:9,fontWeight:700,color:"#dc2626",letterSpacing:"0.02em",border:"1px solid rgba(220,38,38,0.4)",padding:"2px 6px",borderRadius:2,display:"inline-block",transform:"rotate(1.5deg)"},
 
   // Columns
   folderColumns: {display:"flex",gap:0,alignItems:"stretch",marginBottom:0},
@@ -1160,41 +1160,41 @@ const s = {
   suspectName: {fontSize:22,fontWeight:700,color:"#0f1f4a",margin:"0 0 2px",letterSpacing:"0.02em",fontFamily:"'Special Elite',cursive"},
   suspectAlias: {fontSize:12,color:"#3a4a8a",fontStyle:"italic",margin:"0 0 8px",fontFamily:"'Crimson Pro',Georgia,serif",letterSpacing:"0.02em"},
   suspectBadges: {display:"flex",gap:5,flexWrap:"wrap"},
-  suspectBadgeDanger: {fontSize:8,fontWeight:700,letterSpacing:"0.12em",color:"#fff",background:"#dc2626",padding:"2px 7px",borderRadius:2},
-  suspectBadgeWarn: {fontSize:8,fontWeight:700,letterSpacing:"0.12em",color:"#3a4a8a",background:"rgba(58,74,138,0.12)",border:"1px solid rgba(58,74,138,0.25)",padding:"2px 7px",borderRadius:2},
+  suspectBadgeDanger: {fontSize:8,fontWeight:700,letterSpacing:"0.03em",color:"#fff",background:"#dc2626",padding:"2px 7px",borderRadius:2},
+  suspectBadgeWarn: {fontSize:8,fontWeight:700,letterSpacing:"0.03em",color:"#3a4a8a",background:"rgba(58,74,138,0.12)",border:"1px solid rgba(58,74,138,0.25)",padding:"2px 7px",borderRadius:2},
   suspectGrid: {display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px 12px"},
   suspectGridItem: {display:"flex",flexDirection:"column",gap:2},
-  fieldLabel: {fontSize:13,fontWeight:400,letterSpacing:"0.14em",color:"#5a6a9a",fontFamily:"'VT323','Courier New',monospace"},
+  fieldLabel: {fontSize:13,fontWeight:400,letterSpacing:"0.04em",color:"#5a6a9a",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
   fieldValue: {fontSize:13,fontWeight:600,color:"#0f1f4a",fontFamily:"'Crimson Pro',Georgia,serif",letterSpacing:"0.01em"},
 
   // Section dividers
   sectionDivider: {display:"flex",alignItems:"center",gap:10,marginBottom:14,position:"relative",zIndex:1},
   sectionRule: {flex:1,height:1,background:"rgba(58,74,138,0.3)"},
-  sectionLabel: {fontSize:13,fontWeight:400,letterSpacing:"0.14em",color:"#3a4a8a",whiteSpace:"nowrap",fontFamily:"'VT323','Courier New',monospace"},
+  sectionLabel: {fontSize:13,fontWeight:400,letterSpacing:"0.04em",color:"#3a4a8a",whiteSpace:"nowrap",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
 
   // Sightings
   sightingsTable: {marginBottom:0,position:"relative",zIndex:1,border:"1px solid rgba(58,74,138,0.2)",borderRadius:4,overflow:"hidden"},
   sightingsHeader: {display:"flex",padding:"4px 10px",background:"rgba(58,74,138,0.08)",borderBottom:"1px solid rgba(58,74,138,0.15)"},
-  sightingsCell: {fontSize:13,fontWeight:400,letterSpacing:"0.12em",color:"#3a4a8a",fontFamily:"'VT323','Courier New',monospace"},
+  sightingsCell: {fontSize:13,fontWeight:400,letterSpacing:"0.03em",color:"#3a4a8a",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
   sightingsRow: {display:"flex",padding:"5px 10px",alignItems:"center"},
-  sightingsDate: {fontSize:11,color:"#5a6a9a",fontFamily:"'VT323',monospace",letterSpacing:"0.04em"},
-  sightingsValue: {fontSize:13,fontWeight:400,color:"#0f1f4a",fontFamily:"'VT323',monospace",letterSpacing:"0.04em"},
-  sightingsCode: {fontSize:13,fontWeight:400,color:"#3a4a8a",fontFamily:"'VT323',monospace",letterSpacing:"0.06em"},
-  sightingsStatus: {fontSize:12,fontWeight:400,letterSpacing:"0.1em",fontFamily:"'VT323',monospace"},
+  sightingsDate: {fontSize:11,color:"#5a6a9a",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",letterSpacing:"0.04em"},
+  sightingsValue: {fontSize:13,fontWeight:400,color:"#0f1f4a",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",letterSpacing:"0.04em"},
+  sightingsCode: {fontSize:13,fontWeight:400,color:"#3a4a8a",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",letterSpacing:"0.01em"},
+  sightingsStatus: {fontSize:12,fontWeight:400,letterSpacing:"0.02em",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
 
   // Clue box
   clueBox: {background:"#fff",border:"1px solid rgba(58,74,138,0.2)",borderLeft:"none",borderRadius:2,padding:"14px 18px 14px 32px",marginBottom:20,position:"relative",zIndex:1,overflow:"hidden",boxShadow:"1px 2px 8px rgba(0,0,0,0.08)",backgroundImage:["repeating-linear-gradient(transparent,transparent 31px,rgba(100,140,220,0.35) 31px,rgba(100,140,220,0.35) 32px)","linear-gradient(to right,rgba(58,74,138,0.5) 0px,rgba(58,74,138,0.5) 1px,transparent 1px)"].join(","),backgroundSize:"100% 32px,100% 100%",backgroundPositionY:"0px,0",lineHeight:"32px"},
-  clueTitle: {display:"inline-block",fontSize:14,fontWeight:400,letterSpacing:"0.16em",color:"#fff",background:"#1e3a7a",padding:"2px 10px",borderRadius:2,marginBottom:8,fontFamily:"'VT323',monospace"},
+  clueTitle: {display:"inline-block",fontSize:14,fontWeight:400,letterSpacing:"0.05em",color:"#fff",background:"#1e3a7a",padding:"2px 10px",borderRadius:2,marginBottom:8,fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
   clueText: {fontSize:15,lineHeight:"32px",color:"#0f1f4a",margin:"0 0 0px",fontFamily:"'Crimson Pro',Georgia,serif",fontStyle:"normal",fontWeight:400},
   directiveLine: {height:1,background:"rgba(58,74,138,0.3)",margin:"8px 0",borderTop:"1px dashed rgba(58,74,138,0.35)"},
   clueQuestion: {fontSize:18,fontWeight:700,color:"#1e3a7a",margin:0,letterSpacing:"0.02em",fontFamily:"'Special Elite','Courier New',cursive",lineHeight:"32px"},
 
   // Input
   inputSection: {marginBottom:8,paddingTop:14,borderTop:"1px dashed rgba(58,74,138,0.15)",position:"relative",zIndex:1},
-  inputLabel: {display:"block",fontSize:14,fontWeight:400,letterSpacing:"0.08em",color:"#3a4a8a",marginBottom:8,fontFamily:"'Special Elite','Courier New',cursive"},
+  inputLabel: {display:"block",fontSize:14,fontWeight:400,letterSpacing:"0.02em",color:"#3a4a8a",marginBottom:8,fontFamily:"'Special Elite','Courier New',cursive"},
   inputRow: {display:"flex",flexDirection:"column",gap:8},
   input: {width:"100%",boxSizing:"border-box",padding:"10px 14px",fontSize:14,fontFamily:"'Courier New',Courier,monospace",border:"1.5px solid #3a4a8a",borderRadius:4,background:"rgba(255,255,255,0.85)",color:"#0f1f4a",outline:"none",letterSpacing:"0.04em"},
-  trackBtn: {width:"100%",padding:"10px 0",background:"#2d4eb0",color:"#fff",border:"none",borderRadius:4,fontSize:12,fontWeight:700,letterSpacing:"0.08em",fontFamily:"'Courier New',Courier,monospace",whiteSpace:"nowrap",textAlign:"center"},
+  trackBtn: {width:"100%",padding:"10px 0",background:"#2d4eb0",color:"#fff",border:"none",borderRadius:4,fontSize:12,fontWeight:700,letterSpacing:"0.02em",fontFamily:"'Courier New',Courier,monospace",whiteSpace:"nowrap",textAlign:"center"},
 
   // Scan terminal
   scanSection: {margin:"0 0 8px",border:"1px solid #c5cce8",borderRadius:6,position:"relative",zIndex:1,overflow:"hidden",boxShadow:"0 2px 12px rgba(30,58,122,0.12)",background:"#f8f9fc"},
@@ -1202,7 +1202,7 @@ const s = {
   scanBody: {padding:"14px 16px"},
   scanHeader: {display:"flex",alignItems:"center",gap:10,marginBottom:10},
   scanDot: {width:8,height:8,borderRadius:"50%",background:"#2d4eb0",display:"inline-block",flexShrink:0},
-  scanTitle: {fontSize:12,fontWeight:600,letterSpacing:"0.06em",color:"#1e3a7a",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
+  scanTitle: {fontSize:12,fontWeight:600,letterSpacing:"0.01em",color:"#1e3a7a",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
   scanMessage: {fontSize:13,color:"#3a4a8a",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",margin:"0 0 6px",minHeight:20},
   progressBar: {height:6,background:"#dde4f0",borderRadius:3,overflow:"hidden",marginBottom:6,marginTop:4},
   progressFill: {height:"100%",borderRadius:3,background:"linear-gradient(90deg,#1e3a7a,#4a7adc)",transition:"width 0.15s ease-out"},
@@ -1213,27 +1213,27 @@ const s = {
   resultBanner: {border:"1.5px solid",borderRadius:4,padding:"14px 18px",marginBottom:16},
   resultTagRow: {marginBottom:8},
   retryBox: {display:"flex",alignItems:"center",justifyContent:"space-between",gap:16,background:"rgba(127,29,29,0.06)",border:"1px solid rgba(127,29,29,0.2)",borderLeft:"3px solid #7f1d1d",borderRadius:4,padding:"12px 14px",marginBottom:14,position:"relative",zIndex:1},
-  retryBtn: {padding:"8px 14px",background:"transparent",color:"#7f1d1d",border:"1.5px solid #7f1d1d",borderRadius:4,fontSize:10,fontWeight:700,letterSpacing:"0.1em",fontFamily:"'Courier New',Courier,monospace",cursor:"pointer",whiteSpace:"nowrap",flexShrink:0},
-  submitBtn: {width:"100%",padding:"10px 0",background:"#1e3a7a",color:"#fff",border:"none",borderRadius:4,fontSize:12,fontWeight:700,letterSpacing:"0.08em",fontFamily:"'Courier New',Courier,monospace",whiteSpace:"nowrap",textAlign:"center"},
+  retryBtn: {padding:"8px 14px",background:"transparent",color:"#7f1d1d",border:"1.5px solid #7f1d1d",borderRadius:4,fontSize:10,fontWeight:700,letterSpacing:"0.02em",fontFamily:"'Courier New',Courier,monospace",cursor:"pointer",whiteSpace:"nowrap",flexShrink:0},
+  submitBtn: {width:"100%",padding:"10px 0",background:"#1e3a7a",color:"#fff",border:"none",borderRadius:4,fontSize:12,fontWeight:700,letterSpacing:"0.02em",fontFamily:"'Courier New',Courier,monospace",whiteSpace:"nowrap",textAlign:"center"},
 
   // Footer
   cardFooter: {display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:20,paddingTop:12,borderTop:"1px solid rgba(58,74,138,0.2)",position:"relative",zIndex:1},
-  footerText: {fontSize:13,color:"#5a6a9a",letterSpacing:"0.08em",fontFamily:"'VT323',monospace"},
+  footerText: {fontSize:13,color:"#5a6a9a",letterSpacing:"0.02em",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
 
   // Folder (submitted/lockout screens)
   folderWrap: {width:"100%",maxWidth:760,position:"relative",zIndex:10},
   folderTab: {display:"flex",justifyContent:"space-between",alignItems:"center",background:"#1e3a7a",borderRadius:"6px 6px 0 0",padding:"8px 18px",width:"38%",boxShadow:"inset 0 -3px 0 #152b7a"},
-  folderTabText: {color:"#fff",fontSize:9,fontWeight:700,letterSpacing:"0.14em",fontFamily:"'Courier New',Courier,monospace"},
-  folderTabCase: {color:"rgba(255,255,255,0.6)",fontSize:9,letterSpacing:"0.08em",fontFamily:"'Courier New',Courier,monospace"},
+  folderTabText: {color:"#fff",fontSize:9,fontWeight:700,letterSpacing:"0.04em",fontFamily:"'Courier New',Courier,monospace"},
+  folderTabCase: {color:"rgba(255,255,255,0.6)",fontSize:9,letterSpacing:"0.02em",fontFamily:"'Courier New',Courier,monospace"},
   folderBody: {background:"linear-gradient(160deg,#f0f4ff 0%,#e8eeff 40%,#dde4ff 100%)",border:"2px solid #3a4a8a",borderTop:"2px solid #3a4a8a",borderRadius:"0 8px 8px 8px",padding:"28px 32px 24px",position:"relative",overflow:"visible",boxShadow:"0 24px 60px rgba(0,0,0,0.75),inset 0 0 40px rgba(30,58,122,0.06)"},
   folderTitle: {fontSize:22,fontWeight:700,color:"#0f1f4a",margin:"0 0 2px",letterSpacing:"0.02em",position:"relative",zIndex:1,fontFamily:"'Special Elite','Courier New',cursive"},
   folderSuspect: {fontSize:12,color:"#3a4a8a",margin:"0 0 16px",letterSpacing:"0.04em",fontFamily:"'Crimson Pro',Georgia,serif",fontStyle:"italic",position:"relative",zIndex:1},
   folderDivider: {height:1,background:"rgba(58,74,138,0.25)",marginBottom:20,position:"relative",zIndex:1},
   folderFields: {display:"flex",flexDirection:"column",gap:14,position:"relative",zIndex:1},
   folderField: {display:"flex",flexDirection:"column",gap:3,paddingBottom:14,borderBottom:"1px solid rgba(58,74,138,0.12)"},
-  folderFieldLabel: {fontSize:13,fontWeight:400,letterSpacing:"0.16em",color:"#5a6a9a",fontFamily:"'VT323','Courier New',monospace"},
+  folderFieldLabel: {fontSize:13,fontWeight:400,letterSpacing:"0.05em",color:"#5a6a9a",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
   folderFieldValue: {fontSize:15,fontWeight:600,color:"#0f1f4a",fontFamily:"'Crimson Pro',Georgia,serif",letterSpacing:"0.01em"},
   folderFooter: {marginTop:20,paddingTop:12,borderTop:"1px solid rgba(58,74,138,0.15)",position:"relative",zIndex:1},
-  folderFooterText: {fontSize:9,color:"#5a6a9a",letterSpacing:"0.08em",fontFamily:"'Courier New',Courier,monospace"},
-  newMissionBtn: {marginTop:20,width:"100%",padding:"10px 0",background:"#dc2626",color:"#fff",border:"none",borderRadius:4,fontSize:13,fontWeight:700,letterSpacing:"0.1em",fontFamily:"'Courier New',Courier,monospace",cursor:"pointer",position:"relative",zIndex:1},
+  folderFooterText: {fontSize:9,color:"#5a6a9a",letterSpacing:"0.02em",fontFamily:"'Courier New',Courier,monospace"},
+  newMissionBtn: {marginTop:20,width:"100%",padding:"10px 0",background:"#dc2626",color:"#fff",border:"none",borderRadius:4,fontSize:13,fontWeight:700,letterSpacing:"0.02em",fontFamily:"'Courier New',Courier,monospace",cursor:"pointer",position:"relative",zIndex:1},
 };
