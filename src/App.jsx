@@ -225,7 +225,7 @@ function LoginScreen({ onLogin }) {
                   Welcome, {agentName}
                 </div>
                 <div style={{fontFamily:"'VT323',monospace",fontSize:13,color:"#8a9ac8",letterSpacing:"0.08em"}}>
-                  Loading your desktop...
+                  Loading your briefing...
                 </div>
               </motion.div>
             )}
@@ -845,22 +845,22 @@ export default function CarmenV2() {
                 {scanning && (
                   <motion.div key="scanning" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} style={s.scanSection}>
                     <div style={s.scanTitleBar}>
-                      <span style={{width:8,height:8,borderRadius:"50%",background:"#dc2626",display:"inline-block"}}></span>
-                      <span style={{width:8,height:8,borderRadius:"50%",background:"#facc15",display:"inline-block"}}></span>
-                      <span style={{width:8,height:8,borderRadius:"50%",background:"#22c55e",display:"inline-block"}}></span>
-                      <span style={{fontSize:11,color:"rgba(34,197,94,0.5)",letterSpacing:"0.1em",marginLeft:6,fontFamily:"'VT323',monospace"}}>SC-INTERNAL-NETWORK — ACTIVE SEARCH</span>
+                      <span style={{width:10,height:10,borderRadius:"50%",background:"#ff5f57",display:"inline-block"}}></span>
+                      <span style={{width:10,height:10,borderRadius:"50%",background:"#febc2e",display:"inline-block"}}></span>
+                      <span style={{width:10,height:10,borderRadius:"50%",background:"#28c840",display:"inline-block"}}></span>
+                      <span style={{fontSize:11,color:"#5a6a9a",letterSpacing:"0.06em",marginLeft:6,fontFamily:"'Inter',sans-serif",fontWeight:500}}>Sun Country Internal Network — Searching</span>
                     </div>
                     <div style={s.scanBody}>
                       <div style={s.scanHeader}>
                         <span style={{...s.scanDot,animation:"pulse 1.2s ease-in-out infinite"}}></span>
-                        <span style={s.scanTitle}>SEARCHING INTERNAL DIRECTORIES...</span>
+                        <span style={s.scanTitle}>Searching employee directories...</span>
                       </div>
-                      <p style={s.scanMessage}>Cross-referencing employee database...</p>
-                      <p style={{fontFamily:"'VT323',monospace",fontSize:13,color:"#86efac",letterSpacing:"0.06em",margin:"0 0 10px"}}>Scanning department records...</p>
+                      <p style={s.scanMessage}>Cross-referencing department manifests...</p>
+                      <p style={{...s.scanMessage,color:"#5a6a9a"}}>Analyzing badge access records...</p>
                       <div style={s.progressBar}>
-                        <div style={{...s.progressFill,width:`${scanProgress}%`,transition:"width 0.15s ease-out"}}></div>
+                        <div style={{...s.progressFill,width:`${scanProgress}%`}}></div>
                       </div>
-                      <p style={s.scanProgress}>{scanProgress}%</p>
+                      <p style={s.scanProgress}>{scanProgress}% complete</p>
                     </div>
                   </motion.div>
                 )}
@@ -868,19 +868,19 @@ export default function CarmenV2() {
                 {decrypting && (
                   <motion.div key="decrypting" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} style={s.scanSection}>
                     <div style={s.scanTitleBar}>
-                      <span style={{width:8,height:8,borderRadius:"50%",background:"#dc2626",display:"inline-block"}}></span>
-                      <span style={{width:8,height:8,borderRadius:"50%",background:"#facc15",display:"inline-block"}}></span>
-                      <span style={{width:8,height:8,borderRadius:"50%",background:"#22c55e",display:"inline-block"}}></span>
-                      <span style={{fontSize:11,color:"rgba(250,204,21,0.5)",letterSpacing:"0.1em",marginLeft:6,fontFamily:"'VT323',monospace"}}>SC-INTERNAL-NETWORK — ANALYZING</span>
+                      <span style={{width:10,height:10,borderRadius:"50%",background:"#ff5f57",display:"inline-block"}}></span>
+                      <span style={{width:10,height:10,borderRadius:"50%",background:"#febc2e",display:"inline-block"}}></span>
+                      <span style={{width:10,height:10,borderRadius:"50%",background:"#28c840",display:"inline-block"}}></span>
+                      <span style={{fontSize:11,color:"#5a6a9a",letterSpacing:"0.06em",marginLeft:6,fontFamily:"'Inter',sans-serif",fontWeight:500}}>Sun Country Internal Network — Analyzing Results</span>
                     </div>
                     <div style={s.scanBody}>
                       <div style={s.scanHeader}>
-                        <span style={{...s.scanDot,background:"#facc15",boxShadow:"0 0 6px #facc15",animation:"pulse 0.5s ease-in-out infinite"}}></span>
-                        <span style={{...s.scanTitle,color:"#facc15",animation:"decryptPulse 0.5s ease-in-out infinite"}}>ANALYZING RESULTS...</span>
+                        <span style={{...s.scanDot,background:"#f59e0b",animation:"pulse 0.5s ease-in-out infinite"}}></span>
+                        <span style={{...s.scanTitle,color:"#b45309"}}>Verifying department match...</span>
                       </div>
-                      <p style={{...s.scanMessage,color:"#fef08a",marginBottom:10}}>Verifying department match...</p>
+                      <p style={{...s.scanMessage,color:"#92400e",marginBottom:10}}>Processing intelligence report...</p>
                       <div style={{...s.progressBar,marginTop:0}}>
-                        <div style={{...s.progressFill,width:"100%",animation:"barFlash 0.3s steps(2) infinite"}}></div>
+                        <div style={{...s.progressFill,width:"100%",background:"linear-gradient(90deg,#b45309,#f59e0b)",animation:"barFlash 0.4s steps(2) infinite"}}></div>
                       </div>
                     </div>
                   </motion.div>
@@ -907,7 +907,7 @@ export default function CarmenV2() {
                           text={isCorrect ? `Outstanding work, ${firstName(agentName)}. She's been tracked to ${CURRENT_DAY.label}.` : transferMsg}
                           color={isCorrect?"#166534":"#991b1b"}
                         />
-                        {isCorrect && <p style={{fontFamily:"'VT323',monospace",fontSize:14,color:"#166534",margin:"4px 0 0",letterSpacing:"0.06em"}}>Carmen has been located and was posing as an agent in {CURRENT_DAY.dept}.</p>}
+                        {isCorrect && <p style={{fontFamily:"'VT323',monospace",fontSize:14,color:"#166534",margin:"4px 0 0",letterSpacing:"0.06em"}}>Carmen has been located in the {CURRENT_DAY.dept}.</p>}
                       </motion.div>
                     </div>
 
@@ -1197,16 +1197,16 @@ const s = {
   trackBtn: {width:"100%",padding:"10px 0",background:"#2d4eb0",color:"#fff",border:"none",borderRadius:4,fontSize:12,fontWeight:700,letterSpacing:"0.08em",fontFamily:"'Courier New',Courier,monospace",whiteSpace:"nowrap",textAlign:"center"},
 
   // Scan terminal
-  scanSection: {margin:"0 0 8px",border:"1px solid rgba(0,200,60,0.5)",borderRadius:4,position:"relative",zIndex:1,overflow:"hidden",boxShadow:"0 4px 20px rgba(0,0,0,0.5),inset 0 0 30px rgba(0,0,0,0.4)",background:"#071a07",backgroundImage:["repeating-linear-gradient(0deg,rgba(0,0,0,0.35) 0px,rgba(0,0,0,0.35) 1px,transparent 1px,transparent 4px)","radial-gradient(ellipse at 50% 50%,rgba(0,60,0,0.4) 0%,rgba(0,0,0,0.5) 100%)"].join(",")},
-  scanTitleBar: {background:"rgba(0,180,60,0.12)",borderBottom:"1px solid rgba(0,180,60,0.2)",padding:"5px 12px",display:"flex",alignItems:"center",gap:8},
-  scanBody: {padding:"12px 16px"},
+  scanSection: {margin:"0 0 8px",border:"1px solid #c5cce8",borderRadius:6,position:"relative",zIndex:1,overflow:"hidden",boxShadow:"0 2px 12px rgba(30,58,122,0.12)",background:"#f8f9fc"},
+  scanTitleBar: {background:"#e8ecf8",borderBottom:"1px solid #d0d4e8",padding:"6px 12px",display:"flex",alignItems:"center",gap:8},
+  scanBody: {padding:"14px 16px"},
   scanHeader: {display:"flex",alignItems:"center",gap:10,marginBottom:10},
-  scanDot: {width:7,height:7,borderRadius:"50%",background:"#22c55e",display:"inline-block",boxShadow:"0 0 5px #22c55e",flexShrink:0},
-  scanTitle: {fontSize:13,fontWeight:400,letterSpacing:"0.16em",color:"#4ade80",fontFamily:"'VT323',monospace"},
-  scanMessage: {fontSize:15,color:"#86efac",fontFamily:"'VT323',monospace",margin:"0 0 6px",letterSpacing:"0.06em",minHeight:20},
-  progressBar: {height:8,background:"rgba(0,0,0,0.4)",borderRadius:2,overflow:"hidden",marginBottom:6,marginTop:4,border:"1px solid rgba(0,180,60,0.2)"},
-  progressFill: {height:"100%",borderRadius:2,backgroundImage:"linear-gradient(90deg,#15803d,#22c55e)"},
-  scanProgress: {fontSize:14,color:"#4ade80",margin:0,textAlign:"right",letterSpacing:"0.08em",fontFamily:"'VT323',monospace"},
+  scanDot: {width:8,height:8,borderRadius:"50%",background:"#2d4eb0",display:"inline-block",flexShrink:0},
+  scanTitle: {fontSize:12,fontWeight:600,letterSpacing:"0.06em",color:"#1e3a7a",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
+  scanMessage: {fontSize:13,color:"#3a4a8a",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",margin:"0 0 6px",minHeight:20},
+  progressBar: {height:6,background:"#dde4f0",borderRadius:3,overflow:"hidden",marginBottom:6,marginTop:4},
+  progressFill: {height:"100%",borderRadius:3,background:"linear-gradient(90deg,#1e3a7a,#4a7adc)",transition:"width 0.15s ease-out"},
+  scanProgress: {fontSize:12,color:"#5a6a9a",margin:0,textAlign:"right",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
 
   // Result
   resultSection: {marginBottom:4,position:"relative",zIndex:1},
