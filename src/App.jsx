@@ -12,13 +12,80 @@ const FINALE_WINNERS = [
   { name: "Agent Name Here", dept: "Department" },
 ];
 
-const CURRENT_DAY = {
-  dept: "CRC",
-  label: "Central Reservations Control",
-  correctAnswers: ["crc", "central reservations control", "central reservation control", "reservations control"],
-  clue: `Our crafty friend has worked themselves into the perfect hiding spot, balancing inbound calls, outbound calls, emails, and SMS messages all at once. They seem to enjoy this department because it gives them a front row seat to every bit of chaos the moment it unfolds. Catching them is extremely difficult since they can be found here 24/7, giving them plenty of opportunities for mischief and countless shifts to disappear into when suspicion arises. We thought we finally had them cornered after they got a little too generous and handed out free hotel rooms during a weather delay — but somehow they slipped through our fingers just in time and vanished back into the queue.`,
-  previousDepts: [],
+// ── CLUES — update CURRENT_DAY daily ─────────────────────────────────────────
+const CLUES = {
+  MON: {
+    dept: "CRC",
+    label: "Central Reservations Control",
+    correctAnswers: ["crc", "central reservations control", "central reservation control", "reservations control"],
+    clue: `Our crafty friend has worked themselves into the perfect hiding spot, balancing inbound calls, outbound calls, emails, and SMS messages all at once. They seem to enjoy this department because it gives them a front row seat to every bit of chaos the moment it unfolds. Catching them is extremely difficult since they can be found here 24/7, giving them plenty of opportunities for mischief and countless shifts to disappear into when suspicion arises. We thought we finally had them cornered after they got a little too generous and handed out free hotel rooms during a weather delay — but somehow they slipped through our fingers just in time and vanished back into the queue.`,
+    previousDepts: [],
+  },
+  TUE: {
+    dept: "CRC",
+    label: "Central Reservations Control",
+    correctAnswers: ["crc", "central reservations control", "central reservation control", "reservations control"],
+    clue: `Our crafty friend has worked themselves into the perfect hiding spot, balancing inbound calls, outbound calls, emails, and SMS messages all at once. They seem to enjoy this department because it gives them a front row seat to every bit of chaos the moment it unfolds. Catching them is extremely difficult since they can be found here 24/7, giving them plenty of opportunities for mischief and countless shifts to disappear into when suspicion arises. We thought we finally had them cornered after they got a little too generous and handed out free hotel rooms during a weather delay — but somehow they slipped through our fingers just in time and vanished back into the queue.`,
+    previousDepts: [],
+  },
+  WED: {
+    dept: "Training",
+    label: "Training Team",
+    correctAnswers: ["training", "training team", "the training team", "res learning", "learning"],
+    clue: `Listen up, Gumshoe: our slippery mischief maker has given us the slip again, and our informants say they've gone to ground in a brand-new department — the perfect hideout for an agent of chaos, because there they get to write their own rules. Witnesses report the suspect stirring up extra confusion by rewriting policy left and right, and they've even sweet-talked Sunny Bot into taking orders from them. By all accounts, this rascal is having the time of their life rewriting every rule in the book. Your mission is to crack the case and track them down before the bell rings and the next new hire class is in session!`,
+    previousDepts: [
+      { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
+    ],
+  },
+  THU: {
+    dept: "Training",
+    label: "Training Team",
+    correctAnswers: ["training", "training team", "the training team", "res learning", "learning"],
+    clue: `Listen up, Gumshoe: our slippery mischief maker has given us the slip again, and our informants say they've gone to ground in a brand-new department — the perfect hideout for an agent of chaos, because there they get to write their own rules. Witnesses report the suspect stirring up extra confusion by rewriting policy left and right, and they've even sweet-talked Sunny Bot into taking orders from them. By all accounts, this rascal is having the time of their life rewriting every rule in the book. Your mission is to crack the case and track them down before the bell rings and the next new hire class is in session!`,
+    previousDepts: [
+      { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
+    ],
+  },
+  FRI: {
+    dept: "Social",
+    label: "Social Media Team",
+    correctAnswers: ["social", "social media", "social team", "social media team"],
+    clue: `Look out, Gumshoes! Our tricky suspect has logged into a new place to stir up trouble, and this time they seem to "like" every problem they cause. Witnesses say they've been sliding into DMs, dropping cryptic comments, and leaving a trail of shares and retweets everywhere they go. Our agents fear that if we don't catch this mischief maker soon, their antics could go viral and rack up more followers than the ACME home page. Even worse, they're mocking our search by emailing out bogus delays and phony compensation, then posting about it in their stories with a winking emoji. Some say they've even been spotted going live to brag that no detective can keep up with their feed. Scroll through the clues, follow the hashtags, and track them down fast — before they start trending with #CarmenCantBeCaught!`,
+    previousDepts: [
+      { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
+      { name: "Training Team", date: "WED OCT 8", code: "TRN" },
+    ],
+  },
+  SAT: {
+    dept: "Social",
+    label: "Social Media Team",
+    correctAnswers: ["social", "social media", "social team", "social media team"],
+    clue: `Look out, Gumshoes! Our tricky suspect has logged into a new place to stir up trouble, and this time they seem to "like" every problem they cause. Witnesses say they've been sliding into DMs, dropping cryptic comments, and leaving a trail of shares and retweets everywhere they go. Our agents fear that if we don't catch this mischief maker soon, their antics could go viral and rack up more followers than the ACME home page. Even worse, they're mocking our search by emailing out bogus delays and phony compensation, then posting about it in their stories with a winking emoji. Some say they've even been spotted going live to brag that no detective can keep up with their feed. Scroll through the clues, follow the hashtags, and track them down fast — before they start trending with #CarmenCantBeCaught!`,
+    previousDepts: [
+      { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
+      { name: "Training Team", date: "WED OCT 8", code: "TRN" },
+    ],
+  },
+  SUN: {
+    dept: "CCO",
+    label: "Call Center Operations",
+    correctAnswers: ["cco", "wfm", "call center operations", "call center", "workforce management"],
+    clue: `Just when we thought things couldn't get any worse, our slippery suspect has slipped into yet another department — and this time they're causing pure madness. Agents are missing their start times, nobody is sticking to their schedules, and the timesheets show almost every agent clocking in tardy! Our informants report the suspect has been scrambling shift bids, swapping lunch breaks, and hiding the time-off calendar where no one can find it. Then the crafty mischief maker wiped out every report, and now not a single agent is scheduled in Reservations for next month! Grab your stopwatch and your magnifying glass, Gumshoes, and track them down before the clock runs out and the phones start ringing with no one there to answer!`,
+    previousDepts: [
+      { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
+      { name: "Training Team", date: "WED OCT 8", code: "TRN" },
+      { name: "Social Media Team", date: "FRI OCT 10", code: "SOC" },
+    ],
+  },
 };
+
+// Get today's clue based on day of week
+function getTodayClue() {
+  const day = ["SUN","MON","TUE","WED","THU","FRI","SAT"][new Date().getDay()];
+  return CLUES[day] || CLUES.MON;
+}
+
+const CURRENT_DAY = getTodayClue();
 
 const TRANSFER_MESSAGES = [
   "She's already updated her LinkedIn. Trail's gone cold.",
@@ -579,14 +646,14 @@ export default function CarmenV2() {
                       <div>
                         <span style={s.folderFieldValue}>{CURRENT_DAY.label}</span>
                         <div style={{marginTop:6,display:"inline-block",border:"2px solid #15803d",padding:"2px 8px",transform:"rotate(-2deg)",transformOrigin:"left center"}}>
-                          <span style={{fontSize:11,fontWeight:700,letterSpacing:"0.05em",color:"#15803d",fontFamily:"'Courier New',Courier,monospace",whiteSpace:"nowrap"}}>DEPARTMENT CONFIRMED</span>
+                          <span style={{fontSize:11,fontWeight:700,letterSpacing:"0.05em",color:"#15803d",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",whiteSpace:"nowrap"}}>DEPARTMENT CONFIRMED</span>
                         </div>
                       </div>
                     ) : (
                       <div>
                         <span style={{...s.folderFieldValue,color:"#dc2626"}}>{answer.toUpperCase()}</span>
                         <div style={{marginTop:6,display:"inline-block",border:"2px solid #dc2626",padding:"2px 8px",transform:"rotate(-2deg)",transformOrigin:"left center"}}>
-                          <span style={{fontSize:11,fontWeight:700,letterSpacing:"0.05em",color:"#dc2626",fontFamily:"'Courier New',Courier,monospace",whiteSpace:"nowrap"}}>TRANSFERRED</span>
+                          <span style={{fontSize:11,fontWeight:700,letterSpacing:"0.05em",color:"#dc2626",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",whiteSpace:"nowrap"}}>TRANSFERRED</span>
                         </div>
                       </div>
                     )}
@@ -616,7 +683,7 @@ export default function CarmenV2() {
                 <div style={{height:1,width:"80%",background:"rgba(58,74,138,0.15)"}}></div>
                 <div style={{textAlign:"center"}}>
                   <span style={{display:"block",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,letterSpacing:"0.04em",color:"#8a9ac8",marginBottom:4}}>INVESTIGATION REFERENCE</span>
-                  <span style={{fontSize:11,color:"#1e3a7a",fontFamily:"'Courier New',Courier,monospace"}}>SC-INV-{getTodayString()}</span>
+                  <span style={{fontSize:11,color:"#1e3a7a",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"}}>SC-INV-{getTodayString()}</span>
                 </div>
               </div>
             </div>
@@ -713,7 +780,7 @@ export default function CarmenV2() {
             <span style={s.divider}>·</span>
             <span style={{...s.orgLabel,fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:14,letterSpacing:"0.01em"}}>INTERNAL INVESTIGATIONS</span>
           </div>
-          <div style={s.caseTag}>CASE SC-INV-{getTodayString()}</div>
+          <div style={s.caseTag}>SC-INV · OCT 5–11, 2026</div>
         </div>
 
         <div style={s.card}>
@@ -915,7 +982,7 @@ export default function CarmenV2() {
                       <motion.div initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} transition={{delay:0.4}} style={s.retryBox}>
                         <div style={{flex:1}}>
                           <span style={{display:"block",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:14,letterSpacing:"0.04em",color:"#7f1d1d",marginBottom:4}}>REASSIGNMENT AVAILABLE</span>
-                          <p style={{fontSize:11,color:"#78350f",margin:0,fontFamily:"'Courier New',Courier,monospace",letterSpacing:"0.02em",lineHeight:1.4}}>One retry permitted. First attempt remains on record.</p>
+                          <p style={{fontSize:11,color:"#78350f",margin:0,fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",letterSpacing:"0.02em",lineHeight:1.4}}>One retry permitted. First attempt remains on record.</p>
                         </div>
                         <button onClick={handleRetry} style={s.retryBtn}>Request Reassignment</button>
                       </motion.div>
@@ -955,10 +1022,10 @@ export default function CarmenV2() {
 function FinaleScreen() {
   const stampRotations = [-2,-3,-1.5,-2.5,-1,-3.5];
   const WEEK_DEPTS = [
-    {name:"Central Reservations Control",code:"CRC",date:"MON",fired:true},
-    {name:"Social Media",code:"SOCIAL",date:"WED",fired:true},
-    {name:"Training",code:"TRN",date:"FRI",fired:true},
-    {name:"Call Center Operations",code:"CCO",date:"SAT",fired:false},
+    { name: "Central Reservations Control", code: "CRC", date: "MON OCT 6",  fired: true  },
+    { name: "Training Team",                code: "TRN", date: "WED OCT 8",  fired: true  },
+    { name: "Social Media Team",            code: "SOC", date: "FRI OCT 10", fired: true  },
+    { name: "Call Center Operations",       code: "CCO", date: "SUN OCT 12", fired: false },
   ];
   const keyframes = `
     @keyframes stampIn{0%{opacity:0;transform:rotate(-4deg) scale(1.4)}60%{opacity:1;transform:rotate(-2deg) scale(0.95)}100%{opacity:1;transform:rotate(-2deg) scale(1)}}
@@ -987,10 +1054,10 @@ function FinaleScreen() {
             <div style={s.paperYellow}></div>
             <div style={s.cardTopStrip}>
               <motion.div initial={{scale:1.5,opacity:0,rotate:-4}} animate={{scale:1,opacity:0.88,rotate:-2}} transition={{delay:0.3,type:"spring",stiffness:220,damping:14}} onAnimationComplete={()=>playStamp()} style={{border:"3px solid #15803d",padding:"4px 10px",display:"inline-block",filter:"url(#stampFilter)"}}>
-                <span style={{fontSize:14,fontWeight:700,letterSpacing:"0.01em",color:"#15803d",fontFamily:"'Courier New',Courier,monospace"}}>CASE CLOSED</span>
+                <span style={{fontSize:14,fontWeight:700,letterSpacing:"0.01em",color:"#15803d",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"}}>CASE CLOSED</span>
               </motion.div>
               <div style={s.topRight}>
-                <span style={s.dateStamp}>FINAL WEEK RECAP</span>
+                <span style={s.dateStamp}>WEEK OF OCT 5 – OCT 11, 2026</span>
                 <span style={{...s.priorityTag,color:"#15803d",borderColor:"rgba(21,128,61,0.4)"}}>INVESTIGATION: COMPLETE</span>
               </div>
             </div>
@@ -1065,7 +1132,7 @@ function FinaleScreen() {
                       <div style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,color:"#8a9ac8",letterSpacing:"0.02em"}}>{w.dept}</div>
                     </div>
                     <div style={{border:"2px solid #15803d",padding:"3px 10px",transform:`rotate(${stampRotations[i]}deg)`,flexShrink:0}}>
-                      <span style={{fontFamily:"'Courier New',Courier,monospace",fontSize:12,fontWeight:700,color:"#15803d"}}>$100</span>
+                      <span style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,fontWeight:700,color:"#15803d"}}>$100</span>
                     </div>
                   </motion.div>
                 ))}
@@ -1105,9 +1172,9 @@ const s = {
   loginLogoArea: {display:"flex",alignItems:"center",gap:12,marginBottom:20},
   loginDivider: {height:1,background:"#c5cce8",marginBottom:20},
   loginFieldLabel: {fontSize:11,color:"#5a6a9a",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",letterSpacing:"0.02em",marginBottom:6,display:"block"},
-  loginInput: {width:"100%",boxSizing:"border-box",padding:"10px 12px",fontSize:13,fontFamily:"'Courier New',Courier,monospace",border:"1.5px solid #c5cce8",borderRadius:4,background:"#fff",color:"#1e3a7a",outline:"none",letterSpacing:"0.04em",marginBottom:8},
-  loginError: {fontSize:11,color:"#dc2626",fontFamily:"'Courier New',Courier,monospace",marginBottom:8,letterSpacing:"0.02em"},
-  loginBtn: {width:"100%",padding:"11px 0",background:"#2d4eb0",color:"#fff",border:"none",borderRadius:4,fontSize:12,fontWeight:700,letterSpacing:"0.02em",fontFamily:"'Courier New',Courier,monospace",cursor:"pointer"},
+  loginInput: {width:"100%",boxSizing:"border-box",padding:"10px 12px",fontSize:13,fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",border:"1.5px solid #c5cce8",borderRadius:4,background:"#fff",color:"#1e3a7a",outline:"none",letterSpacing:"0.04em",marginBottom:8},
+  loginError: {fontSize:11,color:"#dc2626",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",marginBottom:8,letterSpacing:"0.02em"},
+  loginBtn: {width:"100%",padding:"11px 0",background:"#2d4eb0",color:"#fff",border:"none",borderRadius:4,fontSize:12,fontWeight:700,letterSpacing:"0.02em",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",cursor:"pointer"},
   loginHint: {textAlign:"center",fontSize:10,color:"#8a9ac8",marginTop:10,fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",letterSpacing:"0.02em"},
   loginProgressTrack: {height:8,background:"#d0d4dc",borderRadius:4,overflow:"hidden"},
   loginProgressFill: {height:"100%",background:"linear-gradient(90deg,#1e3a7a,#4a7adc)",borderRadius:4,transition:"width 0.1s"},
@@ -1124,7 +1191,7 @@ const s = {
   emailSubject: {fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:14,color:"#1e3a7a",fontWeight:700,padding:"12px 0",borderBottom:"1px solid #e0e4f0"},
   emailContent: {padding:"16px 20px"},
   emailP: {fontFamily:"'Crimson Pro',Georgia,serif",fontSize:15,color:"#1e3a7a",lineHeight:1.7,margin:"0 0 12px"},
-  emailBtn: {background:"#1e3a7a",color:"#fff",border:"none",borderRadius:4,padding:"10px 20px",fontFamily:"'Courier New',Courier,monospace",fontSize:12,fontWeight:700,letterSpacing:"0.02em",cursor:"pointer"},
+  emailBtn: {background:"#1e3a7a",color:"#fff",border:"none",borderRadius:4,padding:"10px 20px",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,fontWeight:700,letterSpacing:"0.02em",cursor:"pointer"},
 
   // Header
   headerBar: {display:"flex",justifyContent:"space-between",alignItems:"center",padding:"9px 20px",background:"#1e3a7a",borderRadius:"6px 6px 0 0",borderBottom:"3px solid #152b7a"},
@@ -1193,8 +1260,8 @@ const s = {
   inputSection: {marginBottom:8,paddingTop:14,borderTop:"1px dashed rgba(58,74,138,0.15)",position:"relative",zIndex:1},
   inputLabel: {display:"block",fontSize:13,fontWeight:600,letterSpacing:"0.01em",color:"#3a4a8a",marginBottom:8,fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
   inputRow: {display:"flex",flexDirection:"column",gap:8},
-  input: {width:"100%",boxSizing:"border-box",padding:"10px 14px",fontSize:14,fontFamily:"'Courier New',Courier,monospace",border:"1.5px solid #3a4a8a",borderRadius:4,background:"rgba(255,255,255,0.85)",color:"#0f1f4a",outline:"none",letterSpacing:"0.04em"},
-  trackBtn: {width:"100%",padding:"10px 0",background:"#2d4eb0",color:"#fff",border:"none",borderRadius:4,fontSize:12,fontWeight:700,letterSpacing:"0.02em",fontFamily:"'Courier New',Courier,monospace",whiteSpace:"nowrap",textAlign:"center"},
+  input: {width:"100%",boxSizing:"border-box",padding:"10px 14px",fontSize:14,fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",border:"1.5px solid #3a4a8a",borderRadius:4,background:"rgba(255,255,255,0.85)",color:"#0f1f4a",outline:"none",letterSpacing:"0.04em"},
+  trackBtn: {width:"100%",padding:"10px 0",background:"#2d4eb0",color:"#fff",border:"none",borderRadius:4,fontSize:12,fontWeight:700,letterSpacing:"0.02em",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",whiteSpace:"nowrap",textAlign:"center"},
 
   // Scan terminal
   scanSection: {margin:"0 0 8px",border:"1px solid #c5cce8",borderRadius:6,position:"relative",zIndex:1,overflow:"hidden",boxShadow:"0 2px 12px rgba(30,58,122,0.12)",background:"#f8f9fc"},
@@ -1213,8 +1280,8 @@ const s = {
   resultBanner: {border:"1.5px solid",borderRadius:4,padding:"14px 18px",marginBottom:16},
   resultTagRow: {marginBottom:8},
   retryBox: {display:"flex",alignItems:"center",justifyContent:"space-between",gap:16,background:"rgba(127,29,29,0.06)",border:"1px solid rgba(127,29,29,0.2)",borderLeft:"3px solid #7f1d1d",borderRadius:4,padding:"12px 14px",marginBottom:14,position:"relative",zIndex:1},
-  retryBtn: {padding:"8px 14px",background:"transparent",color:"#7f1d1d",border:"1.5px solid #7f1d1d",borderRadius:4,fontSize:10,fontWeight:700,letterSpacing:"0.02em",fontFamily:"'Courier New',Courier,monospace",cursor:"pointer",whiteSpace:"nowrap",flexShrink:0},
-  submitBtn: {width:"100%",padding:"10px 0",background:"#1e3a7a",color:"#fff",border:"none",borderRadius:4,fontSize:12,fontWeight:700,letterSpacing:"0.02em",fontFamily:"'Courier New',Courier,monospace",whiteSpace:"nowrap",textAlign:"center"},
+  retryBtn: {padding:"8px 14px",background:"transparent",color:"#7f1d1d",border:"1.5px solid #7f1d1d",borderRadius:4,fontSize:10,fontWeight:700,letterSpacing:"0.02em",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",cursor:"pointer",whiteSpace:"nowrap",flexShrink:0},
+  submitBtn: {width:"100%",padding:"10px 0",background:"#1e3a7a",color:"#fff",border:"none",borderRadius:4,fontSize:12,fontWeight:700,letterSpacing:"0.02em",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",whiteSpace:"nowrap",textAlign:"center"},
 
   // Footer
   cardFooter: {display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:20,paddingTop:12,borderTop:"1px solid rgba(58,74,138,0.2)",position:"relative",zIndex:1},
@@ -1223,8 +1290,8 @@ const s = {
   // Folder (submitted/lockout screens)
   folderWrap: {width:"100%",maxWidth:760,position:"relative",zIndex:10},
   folderTab: {display:"flex",justifyContent:"space-between",alignItems:"center",background:"#1e3a7a",borderRadius:"6px 6px 0 0",padding:"8px 18px",width:"38%",boxShadow:"inset 0 -3px 0 #152b7a"},
-  folderTabText: {color:"#fff",fontSize:9,fontWeight:700,letterSpacing:"0.04em",fontFamily:"'Courier New',Courier,monospace"},
-  folderTabCase: {color:"rgba(255,255,255,0.6)",fontSize:9,letterSpacing:"0.02em",fontFamily:"'Courier New',Courier,monospace"},
+  folderTabText: {color:"#fff",fontSize:9,fontWeight:700,letterSpacing:"0.04em",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
+  folderTabCase: {color:"rgba(255,255,255,0.6)",fontSize:9,letterSpacing:"0.02em",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
   folderBody: {background:"linear-gradient(160deg,#f0f4ff 0%,#e8eeff 40%,#dde4ff 100%)",border:"2px solid #3a4a8a",borderTop:"2px solid #3a4a8a",borderRadius:"0 8px 8px 8px",padding:"28px 32px 24px",position:"relative",overflow:"visible",boxShadow:"0 24px 60px rgba(0,0,0,0.75),inset 0 0 40px rgba(30,58,122,0.06)"},
   folderTitle: {fontSize:20,fontWeight:700,color:"#0f1f4a",margin:"0 0 2px",letterSpacing:"0.01em",position:"relative",zIndex:1,fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
   folderSuspect: {fontSize:12,color:"#3a4a8a",margin:"0 0 16px",letterSpacing:"0.04em",fontFamily:"'Crimson Pro',Georgia,serif",fontStyle:"italic",position:"relative",zIndex:1},
@@ -1234,6 +1301,6 @@ const s = {
   folderFieldLabel: {fontSize:13,fontWeight:400,letterSpacing:"0.05em",color:"#5a6a9a",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
   folderFieldValue: {fontSize:15,fontWeight:600,color:"#0f1f4a",fontFamily:"'Crimson Pro',Georgia,serif",letterSpacing:"0.01em"},
   folderFooter: {marginTop:20,paddingTop:12,borderTop:"1px solid rgba(58,74,138,0.15)",position:"relative",zIndex:1},
-  folderFooterText: {fontSize:9,color:"#5a6a9a",letterSpacing:"0.02em",fontFamily:"'Courier New',Courier,monospace"},
-  newMissionBtn: {marginTop:20,width:"100%",padding:"10px 0",background:"#dc2626",color:"#fff",border:"none",borderRadius:4,fontSize:13,fontWeight:700,letterSpacing:"0.02em",fontFamily:"'Courier New',Courier,monospace",cursor:"pointer",position:"relative",zIndex:1},
+  folderFooterText: {fontSize:9,color:"#5a6a9a",letterSpacing:"0.02em",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif"},
+  newMissionBtn: {marginTop:20,width:"100%",padding:"10px 0",background:"#dc2626",color:"#fff",border:"none",borderRadius:4,fontSize:13,fontWeight:700,letterSpacing:"0.02em",fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",cursor:"pointer",position:"relative",zIndex:1},
 };
