@@ -974,7 +974,7 @@ export default function CarmenV2() {
                           text={isCorrect ? `Outstanding work, ${firstName(agentName)}. She's been tracked to ${CURRENT_DAY.label}.` : transferMsg}
                           color={isCorrect?"#166534":"#991b1b"}
                         />
-                        {isCorrect && <p style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:14,color:"#166534",margin:"4px 0 0",letterSpacing:"0.01em"}}>Carmen has been located in the {CURRENT_DAY.dept}.</p>}
+                        {isCorrect && <p style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:14,color:"#166534",margin:"4px 0 0",letterSpacing:"0.01em"}}>Carmen has been located working in  {CURRENT_DAY.dept}.</p>}
                       </motion.div>
                     </div>
 
@@ -1112,7 +1112,7 @@ function FinaleScreen() {
               <motion.div style={{...s.folderRight,display:"flex",flexDirection:"column"}} initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{delay:0.35,type:"spring",stiffness:180,damping:20}}>
                 <div style={{...s.clueBox,marginBottom:18}}>
                   <span style={{...s.clueTitle,background:"#15803d"}}>FINAL TRANSMISSION</span>
-                  <p style={s.clueText}>Carmen Sandiego has been apprehended after infiltrating four Sun Country departments. Six agents cracked the case and have each earned the reward. The Pursuit Division thanks all agents for their service this week. Case closed.</p>
+                  <p style={s.clueText}>Carmen Sandiego has been apprehended after infiltrating four Sun Country departments. Four agents cracked the case and have each earned the reward. The Pursuit Division thanks all agents for their service this week. Case closed.</p>
                   <p style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:13,fontStyle:"italic",color:"#78350f",margin:"6px 0 0",lineHeight:1.5}}>— The Chief, Sun Country Internal Investigations</p>
                 </div>
                 <div style={s.sectionDivider}>
