@@ -31,7 +31,7 @@ const CLUES = {
   WED: {
     dept: "Training",
     label: "Training Team",
-    correctAnswers: ["training", "training team", "the training team", "res learning", "learning"],
+    correctAnswers: ["training", "training team", "the training team", "res learning", "learning", "reservation learning", "reservations learning"],
     clue: `Listen up, Gumshoe: Our resident agent of chaos has gone undercover in a brand-new department, the perfect hideout for someone who thinks policies are more like suggestions. Intelligence reports show the suspect has been busy rewriting procedures, creating new rules on the fly, and somehow convincing Sunny Bot to follow their every command. As if that weren't enough, they've also been caught creating completely bogus LMS courses, assigning mystery trainings, and filling learning plans with classes nobody remembers asking for. Witnesses say they're having the time of their life keeping coworkers guessing what's real policy and what's part of their latest scheme. Your mission: track them down before another fake training goes live and the next new hire class gets enrolled in "mandatory" coursework that doesn't even exist!`,
     previousDepts: [
       { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
@@ -40,7 +40,7 @@ const CLUES = {
   THU: {
     dept: "Training",
     label: "Training Team",
-    correctAnswers: ["training", "training team", "the training team", "res learning", "learning"],
+    correctAnswers: ["training", "training team", "the training team", "res learning", "learning", "reservation learning", "reservations learning"],
     clue: `Listen up, Gumshoe: Our resident agent of chaos has gone undercover in a brand-new department, the perfect hideout for someone who thinks policies are more like suggestions. Intelligence reports show the suspect has been busy rewriting procedures, creating new rules on the fly, and somehow convincing Sunny Bot to follow their every command. As if that weren't enough, they've also been caught creating completely bogus LMS courses, assigning mystery trainings, and filling learning plans with classes nobody remembers asking for. Witnesses say they're having the time of their life keeping coworkers guessing what's real policy and what's part of their latest scheme. Your mission: track them down before another fake training goes live and the next new hire class gets enrolled in "mandatory" coursework that doesn't even exist!`,
     previousDepts: [
       { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
@@ -49,7 +49,7 @@ const CLUES = {
   FRI: {
     dept: "Social",
     label: "Social Media Team",
-    correctAnswers: ["social", "social media", "social team", "social media team"],
+    correctAnswers: ["social", "social media", "social team", "social media team", "the social team", "the social media team"],
     clue: `Look out, Gumshoes! Our tricky suspect has logged into a new place to stir up trouble, and this time they seem to "like" every problem they cause. Witnesses say they've been sliding into DMs, dropping cryptic comments, and leaving a trail of shares and retweets everywhere they go. Our agents fear that if we don't catch this mischief maker soon, their antics could go viral and rack up more followers than the ACME home page. Even worse, they're mocking our search by emailing out bogus delays and phony compensation, then posting about it in their stories with a winking emoji. Some say they've even been spotted going live to brag that no detective can keep up with their feed. Scroll through the clues, follow the hashtags, and track them down fast — before they start trending with #CarmenCantBeCaught!`,
     previousDepts: [
       { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
@@ -59,7 +59,7 @@ const CLUES = {
   SAT: {
     dept: "Social",
     label: "Social Media Team",
-    correctAnswers: ["social", "social media", "social team", "social media team"],
+    correctAnswers: [["social", "social media", "social team", "social media team", "the social team", "the social media team"],
     clue: `Look out, Gumshoes! Our tricky suspect has logged into a new place to stir up trouble, and this time they seem to "like" every problem they cause. Witnesses say they've been sliding into DMs, dropping cryptic comments, and leaving a trail of shares and retweets everywhere they go. Our agents fear that if we don't catch this mischief maker soon, their antics could go viral and rack up more followers than the ACME home page. Even worse, they're mocking our search by emailing out bogus delays and phony compensation, then posting about it in their stories with a winking emoji. Some say they've even been spotted going live to brag that no detective can keep up with their feed. Scroll through the clues, follow the hashtags, and track them down fast — before they start trending with #CarmenCantBeCaught!`,
     previousDepts: [
       { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
@@ -69,7 +69,7 @@ const CLUES = {
   SUN: {
     dept: "CCO",
     label: "Call Center Operations",
-    correctAnswers: ["cco", "wfm", "call center operations", "call center", "workforce management"],
+    correctAnswers: ["cco", "wfm", "call center operations", "call center", "workforce management", "call center operation"],
     clue: `Just when we thought things couldn't get any worse, our slippery suspect has slipped into yet another department — and this time they're causing pure madness. Agents are missing their start times, nobody is sticking to their schedules, and the timesheets show almost every agent clocking in tardy! Our informants report the suspect has been scrambling shift bids, swapping lunch breaks, and hiding the time-off calendar where no one can find it. Then the crafty mischief maker wiped out every report, and now not a single agent is scheduled in Reservations for next month! Grab your stopwatch and your magnifying glass, Gumshoes, and track them down before the clock runs out and the phones start ringing with no one there to answer!`,
     previousDepts: [
       { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
