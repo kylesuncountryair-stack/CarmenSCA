@@ -32,7 +32,11 @@ const CLUES = {
     dept: "Training",
     label: "Training Team",
     correctAnswers: ["training", "training team", "the training team", "res learning", "learning"],
-    clue: `Listen up, Gumshoe: our slippery mischief maker has given us the slip again, and our informants say they've gone to ground in a brand-new department — the perfect hideout for an agent of chaos, because there they get to write their own rules. Witnesses report the suspect stirring up extra confusion by rewriting policy left and right, and they've even sweet-talked Sunny Bot into taking orders from them. By all accounts, this rascal is having the time of their life rewriting every rule in the book. Your mission is to crack the case and track them down before the bell rings and the next new hire class is in session!`,
+    clue: `Listen up, Gumshoe: Our slippery agent of chaos has vanished again, taking cover in a brand-new department where they seem convinced policies are merely suggestions. Reports indicate the suspect has been busy rewriting procedures, creating confusion wherever they go, and somehow convincing Sunny Bot to take orders from them.
+
+But the mischief doesn't stop there. Witnesses claim they've been creating completely bogus LMS courses, assigning mysterious trainings, and keeping coworkers guessing what's real and what's made up. By all accounts, this rascal is having the time of their life rewriting the rulebook and causing just enough chaos to keep everyone on their toes.
+
+Your mission: track them down before the next fake training goes live and the next new hire class is forced to complete it. Good luck, detective!`,
     previousDepts: [
       { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
     ],
@@ -41,7 +45,11 @@ const CLUES = {
     dept: "Training",
     label: "Training Team",
     correctAnswers: ["training", "training team", "the training team", "res learning", "learning"],
-    clue: `Listen up, Gumshoe: our slippery mischief maker has given us the slip again, and our informants say they've gone to ground in a brand-new department — the perfect hideout for an agent of chaos, because there they get to write their own rules. Witnesses report the suspect stirring up extra confusion by rewriting policy left and right, and they've even sweet-talked Sunny Bot into taking orders from them. By all accounts, this rascal is having the time of their life rewriting every rule in the book. Your mission is to crack the case and track them down before the bell rings and the next new hire class is in session!`,
+    clue: `Listen up, Gumshoe: Our slippery agent of chaos has vanished again, taking cover in a brand-new department where they seem convinced policies are merely suggestions. Reports indicate the suspect has been busy rewriting procedures, creating confusion wherever they go, and somehow convincing Sunny Bot to take orders from them.
+
+But the mischief doesn't stop there. Witnesses claim they've been creating completely bogus LMS courses, assigning mysterious trainings, and keeping coworkers guessing what's real and what's made up. By all accounts, this rascal is having the time of their life rewriting the rulebook and causing just enough chaos to keep everyone on their toes.
+
+Your mission: track them down before the next fake training goes live and the next new hire class is forced to complete it. Good luck, detective!`,
     previousDepts: [
       { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
     ],
