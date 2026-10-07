@@ -32,11 +32,7 @@ const CLUES = {
     dept: "Training",
     label: "Training Team",
     correctAnswers: ["training", "training team", "the training team", "res learning", "learning"],
-    clue: `Listen up, Gumshoe: Our slippery agent of chaos has vanished again, taking cover in a brand-new department where they seem convinced policies are merely suggestions. Reports indicate the suspect has been busy rewriting procedures, creating confusion wherever they go, and somehow convincing Sunny Bot to take orders from them.
-
-But the mischief doesn't stop there. Witnesses claim they've been creating completely bogus LMS courses, assigning mysterious trainings, and keeping coworkers guessing what's real and what's made up. By all accounts, this rascal is having the time of their life rewriting the rulebook and causing just enough chaos to keep everyone on their toes.
-
-Your mission: track them down before the next fake training goes live and the next new hire class is forced to complete it. Good luck, detective!`,
+    clue: `Listen up, Gumshoe: Our resident agent of chaos has gone undercover in a brand-new department, the perfect hideout for someone who thinks policies are more like suggestions. Intelligence reports show the suspect has been busy rewriting procedures, creating new rules on the fly, and somehow convincing Sunny Bot to follow their every command. As if that weren't enough, they've also been caught creating completely bogus LMS courses, assigning mystery trainings, and filling learning plans with classes nobody remembers asking for. Witnesses say they're having the time of their life keeping coworkers guessing what's real policy and what's part of their latest scheme. Your mission: track them down before another fake training goes live and the next new hire class gets enrolled in "mandatory" coursework that doesn't even exist!`,
     previousDepts: [
       { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
     ],
@@ -45,11 +41,7 @@ Your mission: track them down before the next fake training goes live and the ne
     dept: "Training",
     label: "Training Team",
     correctAnswers: ["training", "training team", "the training team", "res learning", "learning"],
-    clue: `Listen up, Gumshoe: Our slippery agent of chaos has vanished again, taking cover in a brand-new department where they seem convinced policies are merely suggestions. Reports indicate the suspect has been busy rewriting procedures, creating confusion wherever they go, and somehow convincing Sunny Bot to take orders from them.
-
-But the mischief doesn't stop there. Witnesses claim they've been creating completely bogus LMS courses, assigning mysterious trainings, and keeping coworkers guessing what's real and what's made up. By all accounts, this rascal is having the time of their life rewriting the rulebook and causing just enough chaos to keep everyone on their toes.
-
-Your mission: track them down before the next fake training goes live and the next new hire class is forced to complete it. Good luck, detective!`,
+    clue: `Listen up, Gumshoe: Our resident agent of chaos has gone undercover in a brand-new department, the perfect hideout for someone who thinks policies are more like suggestions. Intelligence reports show the suspect has been busy rewriting procedures, creating new rules on the fly, and somehow convincing Sunny Bot to follow their every command. As if that weren't enough, they've also been caught creating completely bogus LMS courses, assigning mystery trainings, and filling learning plans with classes nobody remembers asking for. Witnesses say they're having the time of their life keeping coworkers guessing what's real policy and what's part of their latest scheme. Your mission: track them down before another fake training goes live and the next new hire class gets enrolled in "mandatory" coursework that doesn't even exist!`,
     previousDepts: [
       { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
     ],
