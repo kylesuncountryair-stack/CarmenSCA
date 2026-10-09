@@ -971,7 +971,7 @@ export default function CarmenV2() {
                       </div>
                       <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.55}}>
                         <VerdictLine
-                          text={isCorrect ? `Outstanding work, ${firstName(agentName)}. She's been tracked to ${CURRENT_DAY.label}.` : transferMsg}
+                          text={isCorrect ? `Outstanding work, ${firstName(agentName)}. She's been tracked to the${CURRENT_DAY.label}.` : transferMsg}
                           color={isCorrect?"#166534":"#991b1b"}
                         />
                         {isCorrect && <p style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:14,color:"#166534",margin:"4px 0 0",letterSpacing:"0.01em"}}>Carmen has been located working in  {CURRENT_DAY.dept}.</p>}
