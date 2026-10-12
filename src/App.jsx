@@ -1139,7 +1139,7 @@ function FinaleScreen() {
                       <div style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,color:"#8a9ac8",letterSpacing:"0.02em"}}>{w.dept}</div>
                     </div>
                     <div style={{border:"2px solid #15803d",padding:"3px 10px",transform:`rotate(${stampRotations[i]}deg)`,flexShrink:0}}>
-                      <span style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,fontWeight:700,color:"#15803d"}}>$100</span>
+                      <span style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,fontWeight:700,color:"#15803d"}}>$50</span>
                     </div>
                   </motion.div>
                 ))}
