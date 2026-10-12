@@ -2,12 +2,14 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // ── CONFIG — update daily ────────────────────────────────────────────────────
-const FINALE_MODE = True;
+const FINALE_MODE = false;
 const FINALE_WINNERS = [
-  { name: "To Be Announced at Noon" },
-  { name: "To Be Announced at Noon" },
-  { name: "To Be Announced at Noon" },
-  { name: "To Be Announced at Noon" },
+  { name: "Agent Name Here", dept: "Department" },
+  { name: "Agent Name Here", dept: "Department" },
+  { name: "Agent Name Here", dept: "Department" },
+  { name: "Agent Name Here", dept: "Department" },
+  { name: "Agent Name Here", dept: "Department" },
+  { name: "Agent Name Here", dept: "Department" },
 ];
 
 // ── CLUES — update CURRENT_DAY daily ─────────────────────────────────────────
@@ -29,8 +31,8 @@ const CLUES = {
   WED: {
     dept: "Training",
     label: "Training Team",
-    correctAnswers: ["training", "training team", "the training team", "res learning", "learning", "reservation learning", "reservations learning"],
-    clue: `Listen up, Gumshoe: Our resident agent of chaos has gone undercover in a brand-new department, the perfect hideout for someone who thinks policies are more like suggestions. Intelligence reports show the suspect has been busy rewriting procedures, creating new rules on the fly, and somehow convincing Sunny Bot to follow their every command. As if that weren't enough, they've also been caught creating completely bogus LMS courses, assigning mystery trainings, and filling learning plans with classes nobody remembers asking for. Witnesses say they're having the time of their life keeping coworkers guessing what's real policy and what's part of their latest scheme. Your mission: track them down before another fake training goes live and the next new hire class gets enrolled in "mandatory" coursework that doesn't even exist!`,
+    correctAnswers: ["training", "training team", "the training team", "res learning", "learning"],
+    clue: `Listen up, Gumshoe: our slippery mischief maker has given us the slip again, and our informants say they've gone to ground in a brand-new department — the perfect hideout for an agent of chaos, because there they get to write their own rules. Witnesses report the suspect stirring up extra confusion by rewriting policy left and right, and they've even sweet-talked Sunny Bot into taking orders from them. By all accounts, this rascal is having the time of their life rewriting every rule in the book. Your mission is to crack the case and track them down before the bell rings and the next new hire class is in session!`,
     previousDepts: [
       { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
     ],
@@ -38,8 +40,8 @@ const CLUES = {
   THU: {
     dept: "Training",
     label: "Training Team",
-    correctAnswers: ["training", "training team", "the training team", "res learning", "learning", "reservation learning", "reservations learning"],
-    clue: `Listen up, Gumshoe: Our resident agent of chaos has gone undercover in a brand-new department, the perfect hideout for someone who thinks policies are more like suggestions. Intelligence reports show the suspect has been busy rewriting procedures, creating new rules on the fly, and somehow convincing Sunny Bot to follow their every command. As if that weren't enough, they've also been caught creating completely bogus LMS courses, assigning mystery trainings, and filling learning plans with classes nobody remembers asking for. Witnesses say they're having the time of their life keeping coworkers guessing what's real policy and what's part of their latest scheme. Your mission: track them down before another fake training goes live and the next new hire class gets enrolled in "mandatory" coursework that doesn't even exist!`,
+    correctAnswers: ["training", "training team", "the training team", "res learning", "learning"],
+    clue: `Listen up, Gumshoe: our slippery mischief maker has given us the slip again, and our informants say they've gone to ground in a brand-new department — the perfect hideout for an agent of chaos, because there they get to write their own rules. Witnesses report the suspect stirring up extra confusion by rewriting policy left and right, and they've even sweet-talked Sunny Bot into taking orders from them. By all accounts, this rascal is having the time of their life rewriting every rule in the book. Your mission is to crack the case and track them down before the bell rings and the next new hire class is in session!`,
     previousDepts: [
       { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
     ],
@@ -47,8 +49,8 @@ const CLUES = {
   FRI: {
     dept: "Social",
     label: "Social Media Team",
-    correctAnswers: ["social", "social media", "social team", "social media team", "the social team", "the social media team"],
-    clue: `Look out, Gumshoes! Our tricky suspect has logged into a new place to stir up trouble, and this time they seem to "like" every problem they cause. Witnesses say they've been sliding into DMs, dropping cryptic comments, and leaving a trail of shares and retweets everywhere they go. Our agents fear that if we don't catch this mischief maker soon, their antics could go viral and rack up more followers than the Sun Country home page. Even worse, they're mocking our search by emailing out bogus delays and phony compensation, then posting about it in their stories with a winking emoji. Some say they've even been spotted going live to brag that no detective can keep up with their feed. Scroll through the clues, follow the hashtags, and track them down fast before they start trending with #CarmenCantBeCaught!`,
+    correctAnswers: ["social", "social media", "social team", "social media team"],
+    clue: `Look out, Gumshoes! Our tricky suspect has logged into a new place to stir up trouble, and this time they seem to "like" every problem they cause. Witnesses say they've been sliding into DMs, dropping cryptic comments, and leaving a trail of shares and retweets everywhere they go. Our agents fear that if we don't catch this mischief maker soon, their antics could go viral and rack up more followers than the ACME home page. Even worse, they're mocking our search by emailing out bogus delays and phony compensation, then posting about it in their stories with a winking emoji. Some say they've even been spotted going live to brag that no detective can keep up with their feed. Scroll through the clues, follow the hashtags, and track them down fast — before they start trending with #CarmenCantBeCaught!`,
     previousDepts: [
       { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
       { name: "Training Team", date: "WED OCT 8", code: "TRN" },
@@ -57,8 +59,8 @@ const CLUES = {
   SAT: {
     dept: "Social",
     label: "Social Media Team",
-    correctAnswers: ["social", "social media", "social team", "social media team", "the social team", "the social media team"],
-    clue: `Look out, Gumshoes! Our tricky suspect has logged into a new place to stir up trouble, and this time they seem to "like" every problem they cause. Witnesses say they've been sliding into DMs, dropping cryptic comments, and leaving a trail of shares and retweets everywhere they go. Our agents fear that if we don't catch this mischief maker soon, their antics could go viral and rack up more followers than the Sun Country home page. Even worse, they're mocking our search by emailing out bogus delays and phony compensation, then posting about it in their stories with a winking emoji. Some say they've even been spotted going live to brag that no detective can keep up with their feed. Scroll through the clues, follow the hashtags, and track them down fast before they start trending with #CarmenCantBeCaught!`,
+    correctAnswers: ["social", "social media", "social team", "social media team"],
+    clue: `Look out, Gumshoes! Our tricky suspect has logged into a new place to stir up trouble, and this time they seem to "like" every problem they cause. Witnesses say they've been sliding into DMs, dropping cryptic comments, and leaving a trail of shares and retweets everywhere they go. Our agents fear that if we don't catch this mischief maker soon, their antics could go viral and rack up more followers than the ACME home page. Even worse, they're mocking our search by emailing out bogus delays and phony compensation, then posting about it in their stories with a winking emoji. Some say they've even been spotted going live to brag that no detective can keep up with their feed. Scroll through the clues, follow the hashtags, and track them down fast — before they start trending with #CarmenCantBeCaught!`,
     previousDepts: [
       { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
       { name: "Training Team", date: "WED OCT 8", code: "TRN" },
@@ -67,7 +69,7 @@ const CLUES = {
   SUN: {
     dept: "CCO",
     label: "Call Center Operations",
-    correctAnswers: ["cco", "wfm", "call center operations", "call center", "workforce management", "call center operation"],
+    correctAnswers: ["cco", "wfm", "call center operations", "call center", "workforce management"],
     clue: `Just when we thought things couldn't get any worse, our slippery suspect has slipped into yet another department — and this time they're causing pure madness. Agents are missing their start times, nobody is sticking to their schedules, and the timesheets show almost every agent clocking in tardy! Our informants report the suspect has been scrambling shift bids, swapping lunch breaks, and hiding the time-off calendar where no one can find it. Then the crafty mischief maker wiped out every report, and now not a single agent is scheduled in Reservations for next month! Grab your stopwatch and your magnifying glass, Gumshoes, and track them down before the clock runs out and the phones start ringing with no one there to answer!`,
     previousDepts: [
       { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
@@ -75,22 +77,23 @@ const CLUES = {
       { name: "Social Media Team", date: "FRI OCT 10", code: "SOC" },
     ],
   },
-  MON: {
-    dept: "CCO",
-    label: "Call Center Operations",
-    correctAnswers: ["cco", "wfm", "call center operations", "call center", "workforce management", "call center operation"],
-    clue: `Just when we thought things couldn't get any worse, our slippery suspect has slipped into yet another department — and this time they're causing pure madness. Agents are missing their start times, nobody is sticking to their schedules, and the timesheets show almost every agent clocking in tardy! Our informants report the suspect has been scrambling shift bids, swapping lunch breaks, and hiding the time-off calendar where no one can find it. Then the crafty mischief maker wiped out every report, and now not a single agent is scheduled in Reservations for next month! Grab your stopwatch and your magnifying glass, Gumshoes, and track them down before the clock runs out and the phones start ringing with no one there to answer!`,
-    previousDepts: [
-      { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
-      { name: "Training Team", date: "WED OCT 8", code: "TRN" },
-      { name: "Social Media Team", date: "FRI OCT 10", code: "SOC" },
-        ],
-  },
 };
 
-// Get today's clue based on day of week
+// Get today's clue based on day of week.
+// On Monday before noon ET, still show Sunday's CCO clue.
+// On Monday at noon or after, FINALE_MODE should be flipped to true.
 function getTodayClue() {
-  const day = ["SUN","MON","TUE","WED","THU","FRI","SAT"][new Date().getDay()];
+  const now = new Date();
+  const dayIndex = now.getDay(); // 0=Sun, 1=Mon...
+  const dayNames = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
+
+  // Monday before noon ET (UTC-4): serve Sunday's clue
+  if (dayIndex === 1) {
+    const hourET = now.getUTCHours() - 4;
+    if (hourET < 12) return CLUES.SUN;
+  }
+
+  const day = dayNames[dayIndex];
   return CLUES[day] || CLUES.MON;
 }
 
@@ -980,10 +983,10 @@ export default function CarmenV2() {
                       </div>
                       <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.55}}>
                         <VerdictLine
-                          text={isCorrect ? `Outstanding work, ${firstName(agentName)}. She's been tracked to the${CURRENT_DAY.label}.` : transferMsg}
+                          text={isCorrect ? `Outstanding work, ${firstName(agentName)}. She's been tracked to ${CURRENT_DAY.label}.` : transferMsg}
                           color={isCorrect?"#166534":"#991b1b"}
                         />
-                        {isCorrect && <p style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:14,color:"#166534",margin:"4px 0 0",letterSpacing:"0.01em"}}>Carmen has been located working in  {CURRENT_DAY.dept}.</p>}
+                        {isCorrect && <p style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:14,color:"#166534",margin:"4px 0 0",letterSpacing:"0.01em"}}>Carmen has been located in the {CURRENT_DAY.dept}.</p>}
                       </motion.div>
                     </div>
 
@@ -1121,7 +1124,7 @@ function FinaleScreen() {
               <motion.div style={{...s.folderRight,display:"flex",flexDirection:"column"}} initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{delay:0.35,type:"spring",stiffness:180,damping:20}}>
                 <div style={{...s.clueBox,marginBottom:18}}>
                   <span style={{...s.clueTitle,background:"#15803d"}}>FINAL TRANSMISSION</span>
-                  <p style={s.clueText}>Carmen Sandiego has been apprehended after infiltrating four Sun Country departments. Four agents cracked the case and have each earned the reward. The Pursuit Division thanks all agents for their service this week. Case closed.</p>
+                  <p style={s.clueText}>Carmen Sandiego has been apprehended after infiltrating four Sun Country departments. Six agents cracked the case and have each earned the reward. The Pursuit Division thanks all agents for their service this week. Case closed.</p>
                   <p style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:13,fontStyle:"italic",color:"#78350f",margin:"6px 0 0",lineHeight:1.5}}>— The Chief, Sun Country Internal Investigations</p>
                 </div>
                 <div style={s.sectionDivider}>
