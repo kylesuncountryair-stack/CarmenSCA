@@ -2,14 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // ── CONFIG — update daily ────────────────────────────────────────────────────
-const FINALE_MODE = false;
+const FINALE_MODE = true;
 const FINALE_WINNERS = [
-  { name: "Agent Name Here", dept: "Department" },
-  { name: "Agent Name Here", dept: "Department" },
-  { name: "Agent Name Here", dept: "Department" },
-  { name: "Agent Name Here", dept: "Department" },
-  { name: "Agent Name Here", dept: "Department" },
-  { name: "Agent Name Here", dept: "Department" },
+  { name: "Jessica Luu", dept: "Reservations" },
+  { name: "Sheryl Harrigin", dept: "Customer Care" },
+  { name: "Debra Houston", dept: "Reservations" },
+  { name: "Roxanne Knudsen", dept: "Customer Care" },
 ];
 
 // ── CLUES — update CURRENT_DAY  daily ─────────────────────────────────────────
@@ -1121,7 +1119,7 @@ function FinaleScreen() {
               <motion.div style={{...s.folderRight,display:"flex",flexDirection:"column"}} initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{delay:0.35,type:"spring",stiffness:180,damping:20}}>
                 <div style={{...s.clueBox,marginBottom:18}}>
                   <span style={{...s.clueTitle,background:"#15803d"}}>FINAL TRANSMISSION</span>
-                  <p style={s.clueText}>Carmen Sandiego has been apprehended after infiltrating four Sun Country departments. Six agents cracked the case and have each earned the reward. The Pursuit Division thanks all agents for their service this week. Case closed.</p>
+                  <p style={s.clueText}>Carmen Sandiego has been apprehended after infiltrating four Sun Country departments. Four agents cracked the case and have each earned the reward. The Pursuit Division thanks all agents for their service this week. Case closed.</p>
                   <p style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:13,fontStyle:"italic",color:"#78350f",margin:"6px 0 0",lineHeight:1.5}}>— The Chief, Sun Country Internal Investigations</p>
                 </div>
                 <div style={s.sectionDivider}>
@@ -1130,7 +1128,7 @@ function FinaleScreen() {
                   <span style={{color:"rgba(58,74,138,0.3)",fontSize:10,margin:"0 2px"}}>›</span>
                   <div style={s.sectionRule}></div>
                 </div>
-                <p style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,color:"#8a9ac8",letterSpacing:"0.02em",marginBottom:10,position:"relative",zIndex:1}}>THE FOLLOWING AGENTS ARE EACH AWARDED $100</p>
+                <p style={{fontFamily:"'Inter','Helvetica Neue',Arial,sans-serif",fontSize:12,color:"#8a9ac8",letterSpacing:"0.02em",marginBottom:10,position:"relative",zIndex:1}}>THE FOLLOWING AGENTS ARE EACH AWARDED $50</p>
                 {FINALE_WINNERS.map((w,i)=>(
                   <motion.div key={i} initial={{opacity:0,x:12}} animate={{opacity:1,x:0}} transition={{delay:0.5+i*0.08,type:"spring",stiffness:200,damping:20}} style={{display:"flex",alignItems:"center",gap:12,padding:"9px 14px",background:"rgba(21,128,61,0.05)",border:"1px solid rgba(21,128,61,0.2)",borderRadius:4,marginBottom:7,position:"relative",zIndex:1}}>
                     <div style={{width:36,height:36,borderRadius:"50%",background:"#15803d",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
