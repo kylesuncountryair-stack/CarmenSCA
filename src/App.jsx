@@ -87,11 +87,8 @@ function getTodayClue() {
   const dayIndex = now.getDay(); // 0=Sun, 1=Mon...
   const dayNames = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
 
-  // Monday before noon CT (UTC-5): serve Sunday's clue
-  if (dayIndex === 1) {
-    const hourCT = now.getUTCHours() - 5;
-    if (hourCT < 12) return CLUES.SUN;
-  }
+  // Monday: always serve Sunday's clue (finale flips at end of day)
+  if (dayIndex === 1) return CLUES.SUN;
 
   const day = dayNames[dayIndex];
   return CLUES[day] || CLUES.MON;
