@@ -2,14 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // ── CONFIG — update daily ────────────────────────────────────────────────────
-const FINALE_MODE = false;
+const FINALE_MODE = True;
 const FINALE_WINNERS = [
-  { name: "Agent Name Here", dept: "Department" },
-  { name: "Agent Name Here", dept: "Department" },
-  { name: "Agent Name Here", dept: "Department" },
-  { name: "Agent Name Here", dept: "Department" },
-  { name: "Agent Name Here", dept: "Department" },
-  { name: "Agent Name Here", dept: "Department" },
+  { name: "To Be Announced at Noon" },
+  { name: "To Be Announced at Noon" },
+  { name: "To Be Announced at Noon" },
+  { name: "To Be Announced at Noon" },
 ];
 
 // ── CLUES — update CURRENT_DAY daily ─────────────────────────────────────────
@@ -77,6 +75,15 @@ const CLUES = {
       { name: "Social Media Team", date: "FRI OCT 10", code: "SOC" },
     ],
   },
+  MON: {
+    dept: "CCO",
+    label: "Call Center Operations",
+    correctAnswers: ["cco", "wfm", "call center operations", "call center", "workforce management", "call center operation"],
+    clue: `Just when we thought things couldn't get any worse, our slippery suspect has slipped into yet another department — and this time they're causing pure madness. Agents are missing their start times, nobody is sticking to their schedules, and the timesheets show almost every agent clocking in tardy! Our informants report the suspect has been scrambling shift bids, swapping lunch breaks, and hiding the time-off calendar where no one can find it. Then the crafty mischief maker wiped out every report, and now not a single agent is scheduled in Reservations for next month! Grab your stopwatch and your magnifying glass, Gumshoes, and track them down before the clock runs out and the phones start ringing with no one there to answer!`,
+    previousDepts: [
+      { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
+      { name: "Training Team", date: "WED OCT 8", code: "TRN" },
+      { name: "Social Media Team", date: "FRI OCT 10", code: "SOC" },
 };
 
 // Get today's clue based on day of week
