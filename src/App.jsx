@@ -84,6 +84,8 @@ const CLUES = {
       { name: "Central Reservations Control", date: "MON OCT 6", code: "CRC" },
       { name: "Training Team", date: "WED OCT 8", code: "TRN" },
       { name: "Social Media Team", date: "FRI OCT 10", code: "SOC" },
+        ],
+  },
 };
 
 // Get today's clue based on day of week
