@@ -1086,7 +1086,7 @@ function FinaleScreen() {
                     <div style={s.suspectGridItem}><span style={s.fieldLabel}>APPREHENDED</span><span style={s.fieldValue}>This Week</span></div>
                     <div style={s.suspectGridItem}><span style={s.fieldLabel}>DEPTS INFILTRATED</span><span style={s.fieldValue}>4</span></div>
                     <div style={s.suspectGridItem}><span style={s.fieldLabel}>REPORTS FILED</span><span style={s.fieldValue}>209</span></div>
-                    <div style={{...s.suspectGridItem,gridColumn:"1/-1"}}><span style={s.fieldLabel}>REWARD TOTAL</span><span style={{...s.fieldValue,color:"#15803d",fontSize:16}}>$600</span></div>
+                    <div style={{...s.suspectGridItem,gridColumn:"1/-1"}}><span style={s.fieldLabel}>REWARD TOTAL</span><span style={{...s.fieldValue,color:"#15803d",fontSize:16}}>$200</span></div>
                   </div>
                 </div>
                 <div style={s.sectionDivider}>
