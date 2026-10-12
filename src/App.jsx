@@ -12,7 +12,7 @@ const FINALE_WINNERS = [
   { name: "Agent Name Here", dept: "Department" },
 ];
 
-// ── CLUES — update CURRENT_DAY daily ─────────────────────────────────────────
+// ── CLUES — update CURRENT_DAY  daily ─────────────────────────────────────────
 const CLUES = {
   MON: {
     dept: "CRC",
