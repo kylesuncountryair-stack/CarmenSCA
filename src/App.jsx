@@ -1031,7 +1031,7 @@ function FinaleScreen() {
   const WEEK_DEPTS = [
     { name: "Central Reservations Control", code: "CRC", date: "MON OCT 6",  fired: true  },
     { name: "Training Team",                code: "TRN", date: "WED OCT 8",  fired: true  },
-    { name: "Social Media Team",            code: "SOC", date: "FRI OCT 10", fired: true  },
+    { name: "Social Media Team",            code: "SMT", date: "FRI OCT 10", fired: true  },
     { name: "Call Center Operations",       code: "CCO", date: "SUN OCT 12", fired: false },
   ];
   const keyframes = `
